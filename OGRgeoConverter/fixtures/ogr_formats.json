@@ -1,0 +1,343 @@
+[
+
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 1,
+		"fields": {
+			"name": "AutoCAD DXF",
+			"ogr_name": "DXF",
+			"file_extension": "dxf",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 2,
+		"fields": {
+			"name": "Comma Separated Value (CSV)",
+			"ogr_name": "CSV",
+			"file_extension": "csv",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 3,
+		"fields": {
+			"name": "ESRI File Geodatabase (FileGDB)",
+			"ogr_name": "FileGDB",
+			"file_extension": "gdb",
+			"output_type": "folder",
+			"state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 4,
+		"fields": {
+			"name": "ESRI Personal GeoDatabase",
+			"ogr_name": "PGeo",
+			"file_extension": "mdb",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 5,
+		"fields": {
+			"name": "ESRI Shapefile",
+			"ogr_name": "ESRI Shapefile",
+			"file_extension": "shp",
+			"output_type": "folder",
+			"state_all_files": 0
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 1,
+		"fields": {
+		    "ogr_format": 5,
+		    "file_extension": "dbf",
+		    "required": 1,
+		    "multiple": 0,
+		    "order": 1
+		}
+    },
+    {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 2,
+		"fields": {
+		    "ogr_format": 5,
+		    "file_extension": "shx",
+		    "required": 1,
+		    "multiple": 0,
+		    "order": 2
+		}
+    },
+    {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 3,
+		"fields": {
+		    "ogr_format": 5,
+		    "file_extension": "cpg",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 3
+		}
+    },
+    {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 4,
+		"fields": {
+		    "ogr_format": 5,
+		    "file_extension": "prj",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 4
+		}
+    },
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 6,
+		"fields": {
+			"name": "GeoJSON",
+			"ogr_name": "GeoJSON",
+			"file_extension": "geojson",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 7,
+		"fields": {
+			"name": "GeoRSS",
+			"ogr_name": "GeoRSS",
+			"file_extension": "rss",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 8,
+		"fields": {
+			"name": "Geospatial PDF",
+			"ogr_name": "PDF",
+			"file_extension": "pdf",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 9,
+		"fields": {
+			"name": "Geography Markup Language (GML)",
+			"ogr_name": "GML",
+			"file_extension": "gml",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 5,
+		"fields": {
+		    "ogr_format": 9,
+		    "file_extension": "xsd",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": null
+		}
+    },
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 10,
+		"fields": {
+			"name": "GPS Exchange Format (GPX)",
+			"ogr_name": "GPX",
+			"file_extension": "gpx",
+			"output_type": "file",
+			"state_all_files": 0
+		}
+	},
+
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 11,
+		"fields": {
+		    "name": "INTERLIS 1",
+		    "ogr_name": "Interlis 1",
+		    "file_extension": "itf",
+		    "output_type": "file",
+		    "state_all_files": 1
+		}
+    },
+    {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 6,
+		"fields": {
+		    "ogr_format": 11,
+		    "file_extension": "ili",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": null
+		}
+	},
+
+
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 12,
+		"fields": {
+		    "name": "INTERLIS 2",
+		    "ogr_name": "Interlis 2",
+		    "file_extension": "xml",
+		    "output_type": "file",
+		    "state_all_files": 1
+		}
+    },
+    {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 7,
+		"fields": {
+		    "ogr_format": 12,
+		    "file_extension": "ili",
+		    "required": 0,
+		    "multiple": 1,
+		    "order": null
+		}
+	},
+	
+
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 13,
+  		"fields": {
+		    "name": "Keyhole Markup Language (KML)",
+		    "ogr_name": "KML",
+		    "file_extension": "kml",
+		    "output_type": "file",
+		    "state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 14,
+  		"fields": {
+		    "name": "MapInfo Interchange Format (MIF/MID)",
+		    "ogr_name": "MapInfo File",
+		    "file_extension": "mif",
+		    "output_type": "file",
+		    "state_all_files": 0
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 8,
+		"fields": {
+		    "ogr_format": 14,
+		    "file_extension": "mid",
+		    "required": 1,
+		    "multiple": 0,
+		    "order": null
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalShellParameter",
+		"pk": 1,
+		"fields": {
+		    "ogr_format": 14,
+		    "prefix": "-",
+		    "argument_name": "dsco",
+		    "argument_value": "FORMAT=MIF",
+		    "value_quotation_marks": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 15,
+  		"fields": {
+		    "name": "MapInfo TAB format",
+		    "ogr_name": "MapInfo File",
+		    "file_extension": "tab",
+		    "output_type": "file",
+		    "state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 16,
+  		"fields": {
+		    "name": "Microstation DGN",
+		    "ogr_name": "DGN",
+		    "file_extension": "dgn",
+		    "output_type": "file",
+		    "state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 17,
+  		"fields": {
+		    "name": "OpenStreetMap (OSM)",
+		    "ogr_name": "OSM",
+		    "file_extension": "osm",
+		    "output_type": "file",
+		    "state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 18,
+  		"fields": {
+		    "name": "SQLite",
+		    "ogr_name": "SQLite",
+		    "file_extension": "sqlite",
+		    "output_type": "file",
+		    "state_all_files": 0
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 19,
+  		"fields": {
+		    "name": "SQLite + SpatiaLite",
+		    "ogr_name": "SQLite",
+		    "file_extension": "spatialite",
+		    "output_type": "file",
+		    "state_all_files": 0
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalShellParameter",
+		"pk": 2,
+		"fields": {
+		    "ogr_format": 19,
+		    "prefix": "-",
+		    "argument_name": "dsco",
+		    "argument_value": "SPATIALITE=YES",
+		    "value_quotation_marks": 0
+		}
+	}
+	
+]

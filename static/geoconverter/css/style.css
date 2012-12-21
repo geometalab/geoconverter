@@ -1,0 +1,56 @@
+body {
+	background-color: #F5F5F5;
+}
+
+#header-logo {
+	background-color: #F5F5F5;
+	display: block;
+	background-image: url('../img/globe.png');
+	background-repeat: no-repeat;
+	width: 580px;
+	height: 100px;
+}
+
+.page #container {
+	background-color: #F5F5F5;
+	width: 800px;
+	margin: 0 auto; /* Zentrieren */
+	font-family: Geneva, Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+
+.page #nav1 li {
+	display: inline;
+	list-style-image: none;
+	list-style-position: outside;
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.page #nav1 li a {
+	color: #5474AF;
+	display: block;
+	float: left;
+	font-size: 0.85em;
+	margin: 0px;
+	padding: 2px 8px;
+	text-decoration: none;
+}
+
+.page #nav1 a:hover,.nav2 a.selected {
+	color: #323232;
+	text-decoration: none;
+}
+
+.custom-dialog .ui-dialog-titlebar {
+	display:none;
+}
+
+.custom-dialog {
+	font-size: 0.9em;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+	border-width: 0 !important;
+}

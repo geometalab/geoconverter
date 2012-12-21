@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> -->
+
+		<title>GeoConverter</title>
+		<meta name="description" content="" />
+		<meta name="author" content="jstaehli" />
+
+		<!-- <meta name="viewport" content="width=device-width; initial-scale=1.0" /> -->
+
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<!-- <link rel="shortcut icon" href="/favicon.ico" /> -->
+		<!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> -->
+			
+		<!-- jQuery -->
+		<link rel="stylesheet" href="static/jquery/css/smoothness/jquery-ui-1.9.1.custom.css" />
+    	<script src="static/jquery/js/jquery-1.8.2.min.js"></script>
+    	<script src="static/jquery/js/jquery-ui-1.9.1.custom.min.js"></script>
+    	<!-- <script src="http://code.jquery.com/jquery-1.8.2.js"></script> -->
+    	<!-- <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script> -->
+    	
+    	<!-- CSS -->
+		<link rel="stylesheet" type="text/css" href="static/geoconverter/css/style.css">
+		{% block ogrgeoconverter-css %}{% endblock %}
+    	
+    	<!-- Scripts -->
+    	<script src="static/geoconverter/js/dialogs.js"></script>
+    	{% block ogrgeoconverter-scripts %}{% endblock %}
+    	
+    	<script>
+	    $(function() {
+	        $( "#tabs" ).tabs();
+	    });
+	    </script>
+	</head>
+
+	<body class="page">
+		<div id="container">
+			
+			<div id="header">
+				<a href="/" title="GeoConverter Home" id="header-logo"></a>
+			</div>
+
+			<div id="tabs">
+			    <ul>
+			        <li><a href="#tabs-1">Files</a></li>
+			        <li><a href="#tabs-2">Webservices</a></li>
+			        <!--<li><a href="#tabs-3">Coordinates</a></li>-->
+			    </ul>
+			    <div id="tabs-1">
+			        {% block ogrgeoconverter-files %}{% endblock %}
+			    </div>
+			    <div id="tabs-2">
+			        {% block ogrgeoconverter-webservices %}{% endblock %}
+			    </div>
+			    <!--<div id="tabs-3">
+			    	Convert coordinates
+			        {% block coordinateconverter %}{% endblock %}
+			    </div>-->
+			</div>
+			
+			{% block ogrgeoconverter-downloads %}{% endblock %}
+
+			<footer>
+				<div id="nav1">
+					<nav>
+						<ul>
+							<li>
+								<a href="/">Home</a>
+							</li>	
+							<li>
+								<a id="about-dialog-link" href="#">About</a>
+							</li>
+							<li>
+								<a id="help-link" href="http://giswiki.hsr.ch/GeoConverter">Help</a>
+							</li>
+							<li>
+								<a id="terms-of-service-dialog-link" href="#">Terms of Service</a>
+							</li>
+							<li>
+								<a id="contact-dialog-link" href="#">Contact</a>
+							</li>
+						</ul>
+					</nav>
+				</div>
+			</footer>
+			
+			<div id="about-dialog" style="display:none;">
+				<p>This is an online data converter for GIS vector file formats.<br>
+				It is based on the open source GDAL/OGR tools.</p>
+				<p>For more information please visit the <a href="http://giswiki.hsr.ch/GeoConverter">GISpunkt HSR Wiki</a></p>
+			</div>
+			
+			<div id="terms-of-service-dialog" style="display:none;">
+				<dl>
+		        	<dt>Haftung</dt>
+		        	<dd> <strong>Obwohl wir mit Sorgfalt auf die Richtigkeit  der ver&ouml;ffentlichten Informationen achten, kann hinsichtlich der  inhaltlichen Richtigkeit, Genauigkeit, Aktualit&auml;t und Vollst&auml;ndigkeit  dieser Informationen keine Gew&auml;hrleistung &uuml;bernommen werden</strong>.  Haftungsanspr&uuml;che gegen die Website-Betreiber, welche aus dem Zugriff  oder der Nutzung der ver&ouml;ffentlichten Informationen, durch Missbrauch  der Verbindung oder durch technische St&ouml;rungen entstanden sind, werden  ausgeschlossen. Es wird jegliche Verantwortung &uuml;ber Inhalte verlinkter  Webseiten abgelehnt. </dd>
+		        </dl>
+		        <dl>
+		        	<dt>Nutzungsbedingungen</dt>
+		        	<dd> Diese Webseiten sind frei nutzbar.  Eine kommerzielle Nutzung der angebotenen Daten bzw. Dienste ist nicht  gestattet. Aus technischen Gr&uuml;nden kann kein Anspruch auf  uneingeschr&auml;nkten Zugriff gew&auml;hrleistet werden. Die Website-Betreiber  behalten sich ausdr&uuml;cklich vor, Inhalte ohne Ank&uuml;ndigung zu &auml;ndern oder  zu l&ouml;schen. </dd>
+		        </dl>
+		        <dl>
+		        	<dt>Datenschutz</dt>
+		        	<dd> Der Schutz der Privatsph&auml;re und namentlich  der Datenschutz sind uns wichtig. Daten werden streng vertraulich  behandelt und weder an Dritte verkauft noch weiter gegeben. Es werden  lediglich unpers&ouml;nliche Nutzungsdaten gespeichert (Logfiles)  ausgenommen freiwillige Registration. Die Nutzungsdaten werden nicht  mit pers&ouml;nlichen Daten verkn&uuml;pft. </dd>
+		        </dl>
+		        <dl>
+		        	<dt>Copyright</dt>
+		        	<dd> GISpunkt HSR. Eine Weiterverwendung der  Grafiken und Informationen im Rahmen von Publikationen oder  Internetseiten ist nur unter Anf&uuml;hrung eines Quellenhinweises &quot;GISpunkt  HSR www.gis.hsr.ch&quot; zul&auml;ssig. </dd>
+		        </dl>
+			</div>
+			
+			<div id="contact-dialog" style="display:none;">
+				<p>Prof. S. Keller<br>
+				   GeometaLab am Institut für Software<br><br>
+				   HSR Hochschule f&uuml;r Technik Rapperswil<br>
+            	   Institut f&uuml;r Software<br>
+            	   Oberseestrasse 10<br>
+            	   CH-8640 Rapperswil<br>
+            	   Switzerland</p>
+          	    <p><a href="http://wiki.hsr.ch/StefanKeller/wiki.cgi?GeometaLab">Weblink</a></p>
+			</div>
+			
+		</div>
+	</body>
+</html>

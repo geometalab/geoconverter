@@ -1,0 +1,161 @@
+#files-step1 {
+	float: left;
+	padding: 10px;
+	width: 43%;
+}
+
+#files-step2 {
+	float: left;
+	padding: 10px;
+	width: 32%;
+}
+
+#id_files_ogrformat {
+	margin-top: 16px;
+	width: 80%;
+}
+
+#files-step3 {
+	float: left;
+	padding: 10px;
+	width: 15%;
+}
+
+#files-advanced {
+	clear: both;
+	position: relative;
+}
+
+#webservices-step1 {
+	float: left;
+	padding: 10px;
+	width: 43%;
+}
+
+#id_urlinput {
+	margin-top: 16px;
+	margin-bottom: 9px;
+	width: 90%;
+}
+
+#webservices-step2 {
+	float: left;
+	padding: 10px;
+	width: 32%;
+}
+
+#id_webservices_ogrformat {
+	margin-top: 16px;
+	width: 80%;
+}
+
+.webservices-submit-button {
+	margin-top: 10px;
+}
+
+#webservices-step3 {
+	float: left;
+	padding: 10px;
+	width: 15%;
+}
+
+#webservices-advanced {
+	clear: both;
+}
+
+.download-item {
+	position: relative;
+	margin-left: 15px;
+	margin-right: 10px;
+	float: left;
+	background-color: white;
+	width: 340px;
+	margin-top: 15px;
+	padding: 15px;
+	
+	overflow: hidden;
+}
+
+.remove-download-item {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	width: 16px;
+	height: 16px;
+	background-position: -32px -192px;
+	display: block;
+	text-indent: -99999px;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	cursor: pointer;
+}
+
+.remove-download-item-icon {
+	background-image: url('../../jquery/css/smoothness/images/ui-icons_888888_256x240.png');
+}
+
+.remove-download-item-icon-hover {
+	background-image: url('../../jquery/css/smoothness/images/ui-icons_cd0a0a_256x240.png');
+}
+
+#download-list {
+	overflow: hidden;
+}
+
+.expander-icon,.expander-title {
+	cursor: pointer;
+}
+
+.expander-icon {
+	float: left;
+	top:1px;
+    left:0;
+	width: 16px;
+	height: 16px;
+	background-image: url('../../jquery/css/smoothness/images/ui-icons_888888_256x240.png');
+	background-repeat: no-repeat;
+}
+
+.expander-icon.expander-hover {
+	background-image: url('../../jquery/css/smoothness/images/ui-icons_454545_256x240.png');
+}
+
+.expander-title {
+	float: left;
+	margin-left: 5px;
+	color: #888888;
+}
+
+.expander-title.expander-hover {
+	color: #454545;
+}
+
+.expander-content {
+	clear: both;
+	position: relative;
+	left: 20px;
+	overflow: hidden;
+}
+
+.expander-bottom {
+	clear: both;
+	position: relative;
+}
+
+.expander-icon.expanded {
+	background-position: -64px -192px;
+}
+
+.expander-icon.collapsed {
+	background-position: -48px -192px;
+}
+
+.default-border {
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-khtml-border-radius: 4px;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #454545;
+}
