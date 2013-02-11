@@ -15,7 +15,7 @@ class AdditionalShellArgumentInline(admin.StackedInline):
 class OgrFormatAdmin(admin.ModelAdmin):
     model = OgrFormat
     inlines = [AdditionalOgrFormatInline, AdditionalShellArgumentInline]
-    list_display = ('name', 'is_readable', 'is_writeable')
+    list_display = ('name', 'is_readable', 'is_writeable', 'file_extension', 'output_type')
     
     class Media:
         js = (

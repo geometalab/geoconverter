@@ -22,7 +22,7 @@ def store_uploaded_file(path_code, file_data, file_name):
 
 def get_empty_job_folder():
     '''
-    Returns a unique random pathcode and creates folders belonging to the pathocde.
+    Returns a unique random pathcode and creates the folders belonging to the pathocde.
     '''
     i = 0
     while i < 100:
@@ -41,6 +41,9 @@ def get_empty_job_folder():
     return path_code
 
 def remove_old_folders():
+    '''
+    Cleans up conversion folders older than 5 days
+    '''
     folder_path = get_conversion_job_folder()
     
     today = datetime.now().date()
@@ -56,11 +59,16 @@ def remove_old_folders():
                 
 
 def get_conversion_job_folder():
+    '''
+    Returns the folder containing the job folders
+    /OGRgeoConverter/ConversionJobs/
+    '''
     return paths.conversion_job_path()
 
 def get_folder_path(path_code):
     '''
     Returns the root job folder belonging to a pathcode
+    e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/
     '''
     year, month, day, hour, minute, second, code = pathcode.split_pathcode(path_code)
     
@@ -73,6 +81,7 @@ def get_folder_path(path_code):
 def get_upload_folder_path(path_code):
     '''
     Returns the folder where uploads are stored (depending on pathcode)
+    e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/1_upload/
     '''
     folder_path = get_folder_path(path_code)
     folder_path = os.path.join(folder_path, '1_upload')
@@ -81,6 +90,7 @@ def get_upload_folder_path(path_code):
 def get_extract_folder_path(path_code):
     '''
     Returns the folder where files from archives are extracted to (depending on pathcode)
+    e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/2_extract/
     '''
     folder_path = get_folder_path(path_code)
     folder_path = os.path.join(folder_path, '2_extract')
@@ -89,6 +99,7 @@ def get_extract_folder_path(path_code):
 def get_output_folder_path(path_code):
     '''
     Returns the folder where converted files are stored (depending on pathcode)
+    e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/3_output/
     '''
     folder_path = get_folder_path(path_code)
     folder_path = os.path.join(folder_path, '3_output')
@@ -97,6 +108,7 @@ def get_output_folder_path(path_code):
 def get_download_folder_path(path_code):
     '''
     Returns the folder where the download file is stored (depending on pathcode)
+    e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/4_download/
     '''
     folder_path = get_folder_path(path_code)
     folder_path = os.path.join(folder_path, '4_download')
@@ -105,10 +117,10 @@ def get_download_folder_path(path_code):
 def get_download_file_path(path_code):
     '''
     Returns the file path of the final archive with the converted files (depending on pathcode)
+    e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/4_download/geoconverter_20121212_151500.zip
     '''
     year, month, day, hour, minute, second, code = pathcode.split_pathcode(path_code)
     
     file_path = get_download_folder_path(path_code)
-    file_path = os.path.join(file_path, year + '-' + month + '-' + day + '-' + hour + '-' + minute + '-' + second + '-geoconverter-ch.zip')
+    file_path = os.path.join(file_path, 'geoconverter' + '_' + year  + month + day + '_' + hour + minute + second + '.zip')
     return file_path
-        

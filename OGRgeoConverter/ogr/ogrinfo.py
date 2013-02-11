@@ -10,14 +10,14 @@ from collections import namedtuple
 
 def get_ogrinfo_shell_call():
     call = ShellCall()
-    call.set_command("ogrinfo")
+    call.set_command('ogrinfo')
     return call
 
 def get_supported_formats():
     call = get_ogrinfo_shell_call()
     
     arguments = ArgumentList()
-    arguments.add_argument("formats", None, "--")
+    arguments.add_argument('formats', None, '--')
     call.set_arguments(arguments)
     
     result = shell.execute(call)
@@ -25,18 +25,18 @@ def get_supported_formats():
     OgrFormat = namedtuple('OgrFormat', ['name', 'read', 'write'])
     format_list = []
     for line in result.get_text().splitlines():
-        if "->" in line:
+        if '->' in line:
             name_pos1 = line.find('"') + 1
             name_pos2 = line.find('"', name_pos1)
             name = line[name_pos1:name_pos2]
-            if "readonly" in line:
+            if 'readonly' in line:
                 read = True
                 write = False
-            elif "writeonly" in line:
+            elif 'writeonly' in line:
                 # probably not used by OGR
                 read = False
                 write = True
-            elif "read/write" in line:
+            elif 'read/write' in line:
                 read = True
                 write = True
             else:

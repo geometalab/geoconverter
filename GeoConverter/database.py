@@ -1,6 +1,6 @@
 class DatabaseRouter(object):
     '''
-    These functions are always called when Django accesses the database.
+    These functions are called when Django accesses the database.
     Returns the name of the database to use depending on the app and model.
     Returning None means use default.
     '''

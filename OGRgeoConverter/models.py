@@ -83,7 +83,6 @@ class OgrFormat(models.Model):
     def get_format_information_by_name(ogr_format):
         format_dictionary = OgrFormat.get_formats_information_dictionary()
         if ogr_format in format_dictionary:
-            
             return format_dictionary[ogr_format]
         else:
             return None

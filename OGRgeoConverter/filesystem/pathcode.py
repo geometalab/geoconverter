@@ -1,6 +1,7 @@
 '''
 Creates and handles pathcodes.
 A pathcode is unique an can be translated into a file or folder path.
+Pathcodes normally belong to a conversion job.
 '''
 
 import datetime
@@ -9,13 +10,24 @@ import random
 import re
 
 def get_pathcode_regex():
+    '''
+    Returns a regular expression representing a pathcode.
+    Matches strings containing a pathcode.
+    '''
     #         year   month   day   hour  minute  second  code    total: 24 characters
     return r'(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\w{10})'
 
 def get_bounded_pathcode_regex():
+    '''
+    Returns a regular expression representing a pathcode.
+    Only matches strings being a pathcode (no characters before and after)
+    '''
     return r'^' + get_pathcode_regex() + r'$'
 
 def get_random_pathcode():
+    '''
+    Generates a random pathcode containing the current date and a random string
+    '''
     return __get_date_string() + __get_random_code()
 
 def __get_date_string():
@@ -28,11 +40,14 @@ def __get_date_string():
     minute = now.strftime('%M')
     second = now.strftime('%S')
     
+    # e.g. 20121212151500
     return year + month + day + hour + minute + second
 
 def __get_random_code():
     length = 10
     characters=string.ascii_lowercase + string.digits
+    
+    # e.g. 3a9rtf3ifw
     return ''.join(random.choice(characters) for i in range(length))
 
 def is_pathcode(code):
@@ -52,7 +67,7 @@ def split_pathcode(path_code):
 
 def join_pathcode(*args):
     '''
-    Joins a list to a pathcode.
+    Joins a list (containing year, month, ...) to a pathcode.
     If the joined string is not a valid pathcode an empty string is returned
     '''
     joined_pathcode = ''.join(args)

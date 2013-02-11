@@ -25,11 +25,6 @@ def show_main_page(request):
     if not sessionhandler.is_valid_key(request.session.session_key):
         request.session.flush()
     
-    #s = SessionStore(session_key=request.session.session_key)
-    #s.save()
-    #if s.session_key != request.session.session_key:
-    #    request.session.flush()
-    
     files_form = GeoConverterFilesForm(request.POST, request.FILES)
     
     if 'urlinput' in request.POST:
@@ -118,15 +113,6 @@ def remove_download_item(request, *path_code_args):
         return HttpResponse('success')
     
     return HttpResponse('fail')
-    #path_code = pathcode.join_pathcode(*path_code_args)
-    
-    #if path_code != '':
-    #    # http://stackoverflow.com/questions/5844672/delete-an-element-from-a-dictionary
-    #    del request.session['download_list'][path_code]
-    #    request.session.modified = True
-    #    return HttpResponse('success')
-    
-    #return HttpResponse('fail')
 
 def convert_webservice(request, job_id):
     if request.method == 'POST':
@@ -155,37 +141,3 @@ def convert_webservice(request, job_id):
         return HttpResponse(json.dumps(response_data), mimetype="text/plain")
     
     return HttpResponse('fail')
-
-"""
-def process_form_submit(request):
-    if request.method == 'POST':
-        _initialize_session(request)
-        files_form = GeoConverterFilesForm(request.POST, request.FILES)
-        
-        if 'urlinput' in request.POST:
-            webservices_form = GeoConverterWebservicesForm(request.POST, request.POST['urlinput'])
-        else:
-            webservices_form = GeoConverterWebservicesForm()
-        
-        if files_form.is_valid():
-            uploaded_file = request.FILES['fileupload']
-            ogr_format_name = request.POST['ogrformat']
-            
-            path_code = geoconverter.process_convert_request(uploaded_file, ogr_format_name)
-
-            # Reload session. Otherwise parallel requests will be lost!
-            # This part is still not thread safe (parallel user requests) but erorrs are rare
-            reloaded_session = SessionStore(session_key=request.session.session_key)
-            reloaded_session['download_list'][path_code] = reverse('OGRgeoConverter.views.download_output_file', args=pathcode.split_pathcode(path_code))
-            reloaded_session.save()
-         
-            response_data = {}
-            response_data['path_code'] = path_code
-            response_data['download_url'] = reverse('OGRgeoConverter.views.download_output_file', args=pathcode.split_pathcode(path_code))
-            return HttpResponse(json.dumps(response_data), mimetype="application/json")
-            
-        if webservices_form.is_valid():
-            pass
-
-    return HttpResponse('invalid')
-"""

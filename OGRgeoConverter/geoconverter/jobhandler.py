@@ -14,8 +14,6 @@ def _initialize_job(session_key, job_id):
     if not job_id in session['jobs']:
         session['jobs'][job_id] = ConversionJob(job_id)
     session.save()
-    #if not 'files' in session['jobs']:
-    #    session['jobs'][job_id]['files'] = {}
     
 def add_file_names(session_key, job_id, file_dict):
     _initialize_job(session_key, job_id)
@@ -61,6 +59,7 @@ def store_file(session_key, job_id, file_id, file_data):
     _initialize_job(session_key, job_id)
     session = sessionhandler.get_session(session_key)
     conversion_job = session['jobs'][job_id]
+    # TODO: check if file was removed
     file_name = conversion_job.get_file_name(file_id)
     path_code = conversion_job.get_path_code()
     filemanager.store_uploaded_file(path_code, file_data, file_name)
@@ -91,6 +90,7 @@ def process_file(session_key, job_id, file_id):
             extract_path = conversion_job.get_extract_folder_path()
             file_name = matched_files.get_files()[0]
             if conversion_job.get_file_count() > 1:
+                # Creates a sub folder in the extract folder
                 extract_path = os.path.join(extract_path, os.path.splitext(file_name)[0])
             process_archive(os.path.join(source_path, file_name), extract_path, destination_path, export_format_name, export_format, additional_arguments)
         else:
@@ -98,7 +98,7 @@ def process_file(session_key, job_id, file_id):
 
 def process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, additional_arguments):
     archives.unpack_archive_file(archive_path, unpack_path)
-        
+    
     folder_files_list = [(root, files) for root, dirs, files in os.walk(unpack_path)]
     
     file_matches = []
@@ -119,11 +119,6 @@ def process_archive(archive_path, unpack_path, output_path, export_format_name, 
         destination_path = os.path.join(output_path, sub_path)
         
         process_folder(source_path, file_dict, destination_path, export_format_name, export_format, additional_arguments)
-        
-        #matches_in_folder = _get_matches_from_folder(folder_files[1])
-        
-        #for match_in_folder in matches_in_folder:
-        #    file_matches.append(FileMatch(source_path, match_in_folder[0], destination_path, match_in_folder[1], match_in_folder[2]))
 
 def process_folder(source_path, file_dict, destination_path, export_format_name, export_format, additional_arguments):
     file_matcher = FileMatcher(file_dict)
@@ -150,9 +145,14 @@ def process_webservice_urls(session_key, job_id):
     target_srs = conversion_job.get_target_srs()
     additional_arguments = conversion_job.get_additional_arguments()
     
-    for webservice_url in webservice_urls:
-        conversion.convert_webservice(webservice_url, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
-
+    base_name = 'webservice'
+    if len(webservice_urls) == 1:
+        conversion.convert_webservice(webservice_url, destination_path, base_name, export_format_name, export_format, source_srs, target_srs, additional_arguments)
+    else:
+        counter = 1
+        for webservice_url in webservice_urls:
+            conversion.convert_webservice(webservice_url, destination_path, base_name + str(counter), export_format_name, export_format, source_srs, target_srs, additional_arguments)
+            counter += 1
 
 def create_download_file(session_key, job_id):
     _initialize_job(session_key, job_id)
@@ -174,7 +174,10 @@ def get_path_code(session_key, job_id):
 
 
 class ConversionJob:
-        
+    '''
+    Class storing information of a conversion job.
+    '''
+    
     def __init__(self, job_id):
         self.__job_id = job_id
         self.__export_format = ''
@@ -206,9 +209,6 @@ class ConversionJob:
         for key, value in self.__file_dict.items():
             if not key in self.__uploaded_file_dict:
                 self.__uploaded_file_dict[key] = False
-                
-        for key, value in self.__file_dict.items():
-            if not key in self.__processed_file_dict:
                 self.__processed_file_dict[key] = False
                 
     def add_webservice_url(self, webservice_url):
@@ -261,6 +261,7 @@ class ConversionJob:
     def remove_file(self, file_id):
         if file_id in self.__file_dict:
             del self.__file_dict[file_id]
+        self.__matched_files = FileMatcher(self.__file_dict)
             
     def file_ready_for_process(self, file_id):
         matched_files = self.get_matched_files(file_id)
@@ -291,4 +292,3 @@ class ConversionJob:
     
     def get_download_folder_path(self):
         return self.__download_path
-                

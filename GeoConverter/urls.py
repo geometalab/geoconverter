@@ -1,6 +1,5 @@
 '''
-Django URL dispatcher.
-Maps urls to views.
+Django URL dispatcher: Maps urls to views.
 Transforms a URL called by a user into a function call.
 '''
 

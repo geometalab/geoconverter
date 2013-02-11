@@ -1,7 +1,7 @@
 class ShellResult(object):
     '''
     Is returned by the Shell.
-    Saves output text and error messages.
+    Stores output text and error messages.
     '''
 
     def __init__(self, text, error):

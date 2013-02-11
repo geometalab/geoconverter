@@ -9,14 +9,14 @@ from OGRgeoConverter.shell import shell
 
 def get_ogr2ogr_shell_call():
     call = ShellCall()
-    call.set_command("ogr2ogr")
+    call.set_command('ogr2ogr')
     return call
 
 def convert_file(input_file_path, output_file_path, ogr_input_format, ogr_output_format, source_srs = 0, target_srs = 0, additional_arguments = []):
     arguments = ArgumentList()
     
     # Sets the output format
-    arguments.add_argument("f", ogr_output_format)
+    arguments.add_argument('f', ogr_output_format)
     
     # Sets the output file
     arguments.add_argument(None, output_file_path)
@@ -26,9 +26,9 @@ def convert_file(input_file_path, output_file_path, ogr_input_format, ogr_output
     
     # Sets EPGS Number
     if source_srs != 0:
-        arguments.add_argument("s_srs", "EPSG:"  + str(source_srs), "-", False)
+        arguments.add_argument('s_srs', 'EPSG:'  + str(source_srs), '-', False)
     if target_srs != 0:
-        arguments.add_argument("t_srs", "EPSG:"  + str(target_srs), "-", False)
+        arguments.add_argument('t_srs', 'EPSG:'  + str(target_srs), '-', False)
     
     # Sets optional arguments
     for additional_argument in additional_arguments:
@@ -50,19 +50,19 @@ def convert_wfs(webservice_url, output_file_path, ogr_output_format, source_srs,
     arguments = ArgumentList()
     
     # Sets the output format
-    arguments.add_argument("f", ogr_output_format)
+    arguments.add_argument('f', ogr_output_format)
     
     # Sets the output file
     arguments.add_argument(None, output_file_path)
     
     # Sets the input file
-    arguments.add_argument(None, "WFS:" + webservice_url)
+    arguments.add_argument(None, 'WFS:' + webservice_url)
     
     # Sets EPGS Number
     if source_srs != 0:
-        arguments.add_argument("s_srs", "EPSG:"  + str(source_srs), "-", False)
+        arguments.add_argument('s_srs', 'EPSG:'  + str(source_srs), '-', False)
     if target_srs != 0:
-        arguments.add_argument("t_srs", "EPSG:"  + str(target_srs), "-", False)
+        arguments.add_argument('t_srs', 'EPSG:'  + str(target_srs), '-', False)
     
     # Sets optional arguments
     for additional_argument in additional_arguments:

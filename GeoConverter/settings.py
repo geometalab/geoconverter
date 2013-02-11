@@ -1,6 +1,5 @@
 '''
 Settings used by Django.
-
 '''
 
 from GeoConverter import paths
@@ -8,7 +7,7 @@ from GeoConverter import paths
 # Django settings for GeoConverter project.
 
 # Set to False before launching the website!
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Session ends when user closes his browser
@@ -23,7 +22,7 @@ MANAGERS = ADMINS
 # List of databases used
 # What database is used is determined by a database router (see DATABASE_ROUTERS below)
 DATABASES = {
-    'default': {
+    'default': { # Main database mainly used by Django (Users, Admin site, ...)
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': paths.default_database_path(),                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
@@ -31,15 +30,15 @@ DATABASES = {
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     },
-    'sessions_db': {
+    'sessions_db': { # Database storing session information of website visitors
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.sessions_database_path(),
     },
-    'ogrgeoconverter_db': {
+    'ogrgeoconverter_db': { # Database used by the OGRgeoConverter-App. Stores most of the models.
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.ogrgeoconverter_database_path(),
     },
-    'ogrgeoconverter_log_db': {
+    'ogrgeoconverter_log_db': { # Database logs conversions by website visitors
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.ogrgeoconverter_log_database_path(),
     }
