@@ -92,11 +92,11 @@ def process_file(session_key, job_id, file_id):
             if conversion_job.get_file_count() > 1:
                 # Creates a sub folder in the extract folder
                 extract_path = os.path.join(extract_path, os.path.splitext(file_name)[0])
-            process_archive(os.path.join(source_path, file_name), extract_path, destination_path, export_format_name, export_format, additional_arguments)
+            process_archive(os.path.join(source_path, file_name), extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
         else:
             conversion.convert_files(source_path, matched_files, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
 
-def process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, additional_arguments):
+def process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments):
     archives.unpack_archive_file(archive_path, unpack_path)
     
     folder_files_list = [(root, files) for root, dirs, files in os.walk(unpack_path)]
@@ -118,9 +118,9 @@ def process_archive(archive_path, unpack_path, output_path, export_format_name, 
         sub_path = source_path.replace(unpack_path, '').lstrip('/\\')
         destination_path = os.path.join(output_path, sub_path)
         
-        process_folder(source_path, file_dict, destination_path, export_format_name, export_format, additional_arguments)
+        process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
 
-def process_folder(source_path, file_dict, destination_path, export_format_name, export_format, additional_arguments):
+def process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments):
     file_matcher = FileMatcher(file_dict)
     
     for file_match in file_matcher.get_matches():
@@ -129,8 +129,16 @@ def process_folder(source_path, file_dict, destination_path, export_format_name,
             #extract_path = conversion_job.get_extract_folder_path()
             #process_archive(os.path.join(source_path, file_match.get_file[0]), extract_path)
         else:
-            conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, additional_arguments)
-
+            '''
+            x y
+            x y
+            x y
+            File match: Original Names + Destination Names
+            x y
+            x y
+            x y
+            '''
+            conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
 
 def process_webservice_urls(session_key, job_id):
     _initialize_job(session_key, job_id)
@@ -147,7 +155,7 @@ def process_webservice_urls(session_key, job_id):
     
     base_name = 'webservice'
     if len(webservice_urls) == 1:
-        conversion.convert_webservice(webservice_url, destination_path, base_name, export_format_name, export_format, source_srs, target_srs, additional_arguments)
+        conversion.convert_webservice(webservice_urls[0], destination_path, base_name, export_format_name, export_format, source_srs, target_srs, additional_arguments)
     else:
         counter = 1
         for webservice_url in webservice_urls:

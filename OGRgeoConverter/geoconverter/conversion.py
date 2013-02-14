@@ -42,7 +42,7 @@ def convert_webservice(webservice_url, destination_path, base_name, output_forma
     
     format_info = OgrFormat.get_format_information_by_name(output_format_name)
     
-    output_file_path = _get_extended_output_file_path(destination_path, base_name, output_format_name)
+    output_file_path = _get_extended_output_file_path(destination_path, base_name, format_info)
     argument_list = _get_argument_list(additional_arguments)
         
     ogr2ogr.convert_wfs(webservice_url, output_file_path, ogr_output_format, source_srs, target_srs, argument_list)
@@ -59,8 +59,8 @@ def _get_extended_output_file_path(output_path, base_name, format_info):
     extension = ''
     is_folder = False
     if format_info != None:
-            extension = format_info.extension
-            is_folder = format_info.is_folder
+        extension = format_info.extension
+        is_folder = format_info.is_folder
     
     if not is_folder:
         output_name = output_name + '.' + extension
@@ -72,13 +72,13 @@ def _get_argument_list(additional_arguments):
     Returns a list of arguments used for the conversion by ogr2ogr
     '''
     
+    argument_list = []
     if len(additional_arguments) > 0:
-        argument_list = []
         for additional_argument in additional_arguments:
             name = additional_argument.argument_name
             value = additional_argument.argument_value
             prefix = additional_argument.prefix
             quotation_marks = additional_argument.value_quotation_marks
             argument_list.append((name, value, prefix, quotation_marks))
-    else:
-        argument_list = []
+        
+    return argument_list

@@ -17,7 +17,7 @@
 <form id="file-form" enctype="multipart/form-data" method="post" action="/process/">
 	{% csrf_token %}
 	<div id="files-step1">
-		<p>1) Input files</p>
+		<p>1. Input files</p>
 		<div id="files-selector">
 
 		</div>
@@ -26,11 +26,11 @@
 		</div>-->
 	</div>
 	<div id="files-step2">
-		<p>2) Export format</p>
+		<p>2. Export format</p>
 		<p>{{ files_form.files_ogrformat }}</p>
 	</div>
 	<div id="files-step3">
-		<p>3) Convert</p>
+		<p>3. Convert</p>
 		<div id="files-convert-run-button"></div>
 		<!-- <input type="submit" class="files-submit-button" /> -->
 	</div>
@@ -54,15 +54,15 @@
 
 <form id="webservice-form" enctype="multipart/form-data" method="post">
 	<div id="webservices-step1">
-		<p>1) Input URL (WFS)</p>
+		<p>1. Input URL (WFS)</p>
 		<p>{{ webservices_form.urlinput }}</p>
 	</div>
 	<div id="webservices-step2">
-		<p>2) Export format</p>
+		<p>2. Export format</p>
 		<p>{{ webservices_form.webservices_ogrformat }}</p>
 	</div>
 	<div id="webservices-step3">
-		<p>3) Convert</p>
+		<p>3. Convert</p>
 		<div id="webservices-convert-run-button" class="qq-upload-button webservices-submit-button default-border">Run</div>
 	</div>
 	<div id="webservices-advanced">

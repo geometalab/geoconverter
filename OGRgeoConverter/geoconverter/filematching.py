@@ -24,6 +24,9 @@ class FileMatcher:
         else:
             return self.__file_dict[file_id]
     
+    def get_original_file_name(self, file_id):
+        return self.__file_dict[file_id]
+        
     def get_match(self, file_id):
         for file_match in self.__file_matches:
             if file_id in file_match.get_file_dict():
@@ -39,19 +42,18 @@ class FileMatch:
     Represents a single match of files belonging together
     '''
     
-    def __init__(self, file_dict, file_list, ogr_format, is_archive, is_valid):
+    def __init__(self, file_dict, ogr_format, is_archive, is_valid):
         self.__file_dict = file_dict
-        self.__matched_file_list = file_list
         self.__ogr_format = ogr_format
         self.__is_archive = is_archive
         self.__is_valid = is_valid
-        print 'Match: ' + ', '.join(file_list)
+        print 'Match: ' + ', '.join(file_dict.values())
 
     def get_file_dict(self):
         return self.__file_dict
     
     def get_files(self):
-        return self.__matched_file_list
+        return self.__file_dict.values()
     
     def get_ogr_format(self):
         return self.__ogr_format
@@ -62,6 +64,10 @@ class FileMatch:
     def is_valid(self):
         return self.__is_valid
     
+    def rename_file(self, file_id, new_name):
+        if file_id in self.__file_dict:
+            print 'Renaming file ' + self.__file_dict[file_id] + ' to ' + new_name
+            self.__file_dict[file_id] = new_name
 
 def _get_matches_from_file_list(file_dict):
     '''
@@ -79,25 +85,24 @@ def _get_matches_from_file_list(file_dict):
         for file_info in ogr_format_files:
             is_valid = True
             matched_files_dict = {file_info.file_id: file_info.full_name}
-            matched_files_list = [file_info.full_name]
             for additional_format in formats[file_info.format_name].additional_files:
                 limit_reached = False
                 for additional_file_info in additional_format_files:
                     if not limit_reached and additional_file_info.file_extension.lower() == additional_format.file_extension.lower() and additional_file_info.file_name == file_info.file_name:
                         matched_files_dict[additional_file_info.file_id] = additional_file_info.full_name
                         
-                        matched_files_list.append(additional_file_info.full_name)
                         if not additional_format.is_multiple:
                             limit_reached = True
                             
-            matches.append(FileMatch(matched_files_dict, matched_files_list, file_info.format_name, False, is_valid))
+            matches.append(FileMatch(matched_files_dict, file_info.format_name, False, is_valid))
             
         for file_info in archive_formats:
-            matches.append(FileMatch({file_info.file_id: file_info.full_name}, [file_info.full_name], file_info.format_name, True, True))
+            matches.append(FileMatch({file_info.file_id: file_info.full_name}, file_info.format_name, True, True))
             
         for file_info in unknown_format_files:
-            matches.append(FileMatch({file_info.file_id: file_info.full_name}, [file_info.full_name], file_info.format_name, False, False))
+            matches.append(FileMatch({file_info.file_id: file_info.full_name}, file_info.format_name, False, False))
         
+        _resolve_name_conflicts(matches)
         return matches
     
 
@@ -132,4 +137,17 @@ def _get_extended_file_lists(file_dict):
 
     return ogr_format_files, additional_format_files, archive_formats, unknown_format_files
 
-
+def _resolve_name_conflicts(matches):
+    print 'Resolve name conflicts...'
+    
+    file_names = []
+    for i in range(len(matches)):
+        files = matches[i].get_file_dict().values()
+        file_name = os.path.splitext(files[0])[0]
+        file_names.append(file_name)
+        
+    for i in range(len(matches)):
+        for file in matches[i].get_file_dict().items():
+            file_name = os.path.splitext(file[1])[0]
+            file_extension = os.path.splitext(file[1])[1].lstrip(os.path.extsep)
+            matches[i].rename_file(file[0], file_name + '_' + str(i) + '.' + file_extension)
