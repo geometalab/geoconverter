@@ -7,7 +7,7 @@ from GeoConverter import paths
 # Django settings for GeoConverter project.
 
 # Set to False before launching the website!
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 # Session ends when user closes his browser

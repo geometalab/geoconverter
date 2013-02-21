@@ -280,6 +280,39 @@
 		    "state_all_files": 0
 		}
 	},
+	{
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 9,
+		"fields": {
+		    "ogr_format": 15,
+		    "file_extension": "dat",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 1
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 10,
+		"fields": {
+		    "ogr_format": 15,
+		    "file_extension": "id",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 2
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 11,
+		"fields": {
+		    "ogr_format": 15,
+		    "file_extension": "map",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 3
+		}
+	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",

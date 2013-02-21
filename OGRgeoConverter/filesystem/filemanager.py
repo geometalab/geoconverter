@@ -20,6 +20,11 @@ def store_uploaded_file(path_code, file_data, file_name):
         for chunk in file_data.chunks():
             destination.write(chunk)
 
+def rename_file(folder_path, old_file_name, new_file_name):
+    old_file_path = os.path.join(folder_path, old_file_name)
+    new_file_path = os.path.join(folder_path, new_file_name)
+    os.rename(old_file_path, new_file_path)
+
 def get_empty_job_folder():
     '''
     Returns a unique random pathcode and creates the folders belonging to the pathocde.

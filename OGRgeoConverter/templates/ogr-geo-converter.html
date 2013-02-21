@@ -7,6 +7,7 @@
 
 {% block ogrgeoconverter-scripts %}
 <script src="static/geoconverter/js/advanced-options.js"></script>
+<script src="static/geoconverter/js/formats.js"></script>
 <script src="static/geoconverter/js/ogr-converter.js"></script>
 <script src="static/fineuploader/js/jquery.fineuploader-3.0.js"></script>
 <!-- <script src="static/fineuploader/js/jquery.fineuploader-3.0.min.js"></script> -->
@@ -84,8 +85,9 @@
 {% block ogrgeoconverter-downloads %}
 
 <div id="download-list">
-	{% for path_code in download_list %}
+	{% for path_code, download_name in download_list %}
 	<div id="queue-{{ path_code }}" class="download-item default-border">
+		<div class="download-name">{{ download_name }}</div>
 	    <div class="remove-download-item remove-download-item-icon"></div>
 		<div id="download-{{ path_code }}" class="qq-upload-button default-border download-button">
 	        Download

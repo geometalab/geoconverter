@@ -129,15 +129,12 @@ def process_folder(source_path, file_dict, destination_path, export_format_name,
             #extract_path = conversion_job.get_extract_folder_path()
             #process_archive(os.path.join(source_path, file_match.get_file[0]), extract_path)
         else:
-            '''
-            x y
-            x y
-            x y
-            File match: Original Names + Destination Names
-            x y
-            x y
-            x y
-            '''
+            # Rename files
+            for file_id, new_file_name in file_match.get_file_dict().items():
+                original_file_name = file_matcher.get_original_file_name(file_id)
+                if original_file_name != new_file_name:
+                    filemanager.rename_file(source_path, original_file_name, new_file_name)
+                    
             conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
 
 def process_webservice_urls(session_key, job_id):

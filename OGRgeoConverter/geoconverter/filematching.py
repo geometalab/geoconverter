@@ -140,14 +140,34 @@ def _get_extended_file_lists(file_dict):
 def _resolve_name_conflicts(matches):
     print 'Resolve name conflicts...'
     
-    file_names = []
+    file_names = [] # Stores a list of the file names (without file extension) of every file match
     for i in range(len(matches)):
         files = matches[i].get_file_dict().values()
         file_name = os.path.splitext(files[0])[0]
         file_names.append(file_name)
         
     for i in range(len(matches)):
-        for file in matches[i].get_file_dict().items():
-            file_name = os.path.splitext(file[1])[0]
-            file_extension = os.path.splitext(file[1])[1].lstrip(os.path.extsep)
-            matches[i].rename_file(file[0], file_name + '_' + str(i) + '.' + file_extension)
+        found_double = False
+        for j in range(i+1, len(matches)):
+            if file_names[j] == file_names[i]:
+                found_double = True
+        
+        if found_double:
+            base_name = file_names[i] + '_'
+            file_number = _get_free_file_name_number(base_name, file_names, 2)
+            file_names[i] = base_name + str(file_number)
+            for file in matches[i].get_file_dict().items():
+                file_name = os.path.splitext(file[1])[0]
+                file_extension = os.path.splitext(file[1])[1].lstrip(os.path.extsep)
+                matches[i].rename_file(file[0], file_name + '_' + str(file_number) + '.' + file_extension)
+            
+def _get_free_file_name_number(base_name, existing_names, start_number=2):
+    for i in range(start_number, 100):
+    #for i in range(start_number, int.-----------):
+        new_found = True
+        for j in range(len(existing_names)):
+            if base_name + str(i) == existing_names[j]:
+                new_found = False
+        if new_found:
+            break
+    return i

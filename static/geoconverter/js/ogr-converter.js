@@ -2,7 +2,7 @@ $(document).ready(function(){
 	$.ajaxSetup({
 	    crossDomain: false,
 	    beforeSend: function(xhr, settings) {
-	    	xhr.setRequestHeader("X-CSRFToken", $('input[name=csrfmiddlewaretoken]').val());
+	    	xhr.setRequestHeader('X-CSRFToken', $('input[name=csrfmiddlewaretoken]').val());
 	    }
 	});
 	
@@ -19,7 +19,7 @@ $(document).ready(function(){
 });
 
 function getRandomConversionJobID() {
-	var chars = "abcdefghijklmnopqurstuvwxyz";
+	var chars = 'abcdefghijklmnopqurstuvwxyz';
 	var random_id = 'job';
 	
 	random_id += (new Date()).getTime();
@@ -60,6 +60,15 @@ function getPathCodeByDownloadDivID(download_div_id) {
 		return download_div_id.replace('download-', '');
 	}
 	return '';
+}
+
+function get_download_name() {
+	var current_date = new Date();
+	var current_hours = current_date.getHours();
+	if (current_hours < 10) current_hours = "0" + current_hours;
+	var current_minutes = current_date.getMinutes();
+	if (current_minutes < 10) current_minutes = "0" + current_minutes;
+	return current_hours + ":" + current_minutes;
 }
 
 function addUploader() {
@@ -191,7 +200,9 @@ function submitFilesForm(uploader, job_id) {
 	if (fileIDs.length > 0 && $('#id_files_ogrformat').val() != "") {
 		var uploaderDivID = getUploaderAddDivID(job_id);
 		var queueDivID = getQueueDivID(job_id);
+		var download_name = get_download_name();
 		var new_download_box = '<div id="' + queueDivID + '" class="download-item default-border">\n';
+		new_download_box += '    <div class="download-name">' + download_name + '</div>';
 		new_download_box += '    <div class="remove-download-item remove-download-item-icon"></div>\n';
 		new_download_box += '</div>\n';
 		
@@ -215,6 +226,7 @@ function submitFilesForm(uploader, job_id) {
     	fileList['export_format'] = $('#id_files_ogrformat').val();
     	fileList['source_srs'] = $('#id_files_sourceSRS').val();
     	fileList['target_srs'] = $('#id_files_targetSRS').val();
+    	fileList['download_name'] = download_name;
     	
     	$.ajax({
 	        url: '/converter/forms/files/' + job_id + '/start',
@@ -273,20 +285,22 @@ function registerWebservicesRunButton() {
     	var export_format = $('#id_webservices_ogrformat').val();
 		var source_srs = $('#id_webservices_sourceSRS').val();
     	var target_srs = $('#id_webservices_targetSRS').val();
+    	var download_name = get_download_name();
     	
     	if (url != "" && export_format != "") {
     		$('#id_urlinput').val("");
     		
-    		runWebserviceConversion(url, export_format, source_srs, target_srs);
+    		runWebserviceConversion(url, export_format, source_srs, target_srs, download_name);
     	}
 	});
 }
 
-function runWebserviceConversion(url, export_format, source_srs, target_srs) {
+function runWebserviceConversion(url, export_format, source_srs, target_srs, download_name) {
 	var job_id = getRandomConversionJobID();
 		
 	var queue_div_id = getQueueDivID(job_id);
 	var new_download_box = '<div id="' + queue_div_id + '" class="download-item default-border">\n';
+	new_download_box += '    <div class="download-name">' + download_name + '</div>';
 	new_download_box += '    <div class="remove-download-item remove-download-item-icon"></div>\n';
 	new_download_box += '    <img name="ajax-loader" src="static/geoconverter/img/ajax-loader.gif">\n';
 	new_download_box += '</div>\n';
@@ -299,6 +313,7 @@ function runWebserviceConversion(url, export_format, source_srs, target_srs) {
 	webservicesData['export_format'] = export_format;
 	webservicesData['source_srs'] = source_srs;
 	webservicesData['target_srs'] = target_srs;
+	webservicesData['download_name'] = download_name;
 	
 	$.ajax({
         url: '/converter/forms/webservices/' + job_id + '/convert',

@@ -27,13 +27,13 @@ def convert_files(source_path, matched_files, destination_path, output_format_na
         ogr_input_format = matched_files.get_ogr_format()
         
         if format_info != None and format_info.state_all_files:
-            input_file = ','.join(input_files)
+            input_file_path = ','.join(input_files)
         else:
-            input_file = input_files[0]
+            input_file_path = input_files[0]
         
         argument_list = _get_argument_list(additional_arguments)
         
-        ogr2ogr.convert_file(input_file, output_file_path, ogr_input_format, ogr_output_format, source_srs, target_srs, argument_list)
+        ogr2ogr.convert_file(input_file_path, output_file_path, ogr_input_format, ogr_output_format, source_srs, target_srs, argument_list)
 
 def convert_webservice(webservice_url, destination_path, base_name, output_format_name, ogr_output_format, source_srs, target_srs, additional_arguments):
     '''

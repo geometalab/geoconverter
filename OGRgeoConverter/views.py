@@ -49,9 +49,17 @@ def start_conversion_job(request, job_id):
         target_srs = POST_dict['target_srs'].strip()
         del POST_dict['target_srs']
         
+        download_name = POST_dict['download_name'].strip()
+        del POST_dict['download_name']
+        if len(download_name) > 10: download_name = download_name[0:7] + '...'
+        
         jobhandler.add_file_names(request.session.session_key, job_id, POST_dict)
         jobhandler.set_export_format(request.session.session_key, job_id, export_format)
         jobhandler.set_srs(request.session.session_key, job_id, source_srs, target_srs)
+        
+        path_code = jobhandler.get_path_code(request.session.session_key, job_id)
+        downloadhandler.set_download_name(request.session.session_key, path_code, download_name)
+        
         return HttpResponse('success')
     else:
         return redirect_to_main_page(request)
@@ -68,7 +76,7 @@ def process_upload(request, job_id):
     response_data = {}
     response_data['success'] = True
     
-    # mimetype should be "application/json" but than IE offers the response as dwonload...
+    # mimetype should be "application/json" but than IE offers the response as download...
     return HttpResponse(json.dumps(response_data), mimetype="text/plain")
     
 def remove_file(request, job_id, file_id):
@@ -121,7 +129,9 @@ def convert_webservice(request, job_id):
         export_format = POST_dict['export_format'].strip()
         source_srs = POST_dict['source_srs'].strip()
         target_srs = POST_dict['target_srs'].strip()
-
+        download_name = POST_dict['download_name'].strip()
+        if len(download_name) > 10: download_name = download_name[0:7] + '...'
+        
         jobhandler.add_webservice_url(request.session.session_key, job_id, webservice_url)
         jobhandler.set_export_format(request.session.session_key, job_id, export_format)
         jobhandler.set_srs(request.session.session_key, job_id, source_srs, target_srs)
@@ -133,6 +143,7 @@ def convert_webservice(request, job_id):
         path_code = jobhandler.get_path_code(request.session.session_key, job_id)
         
         downloadhandler.store_download_item(request.session.session_key, path_code)
+        downloadhandler.set_download_name(request.session.session_key, path_code, download_name)
         
         filemanager.remove_old_folders()
         
