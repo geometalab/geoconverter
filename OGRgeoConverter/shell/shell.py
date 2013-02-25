@@ -13,7 +13,7 @@ def execute(shell_call):
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         stdout, stderr = p.communicate()
     except Exception, e:
-        stdout = ""
+        stdout = ''
         stderr = e
     
     return ShellResult(stdout, stderr)

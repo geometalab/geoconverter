@@ -92,11 +92,15 @@ def process_file(session_key, job_id, file_id):
             if conversion_job.get_file_count() > 1:
                 # Creates a sub folder in the extract folder
                 extract_path = os.path.join(extract_path, os.path.splitext(file_name)[0])
-            process_archive(os.path.join(source_path, file_name), extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
+            process_archive(os.path.join(source_path, file_name), extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, 1)
         else:
             conversion.convert_files(source_path, matched_files, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
 
-def process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments):
+def process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
+    # Allowed depth of nested archives
+    if archive_depth > 6:
+        return
+    
     archives.unpack_archive_file(archive_path, unpack_path)
     
     folder_files_list = [(root, files) for root, dirs, files in os.walk(unpack_path)]
@@ -118,23 +122,27 @@ def process_archive(archive_path, unpack_path, output_path, export_format_name, 
         sub_path = source_path.replace(unpack_path, '').lstrip('/\\')
         destination_path = os.path.join(output_path, sub_path)
         
-        process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
+        process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth)
 
-def process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments):
+def process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
     file_matcher = FileMatcher(file_dict)
     
     for file_match in file_matcher.get_matches():
+        # Rename files
+        for file_id, new_file_name in file_match.get_file_dict().items():
+            original_file_name = file_matcher.get_original_file_name(file_id)
+            if original_file_name != new_file_name:
+                filemanager.rename_file(source_path, original_file_name, new_file_name)
+        
         if file_match.is_archive():
-            print 'Nested archive!!!!!'
-            #extract_path = conversion_job.get_extract_folder_path()
-            #process_archive(os.path.join(source_path, file_match.get_file[0]), extract_path)
+            # Process nested archive
+            archive_file_name_without_extension = os.path.splitext(file_match.get_files()[0])[0]
+            archive_path = os.path.join(source_path, file_match.get_files()[0])
+            unpack_path = os.path.join(source_path, archive_file_name_without_extension)
+            output_path = os.path.join(destination_path, archive_file_name_without_extension)
+            process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth+1)
         else:
-            # Rename files
-            for file_id, new_file_name in file_match.get_file_dict().items():
-                original_file_name = file_matcher.get_original_file_name(file_id)
-                if original_file_name != new_file_name:
-                    filemanager.rename_file(source_path, original_file_name, new_file_name)
-                    
+            # Convert files        
             conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
 
 def process_webservice_urls(session_key, job_id):
