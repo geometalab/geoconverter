@@ -226,6 +226,7 @@ function submitFilesForm(uploader, job_id) {
     	fileList['export_format'] = $('#id_files_ogrformat').val();
     	fileList['source_srs'] = $('#id_files_sourceSRS').val();
     	fileList['target_srs'] = $('#id_files_targetSRS').val();
+    	fileList['simplify_parameter'] = $('#id_files_simplify').val();
     	fileList['download_name'] = download_name;
     	
     	$.ajax({
@@ -285,17 +286,18 @@ function registerWebservicesRunButton() {
     	var export_format = $('#id_webservices_ogrformat').val();
 		var source_srs = $('#id_webservices_sourceSRS').val();
     	var target_srs = $('#id_webservices_targetSRS').val();
+    	var simplify_parameter = $('#id_webservices_simplify').val();
     	var download_name = get_download_name();
     	
     	if (url != "" && export_format != "") {
     		$('#id_urlinput').val("");
     		
-    		runWebserviceConversion(url, export_format, source_srs, target_srs, download_name);
+    		runWebserviceConversion(url, export_format, source_srs, target_srs, simplify_parameter, download_name);
     	}
 	});
 }
 
-function runWebserviceConversion(url, export_format, source_srs, target_srs, download_name) {
+function runWebserviceConversion(url, export_format, source_srs, target_srs, simplify_parameter, download_name) {
 	var job_id = getRandomConversionJobID();
 		
 	var queue_div_id = getQueueDivID(job_id);
@@ -313,6 +315,7 @@ function runWebserviceConversion(url, export_format, source_srs, target_srs, dow
 	webservicesData['export_format'] = export_format;
 	webservicesData['source_srs'] = source_srs;
 	webservicesData['target_srs'] = target_srs;
+	webservicesData['simplify_parameter'] = simplify_parameter;
 	webservicesData['download_name'] = download_name;
 	
 	$.ajax({

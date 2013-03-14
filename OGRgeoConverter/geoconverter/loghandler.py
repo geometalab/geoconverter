@@ -63,3 +63,8 @@ def set_download_file_size(session_key, path_code, file_size):
     log_entry = get_log_entry(session_key, path_code)
     log_entry.download_file_size = file_size
     store_log_entry(session_key, path_code, log_entry)
+    
+def set_simplify_parameter(session_key, path_code, simplify_parameter):
+    log_entry = get_log_entry(session_key, path_code)
+    log_entry.simplify_parameter = simplify_parameter
+    store_log_entry(session_key, path_code, log_entry)

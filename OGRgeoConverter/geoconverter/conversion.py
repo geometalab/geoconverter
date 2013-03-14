@@ -6,7 +6,7 @@ import os
 from OGRgeoConverter.ogr import ogr2ogr
 from OGRgeoConverter.models import OgrFormat
 
-def convert_files(source_path, matched_files, destination_path, output_format_name, ogr_output_format, source_srs, target_srs, additional_arguments):
+def convert_files(source_path, matched_files, destination_path, output_format_name, ogr_output_format, source_srs, target_srs, simplify_parameter, additional_arguments):
     '''
     Prepares a conversion of files and calls ogr2ogr
     '''
@@ -33,9 +33,9 @@ def convert_files(source_path, matched_files, destination_path, output_format_na
         
         argument_list = _get_argument_list(additional_arguments)
         
-        ogr2ogr.convert_file(input_file_path, output_file_path, ogr_input_format, ogr_output_format, source_srs, target_srs, argument_list)
+        ogr2ogr.convert_file(input_file_path, output_file_path, ogr_input_format, ogr_output_format, source_srs, target_srs, simplify_parameter, argument_list)
 
-def convert_webservice(webservice_url, destination_path, base_name, output_format_name, ogr_output_format, source_srs, target_srs, additional_arguments):
+def convert_webservice(webservice_url, destination_path, base_name, output_format_name, ogr_output_format, source_srs, target_srs, simplify_parameter, additional_arguments):
     '''
     Prepares a conversion of a webservice and calls ogr2ogr
     '''
@@ -45,7 +45,7 @@ def convert_webservice(webservice_url, destination_path, base_name, output_forma
     output_file_path = _get_extended_output_file_path(destination_path, base_name, format_info)
     argument_list = _get_argument_list(additional_arguments)
         
-    ogr2ogr.convert_wfs(webservice_url, output_file_path, ogr_output_format, source_srs, target_srs, argument_list)
+    ogr2ogr.convert_wfs(webservice_url, output_file_path, ogr_output_format, source_srs, target_srs, simplify_parameter, argument_list)
 
 def _get_extended_output_file_path(output_path, base_name, format_info):
     '''

@@ -57,7 +57,7 @@ class ArgumentList(object):
             if quotation_marks:
                 newvalue = '"' + value + '"'
             else: 
-                newvalue = value
+                newvalue = str(value)
             if not value_only:
                 newvalue = ' ' + newvalue
         return newvalue

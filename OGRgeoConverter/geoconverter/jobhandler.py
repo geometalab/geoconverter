@@ -48,7 +48,13 @@ def set_srs(session_key, job_id, source_srs, target_srs):
     session['jobs'][job_id].set_source_srs(source_srs)
     session['jobs'][job_id].set_target_srs(target_srs)
     session.save()
-        
+
+def set_simplify_parameter(session_key, job_id, simplify_parameter):
+    _initialize_job(session_key, job_id)
+    session = sessionhandler.get_session(session_key)
+    session['jobs'][job_id].set_simplify_parameter(simplify_parameter)
+    session.save()
+            
 def remove_file(session_key, job_id, file_id):
     _initialize_job(session_key, job_id)
     session = sessionhandler.get_session(session_key)
@@ -85,6 +91,7 @@ def process_file(session_key, job_id, file_id):
         export_format = conversion_job.get_export_format()
         source_srs = conversion_job.get_source_srs()
         target_srs = conversion_job.get_target_srs()
+        simplify_parameter = conversion_job.get_simplify_parameter()
         additional_arguments = conversion_job.get_additional_arguments()
         extract_base_path = conversion_job.get_extract_folder_path()
         if matched_files.is_archive():
@@ -94,11 +101,11 @@ def process_file(session_key, job_id, file_id):
                 extract_path = os.path.join(extract_base_path, os.path.splitext(file_name)[0])
             else:
                 extract_path = extract_base_path
-            process_archive(os.path.join(source_path, file_name), extract_base_path, extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, 1)
+            process_archive(os.path.join(source_path, file_name), extract_base_path, extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments, 1)
         else:
-            conversion.convert_files(source_path, matched_files, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
+            conversion.convert_files(source_path, matched_files, destination_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments)
             
-def process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
+def process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments, archive_depth=1):
     # Allowed depth of nested archives
     if archive_depth > 6:
         return
@@ -131,9 +138,9 @@ def process_archive(archive_path, unpack_base_path, unpack_path, output_path, ex
             os.mkdir(destination_path)
         #
         
-        process_folder(source_path, file_dict, destination_path, source_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth)
+        process_folder(source_path, file_dict, destination_path, source_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments, archive_depth)
 
-def process_folder(source_path, file_dict, destination_path, unpack_base_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
+def process_folder(source_path, file_dict, destination_path, unpack_base_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments, archive_depth=1):
     file_matcher = FileMatcher(file_dict)
     
     for file_match in file_matcher.get_matches():
@@ -150,10 +157,10 @@ def process_folder(source_path, file_dict, destination_path, unpack_base_path, e
             unpack_path = os.path.join(source_path, archive_file_name_without_extension)
             output_path = os.path.join(destination_path, archive_file_name_without_extension)
             #process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth+1)
-            process_archive(archive_path, unpack_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth+1)
+            process_archive(archive_path, unpack_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments, archive_depth+1)
         else:
             # Convert files        
-            conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
+            conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments)
 
 def process_webservice_urls(session_key, job_id):
     _initialize_job(session_key, job_id)
@@ -166,15 +173,16 @@ def process_webservice_urls(session_key, job_id):
     export_format = conversion_job.get_export_format()
     source_srs = conversion_job.get_source_srs()
     target_srs = conversion_job.get_target_srs()
+    simplify_parameter = conversion_job.get_simplify_parameter()
     additional_arguments = conversion_job.get_additional_arguments()
     
     base_name = 'webservice'
     if len(webservice_urls) == 1:
-        conversion.convert_webservice(webservice_urls[0], destination_path, base_name, export_format_name, export_format, source_srs, target_srs, additional_arguments)
+        conversion.convert_webservice(webservice_urls[0], destination_path, base_name, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments)
     else:
         counter = 1
         for webservice_url in webservice_urls:
-            conversion.convert_webservice(webservice_url, destination_path, base_name + str(counter), export_format_name, export_format, source_srs, target_srs, additional_arguments)
+            conversion.convert_webservice(webservice_url, destination_path, base_name + str(counter), export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments)
             counter += 1
 
 def create_download_file(session_key, job_id):
@@ -207,6 +215,7 @@ class ConversionJob:
         self.__export_format_name = ''
         self.__source_srs = 0
         self.__target_srs = 0
+        self.__simplify_parameter = 0
         self.__additional_arguments = []
         
         self.__file_dict = {}
@@ -265,6 +274,15 @@ class ConversionJob:
         
     def get_target_srs(self):
         return self.__target_srs
+    
+    def set_simplify_parameter(self, simplify_parameter):
+        if simplify_parameter.isdigit():
+            self.__simplify_parameter = int(simplify_parameter)
+            if self.__simplify_parameter < 0:
+                self.__simplify_parameter = 0
+    
+    def get_simplify_parameter(self):
+        return self.__simplify_parameter
     
     def set_additional_arguments(self, additional_arguments):
         self.__additional_arguments = additional_arguments

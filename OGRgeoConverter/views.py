@@ -4,6 +4,7 @@ URL-Function mapping is defined in urls.py.
 '''
 
 import json
+import time
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
@@ -50,6 +51,9 @@ def start_conversion_job(request, job_id):
         target_srs = POST_dict['target_srs'].strip()
         del POST_dict['target_srs']
         
+        simplify_parameter = POST_dict['simplify_parameter'].strip()
+        del POST_dict['simplify_parameter']
+        
         download_name = POST_dict['download_name'].strip()
         del POST_dict['download_name']
         if len(download_name) > 10: download_name = download_name[0:7] + '...'
@@ -59,15 +63,18 @@ def start_conversion_job(request, job_id):
         jobhandler.add_file_names(session_key, job_id, POST_dict)
         jobhandler.set_export_format(session_key, job_id, export_format)
         jobhandler.set_srs(session_key, job_id, source_srs, target_srs)
+        jobhandler.set_simplify_parameter(session_key, job_id, simplify_parameter)
         
         path_code = jobhandler.get_path_code(session_key, job_id)
         downloadhandler.set_download_name(session_key, path_code, download_name)
         
         loghandler.create_log_entry(session_key, path_code)
-        loghandler.set_start_time(session_key, path_code, '2001-02-03 8:9:10')
+        lt = time.localtime()
+        loghandler.set_start_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
         loghandler.set_input_type(session_key, path_code, 'files')
         loghandler.set_export_format(session_key, path_code, export_format)
         loghandler.set_srs(session_key, path_code, source_srs, target_srs)
+        loghandler.set_simplify_parameter(session_key, path_code, simplify_parameter)
         
         return HttpResponse('success')
     else:
@@ -105,7 +112,8 @@ def finish_conversion_job(request, job_id):
         
         downloadhandler.store_download_item(session_key, path_code)
         
-        loghandler.set_end_time(session_key, path_code, '2001-02-03 8:10:11')
+        lt = time.localtime()
+        loghandler.set_end_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
         loghandler.set_download_file_size(session_key, path_code, downloadhandler.get_download_file_size(path_code)/1024)
         
         filemanager.remove_old_folders()
@@ -143,21 +151,44 @@ def convert_webservice(request, job_id):
         export_format = POST_dict['export_format'].strip()
         source_srs = POST_dict['source_srs'].strip()
         target_srs = POST_dict['target_srs'].strip()
+        simplify_parameter = POST_dict['simplify_parameter'].strip()
         download_name = POST_dict['download_name'].strip()
         if len(download_name) > 10: download_name = download_name[0:7] + '...'
         
-        jobhandler.add_webservice_url(request.session.session_key, job_id, webservice_url)
-        jobhandler.set_export_format(request.session.session_key, job_id, export_format)
-        jobhandler.set_srs(request.session.session_key, job_id, source_srs, target_srs)
+        session_key = request.session.session_key
+        jobhandler.add_webservice_url(session_key, job_id, webservice_url)
+        jobhandler.set_export_format(session_key, job_id, export_format)
+        jobhandler.set_srs(session_key, job_id, source_srs, target_srs)
+        jobhandler.set_simplify_parameter(session_key, job_id, simplify_parameter)
         
-        jobhandler.process_webservice_urls(request.session.session_key, job_id)
+        path_code = jobhandler.get_path_code(session_key, job_id)
         
-        jobhandler.create_download_file(request.session.session_key, job_id)
+        # Log start
         
-        path_code = jobhandler.get_path_code(request.session.session_key, job_id)
+        loghandler.create_log_entry(session_key, path_code)
+        lt = time.localtime()
+        loghandler.set_start_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
+        loghandler.set_input_type(session_key, path_code, 'webservice')
+        loghandler.set_export_format(session_key, path_code, export_format)
+        loghandler.set_srs(session_key, path_code, source_srs, target_srs)
+        loghandler.set_simplify_parameter(session_key, path_code, simplify_parameter)
         
-        downloadhandler.store_download_item(request.session.session_key, path_code)
-        downloadhandler.set_download_name(request.session.session_key, path_code, download_name)
+        # Conversion start
+        
+        jobhandler.process_webservice_urls(session_key, job_id)
+        
+        jobhandler.create_download_file(session_key, job_id)
+        
+        downloadhandler.store_download_item(session_key, path_code)
+        downloadhandler.set_download_name(session_key, path_code, download_name)
+        
+        # Conversion end
+        
+        lt = time.localtime()
+        loghandler.set_end_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
+        loghandler.set_download_file_size(session_key, path_code, downloadhandler.get_download_file_size(path_code)/1024)
+        
+        # Log end
         
         filemanager.remove_old_folders()
         

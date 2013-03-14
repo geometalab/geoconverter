@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import time
 from collections import namedtuple
 from django.db import models
 from OGRgeoConverter.ogr import ogrinfo
@@ -144,13 +145,15 @@ class LogEntry(models.Model):
     export_format = models.CharField(max_length=100)
     source_srs = models.CharField(max_length=100)
     target_srs = models.CharField(max_length=100)
+    simplify_parameter = models.CharField(max_length=100)
     download_file_size = models.IntegerField(verbose_name='Downloadgrösse (KB)')
     
     def __unicode__(self):
         return str(self.start_time)
     
     def duration(self):
-        return '... s'
-    
+        difference = self.end_time - self.start_time
+        return str(difference)
+        
     class Meta:
         db_table = 'ogrgeoconverter_log'
