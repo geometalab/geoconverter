@@ -63,3 +63,11 @@ def get_download_file_information(*path_code_args):
         return wrapper, file_name, file_size
     else:
         return None
+    
+def get_download_file_size(path_code):
+    file_path = filemanager.get_download_file_path(path_code)
+    
+    if file_path != '':
+        return os.path.getsize(file_path)
+    else:
+        return -1

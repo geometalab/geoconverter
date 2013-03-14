@@ -138,9 +138,19 @@ class ConversionResult(models.Model):
 
 
 class LogEntry(models.Model):
+    input_type = models.CharField(max_length=50, verbose_name='Eingabetyp', choices=(('files','Dateien'),('webservice','Webservice')))
     start_time = models.DateTimeField(verbose_name='Startzeit')
     end_time = models.DateTimeField(verbose_name='Endzeit')
     export_format = models.CharField(max_length=100)
+    source_srs = models.CharField(max_length=100)
+    target_srs = models.CharField(max_length=100)
+    download_file_size = models.IntegerField(verbose_name='Downloadgrösse (KB)')
+    
+    def __unicode__(self):
+        return str(self.start_time)
+    
+    def duration(self):
+        return '... s'
     
     class Meta:
         db_table = 'ogrgeoconverter_log'

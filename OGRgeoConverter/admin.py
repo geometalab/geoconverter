@@ -23,6 +23,11 @@ class OgrFormatAdmin(admin.ModelAdmin):
             '/static/jquery/js/jquery-ui-1.9.1.custom.min.js',
             '/static/django/js/geofiles-sort.js',
         )
+
+class LogEntryAdmin(admin.ModelAdmin):
+    model = LogEntry
+    list_display = ('start_time', 'duration', 'input_type', 'export_format', 'source_srs', 'target_srs', 'download_file_size')
+    
     
 admin.site.register(OgrFormat, OgrFormatAdmin)
-admin.site.register(LogEntry)
+admin.site.register(LogEntry, LogEntryAdmin)

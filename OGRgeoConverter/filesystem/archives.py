@@ -31,7 +31,7 @@ def unpack_archive_file(source_file_path, destination_folder_path):
         unpack_zip_archive_file(source_file_path, destination_folder_path)
     elif tarfile.is_tarfile(source_file_path):
         unpack_tar_archive_file(source_file_path, destination_folder_path)
-        
+    
 def unpack_zip_archive_file(source_file_path, destination_folder_path):
     print 'Unpacking Zip ' + source_file_path
     source_zip = zipfile.ZipFile(source_file_path, 'r')

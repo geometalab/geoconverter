@@ -86,17 +86,19 @@ def process_file(session_key, job_id, file_id):
         source_srs = conversion_job.get_source_srs()
         target_srs = conversion_job.get_target_srs()
         additional_arguments = conversion_job.get_additional_arguments()
+        extract_base_path = conversion_job.get_extract_folder_path()
         if matched_files.is_archive():
-            extract_path = conversion_job.get_extract_folder_path()
             file_name = matched_files.get_files()[0]
             if conversion_job.get_file_count() > 1:
                 # Creates a sub folder in the extract folder
-                extract_path = os.path.join(extract_path, os.path.splitext(file_name)[0])
-            process_archive(os.path.join(source_path, file_name), extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, 1)
+                extract_path = os.path.join(extract_base_path, os.path.splitext(file_name)[0])
+            else:
+                extract_path = extract_base_path
+            process_archive(os.path.join(source_path, file_name), extract_base_path, extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, 1)
         else:
             conversion.convert_files(source_path, matched_files, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)
-
-def process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
+            
+def process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
     # Allowed depth of nested archives
     if archive_depth > 6:
         return
@@ -108,23 +110,30 @@ def process_archive(archive_path, unpack_path, output_path, export_format_name, 
     file_matches = []
     
     for folder_files in folder_files_list:
-        print '++++++++++++++++++++'
-        print folder_files
-        
         source_path = folder_files[0]
         
         file_dict = {}
         file_id_counter = 0
+        
+        #print '$$$$$$$$$$$$$$$$$'
+        #print 'Source path: ' + source_path
+        #print 'Number of files: ' + str(len(folder_files[1]))
+        
         for file_name in folder_files[1]:
             file_dict[file_id_counter] = file_name
             file_id_counter += 1
-            
-        sub_path = source_path.replace(unpack_path, '').lstrip('/\\')
+        
+        sub_path = source_path.replace(unpack_base_path, '').lstrip('/\\')
         destination_path = os.path.join(output_path, sub_path)
         
-        process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth)
+        #
+        if not os.path.exists(destination_path):
+            os.mkdir(destination_path)
+        #
+        
+        process_folder(source_path, file_dict, destination_path, source_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth)
 
-def process_folder(source_path, file_dict, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
+def process_folder(source_path, file_dict, destination_path, unpack_base_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth=1):
     file_matcher = FileMatcher(file_dict)
     
     for file_match in file_matcher.get_matches():
@@ -140,7 +149,8 @@ def process_folder(source_path, file_dict, destination_path, export_format_name,
             archive_path = os.path.join(source_path, file_match.get_files()[0])
             unpack_path = os.path.join(source_path, archive_file_name_without_extension)
             output_path = os.path.join(destination_path, archive_file_name_without_extension)
-            process_archive(archive_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth+1)
+            #process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth+1)
+            process_archive(archive_path, unpack_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth+1)
         else:
             # Convert files        
             conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, source_srs, target_srs, additional_arguments)

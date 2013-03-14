@@ -14,6 +14,7 @@ from OGRgeoConverter.forms import GeoConverterFilesForm, GeoConverterWebservices
 from OGRgeoConverter.filesystem import pathcode
 from OGRgeoConverter.geoconverter import jobhandler
 from OGRgeoConverter.geoconverter import downloadhandler
+from OGRgeoConverter.geoconverter import loghandler
 from OGRgeoConverter.geoconverter import sessionhandler
 from OGRgeoConverter.filesystem import filemanager
 
@@ -53,12 +54,20 @@ def start_conversion_job(request, job_id):
         del POST_dict['download_name']
         if len(download_name) > 10: download_name = download_name[0:7] + '...'
         
-        jobhandler.add_file_names(request.session.session_key, job_id, POST_dict)
-        jobhandler.set_export_format(request.session.session_key, job_id, export_format)
-        jobhandler.set_srs(request.session.session_key, job_id, source_srs, target_srs)
+        session_key = request.session.session_key
         
-        path_code = jobhandler.get_path_code(request.session.session_key, job_id)
-        downloadhandler.set_download_name(request.session.session_key, path_code, download_name)
+        jobhandler.add_file_names(session_key, job_id, POST_dict)
+        jobhandler.set_export_format(session_key, job_id, export_format)
+        jobhandler.set_srs(session_key, job_id, source_srs, target_srs)
+        
+        path_code = jobhandler.get_path_code(session_key, job_id)
+        downloadhandler.set_download_name(session_key, path_code, download_name)
+        
+        loghandler.create_log_entry(session_key, path_code)
+        loghandler.set_start_time(session_key, path_code, '2001-02-03 8:9:10')
+        loghandler.set_input_type(session_key, path_code, 'files')
+        loghandler.set_export_format(session_key, path_code, export_format)
+        loghandler.set_srs(session_key, path_code, source_srs, target_srs)
         
         return HttpResponse('success')
     else:
@@ -88,11 +97,16 @@ def remove_file(request, job_id, file_id):
         
 def finish_conversion_job(request, job_id):
     if request.method == 'POST':
-        jobhandler.create_download_file(request.session.session_key, job_id)
+        session_key = request.session.session_key
         
-        path_code = jobhandler.get_path_code(request.session.session_key, job_id)
+        jobhandler.create_download_file(session_key, job_id)
         
-        downloadhandler.store_download_item(request.session.session_key, path_code)
+        path_code = jobhandler.get_path_code(session_key, job_id)
+        
+        downloadhandler.store_download_item(session_key, path_code)
+        
+        loghandler.set_end_time(session_key, path_code, '2001-02-03 8:10:11')
+        loghandler.set_download_file_size(session_key, path_code, downloadhandler.get_download_file_size(path_code)/1024)
         
         filemanager.remove_old_folders()
         
