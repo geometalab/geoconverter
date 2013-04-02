@@ -41,6 +41,10 @@ DATABASES = {
     'ogrgeoconverter_log_db': { # Database logs conversions by website visitors
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.ogrgeoconverter_log_database_path(),
+    },
+    'ogrgeoconverter_conversion_jobs_db': { # Database logs conversions by website visitors
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': paths.ogrgeoconverter_conversion_jobs_database_path(),
     }
 }
 

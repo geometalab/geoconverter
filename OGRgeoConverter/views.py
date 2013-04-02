@@ -66,11 +66,9 @@ def start_conversion_job(request, job_id):
         jobhandler.set_simplify_parameter(session_key, job_id, simplify_parameter)
         
         path_code = jobhandler.get_path_code(session_key, job_id)
-        downloadhandler.set_download_name(session_key, path_code, download_name)
+        downloadhandler.set_download_caption(session_key, path_code, download_name)
         
-        loghandler.create_log_entry(session_key, path_code)
-        lt = time.localtime()
-        loghandler.set_start_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
+        loghandler.set_start_time(session_key, path_code)
         loghandler.set_input_type(session_key, path_code, 'files')
         loghandler.set_export_format(session_key, path_code, export_format)
         loghandler.set_srs(session_key, path_code, source_srs, target_srs)
@@ -87,6 +85,10 @@ def process_upload(request, job_id):
     file_data = SimpleUploadedFile(request.GET['qqfile'], request.raw_post_data)
     
     jobhandler.store_file(request.session.session_key, job_id, file_id, file_data)
+    
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    # Temporary deactivated because of race condition !!!!!
+    # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     jobhandler.process_file(request.session.session_key, job_id, file_id)
     
     response_data = {}
@@ -106,32 +108,39 @@ def finish_conversion_job(request, job_id):
     if request.method == 'POST':
         session_key = request.session.session_key
         
+        jobhandler.convert_unprocessed_files(session_key, job_id)
+        
         jobhandler.create_download_file(session_key, job_id)
         
         path_code = jobhandler.get_path_code(session_key, job_id)
         
-        downloadhandler.store_download_item(session_key, path_code)
+        downloadhandler.add_download_item(session_key, path_code)
         
-        lt = time.localtime()
-        loghandler.set_end_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
+        loghandler.set_end_time(session_key, path_code)
         loghandler.set_download_file_size(session_key, path_code, downloadhandler.get_download_file_size(path_code)/1024)
         
         filemanager.remove_old_folders()
         
         response_data = {}
         response_data['path_code'] = path_code
+        response_data['successful'] = downloadhandler.download_file_exists(path_code)
         return HttpResponse(json.dumps(response_data), mimetype="text/plain")
         # if count files == 0 response job canceled
     return HttpResponse('success')
 
 def download_output_file(request, *path_code_args):
-    file, file_name, file_size = downloadhandler.get_download_file_information(*path_code_args)
+    download_file_information = downloadhandler.get_download_file_information(*path_code_args)
     
-    response = HttpResponse(file, content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename=' + file_name
-    response['Content-Length'] = file_size
-    
-    return response
+    if download_file_information != None:
+        file, file_name, file_size = download_file_information
+        
+        response = HttpResponse(file, content_type='application/zip')
+        response['Content-Disposition'] = 'attachment; filename=' + file_name
+        response['Content-Length'] = file_size
+        
+        return response
+    else:
+        return HttpResponse('Error: file does not exist!')
 
 def remove_download_item(request, *path_code_args):
     #_initialize_session(request)
@@ -165,9 +174,7 @@ def convert_webservice(request, job_id):
         
         # Log start
         
-        loghandler.create_log_entry(session_key, path_code)
-        lt = time.localtime()
-        loghandler.set_start_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
+        loghandler.set_start_time(session_key, path_code)
         loghandler.set_input_type(session_key, path_code, 'webservice')
         loghandler.set_export_format(session_key, path_code, export_format)
         loghandler.set_srs(session_key, path_code, source_srs, target_srs)
@@ -179,13 +186,12 @@ def convert_webservice(request, job_id):
         
         jobhandler.create_download_file(session_key, job_id)
         
-        downloadhandler.store_download_item(session_key, path_code)
-        downloadhandler.set_download_name(session_key, path_code, download_name)
+        downloadhandler.add_download_item(session_key, path_code)
+        downloadhandler.set_download_caption(session_key, path_code, download_name)
         
         # Conversion end
         
-        lt = time.localtime()
-        loghandler.set_end_time(session_key, path_code, time.strftime('%Y-%m-%d %H:%M:%S', lt))
+        loghandler.set_end_time(session_key, path_code)
         loghandler.set_download_file_size(session_key, path_code, downloadhandler.get_download_file_size(path_code)/1024)
         
         # Log end
@@ -194,6 +200,7 @@ def convert_webservice(request, job_id):
         
         response_data = {}
         response_data['path_code'] = path_code
+        response_data['successful'] = downloadhandler.download_file_exists(path_code)
         return HttpResponse(json.dumps(response_data), mimetype="text/plain")
     
     return HttpResponse('fail')

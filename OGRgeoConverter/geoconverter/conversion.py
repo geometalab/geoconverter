@@ -11,6 +11,8 @@ def convert_files(source_path, matched_files, destination_path, output_format_na
     Prepares a conversion of files and calls ogr2ogr
     '''
     
+    print 'Converting files...'
+    
     input_files = []
     for file_name in matched_files.get_files():
         input_files.append(os.path.join(source_path, file_name))
@@ -29,7 +31,11 @@ def convert_files(source_path, matched_files, destination_path, output_format_na
         if format_info != None and format_info.state_all_files:
             input_file_path = ','.join(input_files)
         else:
-            input_file_path = input_files[0]
+            input_file_path = ''
+            for input_file in input_files:
+                if os.path.splitext(os.path.basename(input_file))[1].lower() == '.' + format_info.extension.lower():
+                    input_file_path = input_file
+            if input_file_path == '': input_file_path = input_files[0]
         
         argument_list = _get_argument_list(additional_arguments)
         

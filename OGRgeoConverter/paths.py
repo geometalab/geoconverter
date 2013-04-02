@@ -17,6 +17,10 @@ def log_database_path():
     # /OGRgeoConverter/log.sqlite
     return os.path.join(application_root(), 'log.sqlite')
 
+def conversion_jobs_database_path():
+    # /OGRgeoConverter/conversion_jobs.sqlite
+    return os.path.join(application_root(), 'conversion_jobs.sqlite')
+
 def conversion_job_path():
     # /OGRgeoConverter/ConversionJobs/
     return os.path.join(application_root(), 'ConversionJobs')

@@ -24,9 +24,11 @@ class DatabaseRouter(object):
         elif db == 'sessions_db':
             return model._meta.app_label == 'sessions'
         elif db == 'ogrgeoconverter_db':
-            return model._meta.app_label == 'OGRgeoConverter' and model._meta.db_table != 'ogrgeoconverter_log'
+            return model._meta.app_label == 'OGRgeoConverter' and model._meta.db_table != 'ogrgeoconverter_log' and model._meta.db_table != 'ogrgeoconverter_conversion_jobs'
         elif db == 'ogrgeoconverter_log_db':
             return model._meta.app_label == 'OGRgeoConverter' and model._meta.db_table == 'ogrgeoconverter_log'
+        elif db == 'ogrgeoconverter_conversion_jobs_db':
+            return model._meta.app_label == 'OGRgeoConverter' and model._meta.db_table == 'ogrgeoconverter_conversion_jobs'
             
         return None
     
@@ -36,6 +38,8 @@ class DatabaseRouter(object):
         elif model._meta.app_label == 'OGRgeoConverter':
             if model._meta.db_table == 'ogrgeoconverter_log':
                 return 'ogrgeoconverter_log_db'
+            elif model._meta.db_table == 'ogrgeoconverter_conversion_jobs':
+                return 'ogrgeoconverter_conversion_jobs_db'
             else:
                 return 'ogrgeoconverter_db'
                 

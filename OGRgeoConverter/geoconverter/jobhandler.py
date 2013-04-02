@@ -80,6 +80,7 @@ def process_file(session_key, job_id, file_id):
     session = sessionhandler.get_session(session_key)
     conversion_job = session['jobs'][job_id]
     if conversion_job.file_ready_for_process(file_id):
+        print '+++++'
         matched_files = conversion_job.get_matched_files(file_id)
         for matched_file_id in matched_files.get_file_dict().keys():
             conversion_job.set_file_processed(matched_file_id)
@@ -104,7 +105,9 @@ def process_file(session_key, job_id, file_id):
             process_archive(os.path.join(source_path, file_name), extract_base_path, extract_path, destination_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments, 1)
         else:
             conversion.convert_files(source_path, matched_files, destination_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments)
-            
+    else:
+        print '-----'
+        
 def process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments, archive_depth=1):
     # Allowed depth of nested archives
     if archive_depth > 6:
@@ -162,6 +165,20 @@ def process_folder(source_path, file_dict, destination_path, unpack_base_path, e
             # Convert files        
             conversion.convert_files(source_path, file_match, destination_path, export_format_name, export_format, source_srs, target_srs, simplify_parameter, additional_arguments)
 
+def convert_unprocessed_files(session_key, job_id):
+    # Only workaround !!!!!!!!!!!!!!!!!!!!!
+    
+    session = sessionhandler.get_session(session_key)
+    conversion_job = session['jobs'][job_id]
+    
+    conversion_job.set_all_files_uploaded()
+    session.save()
+    
+    unprocessed_files = conversion_job.get_unprocessed_files()
+    
+    for file_id in unprocessed_files:
+        process_file(session_key, job_id, file_id)
+    
 def process_webservice_urls(session_key, job_id):
     _initialize_job(session_key, job_id)
     session = sessionhandler.get_session(session_key)
@@ -191,7 +208,8 @@ def create_download_file(session_key, job_id):
     path_code = session['jobs'][job_id].get_path_code()
     output_folder = filemanager.get_output_folder_path(path_code)
     zip_file_path = filemanager.get_download_file_path(path_code)
-    archives.create_zip_archive(output_folder, zip_file_path)
+    if filemanager.get_file_count(output_folder) > 0:
+        archives.create_zip_archive(output_folder, zip_file_path)
             
 def is_canceled(session_key, job_id):
     _initialize_job(session_key, job_id)
@@ -297,8 +315,13 @@ class ConversionJob:
         return self.__matched_files.get_file_name(file_id)
     
     def set_file_uploaded(self, file_id):
+        print 'Setting file uploaded: ' + str(file_id)
         self.__uploaded_file_dict[file_id] = True
         
+    def set_all_files_uploaded(self):
+        for file_id in self.__uploaded_file_dict.keys():
+            self.__uploaded_file_dict[file_id] = True
+            
     def remove_file(self, file_id):
         if file_id in self.__file_dict:
             del self.__file_dict[file_id]
@@ -312,15 +335,28 @@ class ConversionJob:
         is_ready = True
         for matched_file_id in matched_files.get_file_dict().keys():
             if not self.__uploaded_file_dict[matched_file_id]:
+                print 'File ' + str(matched_file_id) + ' is not uploaded yet.'
+                print self.__uploaded_file_dict.items()
                 is_ready = False
         return is_ready
     
     def set_file_processed(self, file_id):
+        print 'Set file processed: ' + str(file_id)
         self.__processed_file_dict[file_id] = True
         
     def get_matched_files(self, file_id):
         return self.__matched_files.get_match(file_id)
     
+    def get_unprocessed_files(self):
+        unprocessed_files = []
+        
+        for file_id, processed in self.__processed_file_dict.items():
+            if not processed:
+                unprocessed_files.append(file_id)
+        
+        print 'Unprocessed files:'
+        print ', '.join(unprocessed_files)
+        return unprocessed_files
     
     def get_upload_folder_path(self):
         return self.__upload_path

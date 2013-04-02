@@ -74,7 +74,7 @@
 	padding-left: 15px;
 	padding-bottom: 15px;
 	padding-top: 40px;
-	
+	min-height: 45px;
 	overflow: hidden;
 }
 
@@ -82,6 +82,10 @@
 	position: absolute;
 	top: 8px;
 	left: 160px;
+}
+
+.download-button {
+	margin-top: 5px;
 }
 
 .remove-download-item {

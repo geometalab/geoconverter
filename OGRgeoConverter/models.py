@@ -134,11 +134,29 @@ class AdditionalShellParameter(models.Model):
     argument_value = models.CharField(max_length=100, verbose_name='Argument-Wert')
     value_quotation_marks = models.BooleanField(verbose_name='Anführungszeichen für Wert', default=True)
 
-class ConversionResult(models.Model):
-    pass
+class DownloadItem(models.Model):
+    session_key = models.CharField(max_length=50)
+    job_id = models.CharField(max_length=50)
 
+    creation_time = models.DateTimeField()
+    download_caption = models.CharField(max_length=100)
+    
+    class Meta:
+        db_table = 'ogrgeoconverter_conversion_jobs'
+    
+    @staticmethod
+    def get_download_item(session_key, job_id):
+        return DownloadItem.objects.filter(session_key=session_key, job_id=job_id)
+    
+    @staticmethod
+    def get_download_items(session_key):
+        return DownloadItem.objects.filter(session_key=session_key).order_by('creation_time').reverse()
+    
 
 class LogEntry(models.Model):
+    session_key = models.CharField(max_length=50)
+    job_id = models.CharField(max_length=50)
+    
     input_type = models.CharField(max_length=50, verbose_name='Eingabetyp', choices=(('files','Dateien'),('webservice','Webservice')))
     start_time = models.DateTimeField(verbose_name='Startzeit')
     end_time = models.DateTimeField(verbose_name='Endzeit')
@@ -157,3 +175,8 @@ class LogEntry(models.Model):
         
     class Meta:
         db_table = 'ogrgeoconverter_log'
+        
+    @staticmethod
+    def get_log_entry(session_key, job_id):
+        return LogEntry.objects.filter(session_key=session_key, job_id=job_id)
+        

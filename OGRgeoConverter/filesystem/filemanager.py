@@ -62,6 +62,14 @@ def remove_old_folders():
                 full_path = os.path.join(folder_path, folder)
                 shutil.rmtree(full_path)
                 
+def get_file_count(folder_path):
+    file_count = 0
+    
+    for root, dirs, files in os.walk(folder_path):
+        file_count += len(files)
+    
+    print 'File count: ' + str(file_count)
+    return file_count
 
 def get_conversion_job_folder():
     '''
@@ -129,3 +137,7 @@ def get_download_file_path(path_code):
     file_path = get_download_folder_path(path_code)
     file_path = os.path.join(file_path, 'geoconverter' + '_' + year  + month + day + '_' + hour + minute + second + '.zip')
     return file_path
+
+def download_file_exists(path_code):
+    download_file_path = get_download_file_path(path_code)
+    return os.path.exists(download_file_path)

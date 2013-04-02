@@ -24,7 +24,7 @@
 		</div>
 		<!--<div id="files-info-message">
 			Use zip files to  preserve the directory structure!
-		</div>-->
+		</div>-->	
 	</div>
 	<div id="files-step2">
 		<p>2. Export format</p>
@@ -38,18 +38,17 @@
 	<div id="files-advanced">
 		<div class="expander-icon collapsed"></div>
 		<div class="expander-title">Advanced Options</div>
-		<div id="file-options" class="expander-content collapsed">
-			<div style="float: left; margin-top: 20px;">Source EPSG no.</div>
-			<div style="float: left; margin-top: 15px; margin-left: 27.5px;"><input name="files_sourceSRS" id="id_files_sourceSRS" type="text" size="10" maxlength="8" value="n/a"></div>
-			<div style="float: none; margin-top: 20px; font-size: small">Description...</div>
-			<br>
-			<div style="float: left; margin-top: 5px;">Target EPSG no.</div>
-			<div style="float: left; margin-left: 31px;"><input name="files_targetSRS" id="id_files_targetSRS" type="text" size="10" maxlength="8" value="n/a"></div>
-			<div style="float: none; margin-top: 5px; font-size: small">Description...</div>
-			<br>
-			<div style="float: left; margin-top: 5px;">Simplify parameter</div>
-			<div style="float: left; margin-left: 10px;"><input name="files_simplify" id="id_files_simplify" type="text" size="10" maxlength="8" value="n/a"></div>
-			<div style="float: none; margin-top: 5px; font-size: small">Description...</div>
+		<div style="height: 125px" id="file-options" class="expander-content collapsed">
+			<div style="position: absolute; top: 20px;">Source EPSG no.</div>
+			<div style="position: absolute; top: 15px; left: 150px;"><input name="files_sourceSRS" id="id_files_sourceSRS" type="text" size="10" maxlength="8" value="n/a"></div>
+			<div style="position: absolute; top: 50px;">Target EPSG no.</div>
+			<div style="position: absolute; top: 45px; left: 150px;"><input name="files_targetSRS" id="id_files_targetSRS" type="text" size="10" maxlength="8" value="n/a"></div>
+			<div style="position: absolute; top: 28px; left: 265px; font-size: small">
+				Coordinate Reference System (CRS) transformation<br>For EPSG no. see <a href="http://www.spatialreference.org" target="_blank">www.spatialreference.org</a>
+			</div>
+			<div style="position: absolute; top: 90px;">Simplify parameter</div>
+			<div style="position: absolute; top: 85px; left: 150px;"><input name="files_simplify" id="id_files_simplify" type="text" size="10" maxlength="8" value="n/a"></div>
+			<div style="position: absolute; top: 90px; left: 265px; font-size: small">Distance tolerance for simplification</div>
 		</div>
 		<div class="expander-bottom"></div>
 	</div>
@@ -76,18 +75,17 @@
 	<div id="webservices-advanced">
 		<div class="expander-icon collapsed"></div>
 		<div class="expander-title">Advanced Options</div>
-		<div id="webservice-options" class="expander-content collapsed">
-			<div style="float: left; margin-top: 20px;">Source EPSG no.</div>
-			<div style="float: left; margin-top: 15px; margin-left: 27.5px;"><input name="webservices_sourceSRS" id="id_webservices_sourceSRS" type="text" size="10" maxlength="8" value="n/a"></div>
-			<div style="float: none; margin-top: 20px; font-size: small">Description...</div>
-			<br>
-			<div style="float: left; margin-top: 5px;">Target EPSG no.</div>
-			<div style="float: left; margin-left: 31px;"><input name="webservices_targetSRS" id="id_webservices_targetSRS" type="text" size="10" maxlength="8" value="n/a"></div>
-			<div style="float: none; margin-top: 5px; font-size: small">Description...</div>
-			<br>
-			<div style="float: left; margin-top: 5px;">Simplify parameter</div>
-			<div style="float: left; margin-left: 10px;"><input name="webservices_simplify" id="id_webservices_simplify" type="text" size="10" maxlength="8" value="n/a"></div>
-			<div style="float: none; margin-top: 5px; font-size: small">Description...</div>
+		<div style="height: 125px" id="webservice-options" class="expander-content collapsed">
+			<div style="position: absolute; top: 20px;">Source EPSG no.</div>
+			<div style="position: absolute; top: 15px; left: 150px;"><input name="webservices_sourceSRS" id="id_webservices_sourceSRS" type="text" size="10" maxlength="8" value="n/a"></div>
+			<div style="position: absolute; top: 50px;">Target EPSG no.</div>
+			<div style="position: absolute; top: 45px; left: 150px;"><input name="webservices_targetSRS" id="id_webservices_targetSRS" type="text" size="10" maxlength="8" value="n/a"></div>
+			<div style="position: absolute; top: 28px; left: 265px; font-size: small">
+				Coordinate Reference System (CRS) transformation<br>For EPSG no. see <a href="http://www.spatialreference.org" target="_blank">www.spatialreference.org</a>
+			</div>
+			<div style="position: absolute; top: 90px;">Simplify parameter</div>
+			<div style="position: absolute; top: 85px; left: 150px;"><input name="webservices_simplify" id="id_webservices_simplify" type="text" size="10" maxlength="8" value="n/a"></div>
+			<div style="position: absolute; top: 90px; left: 265px;font-size: small">Distance tolerance for simplification</div>
 		</div>
 		<div class="expander-bottom"></div>
 	</div>
@@ -99,14 +97,20 @@
 {% block ogrgeoconverter-downloads %}
 
 <div id="download-list">
-	{% for path_code, download_name in download_list %}
+	{% for path_code, download_name, file_exists in download_list %}
+	
 	<div id="queue-{{ path_code }}" class="download-item default-border">
 		<div class="download-name">{{ download_name }}</div>
-	    <div class="remove-download-item remove-download-item-icon"></div>
+		<div class="remove-download-item remove-download-item-icon"></div>
+	{% if file_exists %}
 		<div id="download-{{ path_code }}" class="qq-upload-button default-border download-button">
 	        Download
 	    </div>
-	</div>
+    {% else %}
+		<p>Error: Conversion failed!</p>
+    {% endif %}
+    </div>
+    
 	{% endfor %}
 </div>
 

@@ -19,7 +19,11 @@ if answer == 'yes':
     print 'Removing log.sqlite ...'
     if os.path.exists('./OGRgeoConverter/log.sqlite'):
         os.remove('./OGRgeoConverter/log.sqlite')
-        
+    
+    print 'Removing conversion_jobs.sqlite ...'
+    if os.path.exists('./OGRgeoConverter/conversion_jobs.sqlite'):
+        os.remove('./OGRgeoConverter/conversion_jobs.sqlite')
+            
     print 'Creating default.sqlite ...'
     os.system('python manage.py syncdb')
 
@@ -31,6 +35,9 @@ if answer == 'yes':
     
     print 'Creating log.sqlite ...'
     os.system('python manage.py syncdb --database=ogrgeoconverter_log_db')
+    
+    print 'Creating conversion_jobs.sqlite ...'
+    os.system('python manage.py syncdb --database=ogrgeoconverter_conversion_jobs_db')
     
     print 'Loading fixture ogr_formats.json ...'
     os.system('python manage.py loaddata ogr_formats.json --database=ogrgeoconverter_db')

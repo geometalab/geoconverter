@@ -155,11 +155,17 @@ function finishConversion(job_id) {
         	$('#' + uploader_add_div_id).remove();
         	var json_response = jQuery.parseJSON(response);
         	var path_code = json_response.path_code;
-        	var download_div_id = getDownloadDivID(path_code);
-        	var download_div = '';
-        	download_div += '<div id="' + download_div_id + '" class="qq-upload-button default-border download-button">' + '\n';
-        	download_div += '    Download' + '\n';
-        	download_div += '</div>';
+        	var successful = json_response.successful;
+	    	var download_div = '';
+	    	if (successful) {
+		    	var download_div_id = getDownloadDivID(path_code);
+		    	download_div += '<div id="' + download_div_id + '" class="qq-upload-button default-border download-button">' + '\n';
+		    	download_div += '    Download' + '\n';
+		    	download_div += '</div>';
+	    	} else {
+	    		download_div += '<p>Error: Conversion failed!</p>';
+	    	}
+        	
         	$('#' + queue_div_id).append(download_div);
         	new_queue_div_id = getDownloadQueueDivID(path_code);
         	$('#' + queue_div_id).attr('id', new_queue_div_id);
@@ -329,14 +335,19 @@ function runWebserviceConversion(url, export_format, source_srs, target_srs, sim
         success: function (response) {
 	    	var json_response = jQuery.parseJSON(response);
 	    	var path_code = json_response.path_code;
-	    	
+	    	var successful = json_response.successful;
 	    	$('#' + queue_div_id).children('img[name=ajax-loader]').remove();
 	    	
-	    	var download_div_id = getDownloadDivID(path_code);
 	    	var download_div = '';
-	    	download_div += '<div id="' + download_div_id + '" class="qq-upload-button default-border download-button">' + '\n';
-	    	download_div += '    Download' + '\n';
-	    	download_div += '</div>';
+	    	if (successful) {
+		    	var download_div_id = getDownloadDivID(path_code);
+		    	download_div += '<div id="' + download_div_id + '" class="qq-upload-button default-border download-button">' + '\n';
+		    	download_div += '    Download' + '\n';
+		    	download_div += '</div>';
+	    	} else {
+	    		download_div += '<p>Error: Conversion failed!</p>';
+	    	}
+	    	
 	    	$('#' + queue_div_id).append(download_div);
 	    	new_queue_div_id = getDownloadQueueDivID(path_code);
 	    	$('#' + queue_div_id).attr('id', new_queue_div_id);

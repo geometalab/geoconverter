@@ -34,6 +34,10 @@ def ogrgeoconverter_log_database_path():
     # /OGRgeoConverter/log.sqlite
     return ogrgeoconverter_paths.log_database_path()
 
+def ogrgeoconverter_conversion_jobs_database_path():
+    # /OGRgeoConverter/conversion_jobs.sqlite
+    return ogrgeoconverter_paths.conversion_jobs_database_path()
+
 def static_files_path():
     # /static/
     return os.path.join(site_root(), 'static')
