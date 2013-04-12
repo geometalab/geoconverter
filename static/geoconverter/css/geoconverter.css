@@ -78,6 +78,10 @@
 	overflow: hidden;
 }
 
+.old-download-item {
+	background-color: #EEEEEE;
+}
+
 .download-name {
 	position: absolute;
 	top: 8px;
@@ -86,6 +90,12 @@
 
 .download-button {
 	margin-top: 5px;
+	background-color: #FFFFFF;
+}
+
+.old-download-button {
+	margin-top: 5px;
+	background-color: #EEEEEE;
 }
 
 .remove-download-item {

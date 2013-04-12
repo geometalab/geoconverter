@@ -8,12 +8,13 @@ import time
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
+from django.http import HttpResponseServerError
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.core.files.uploadedfile import SimpleUploadedFile
 from OGRgeoConverter.forms import GeoConverterFilesForm, GeoConverterWebservicesForm
-from OGRgeoConverter.filesystem import pathcode
-from OGRgeoConverter.geoconverter import jobhandler
+from OGRgeoConverter.jobs import jobidentification
+from OGRgeoConverter.jobs import jobhandler
 from OGRgeoConverter.geoconverter import downloadhandler
 from OGRgeoConverter.geoconverter import loghandler
 from OGRgeoConverter.geoconverter import sessionhandler
@@ -39,40 +40,44 @@ def show_main_page(request):
     return render(request, 'ogr-geo-converter.html', {'files_form': files_form, 'webservices_form': webservices_form, 'download_list': download_list})
     
         
-def start_conversion_job(request, job_id):
+def start_conversion_job(request, client_job_token):
     if request.method == 'POST':
+        # Read POST values
         POST_dict = request.POST.dict()
         export_format = POST_dict['export_format'].strip()
         del POST_dict['export_format']
-        
         source_srs = POST_dict['source_srs'].strip()
         del POST_dict['source_srs']
-        
         target_srs = POST_dict['target_srs'].strip()
         del POST_dict['target_srs']
-        
         simplify_parameter = POST_dict['simplify_parameter'].strip()
         del POST_dict['simplify_parameter']
-        
         download_name = POST_dict['download_name'].strip()
         del POST_dict['download_name']
         if len(download_name) > 10: download_name = download_name[0:7] + '...'
         
         session_key = request.session.session_key
+        job_identifier = jobidentification.get_new_job_identifier_by_client_job_token(session_key, client_job_token)
+        job_id = job_identifier.job_id
+        if job_id == '':
+            return HttpResponseServerError('Error: Job Token is not valid.')
         
-        jobhandler.add_file_names(session_key, job_id, POST_dict)
-        jobhandler.set_export_format(session_key, job_id, export_format)
-        jobhandler.set_srs(session_key, job_id, source_srs, target_srs)
-        jobhandler.set_simplify_parameter(session_key, job_id, simplify_parameter)
         
-        path_code = jobhandler.get_path_code(session_key, job_id)
-        downloadhandler.set_download_caption(session_key, path_code, download_name)
+        jobhandler._initialize_job(session_key, client_job_token, job_id)
         
-        loghandler.set_start_time(session_key, path_code)
-        loghandler.set_input_type(session_key, path_code, 'files')
-        loghandler.set_export_format(session_key, path_code, export_format)
-        loghandler.set_srs(session_key, path_code, source_srs, target_srs)
-        loghandler.set_simplify_parameter(session_key, path_code, simplify_parameter)
+        jobhandler.add_file_names(session_key, client_job_token, POST_dict)
+        jobhandler.set_export_format(session_key, client_job_token, export_format)
+        jobhandler.set_srs(session_key, client_job_token, source_srs, target_srs)
+        jobhandler.set_simplify_parameter(session_key, client_job_token, simplify_parameter)
+        
+        job_id = jobhandler.get_path_code(session_key, client_job_token)
+        downloadhandler.set_download_caption(job_identifier, download_name)
+        
+        loghandler.set_start_time(session_key, job_id)
+        loghandler.set_input_type(session_key, job_id, 'files')
+        loghandler.set_export_format(session_key, job_id, export_format)
+        loghandler.set_srs(session_key, job_id, source_srs, target_srs)
+        loghandler.set_simplify_parameter(session_key, job_id, simplify_parameter)
         
         return HttpResponse('success')
     else:
@@ -104,32 +109,40 @@ def remove_file(request, job_id, file_id):
     else:
         return redirect_to_main_page(request)
         
-def finish_conversion_job(request, job_id):
+def finish_conversion_job(request, client_job_token):
     if request.method == 'POST':
         session_key = request.session.session_key
         
-        jobhandler.convert_unprocessed_files(session_key, job_id)
+        jobhandler.convert_unprocessed_files(session_key, client_job_token)
         
-        jobhandler.create_download_file(session_key, job_id)
+        jobhandler.create_download_file(session_key, client_job_token)
         
-        path_code = jobhandler.get_path_code(session_key, job_id)
+        job_id = jobhandler.get_path_code(session_key, client_job_token)
+        job_identifier = jobidentification.get_job_identifier_by_job_id(session_key, job_id)
         
-        downloadhandler.add_download_item(session_key, path_code)
+        downloadhandler.add_download_item(job_identifier)
         
-        loghandler.set_end_time(session_key, path_code)
-        loghandler.set_download_file_size(session_key, path_code, downloadhandler.get_download_file_size(path_code)/1024)
+        loghandler.set_end_time(session_key, job_id)
+        loghandler.set_download_file_size(session_key, job_id, downloadhandler.get_download_file_size(job_identifier)/1024)
+        
+        #loghandler.set_ogr_command(session_key, job_id, '1234567890')
+        #loghandler.set_ogr_error_message(session_key, job_id, 'abcdefghijklmnopqrstuvwxyz')
         
         filemanager.remove_old_folders()
         
         response_data = {}
-        response_data['path_code'] = path_code
-        response_data['successful'] = downloadhandler.download_file_exists(path_code)
+        response_data['job_id'] = job_id
+        response_data['successful'] = downloadhandler.download_file_exists(job_identifier)
         return HttpResponse(json.dumps(response_data), mimetype="text/plain")
         # if count files == 0 response job canceled
     return HttpResponse('success')
 
-def download_output_file(request, *path_code_args):
-    download_file_information = downloadhandler.get_download_file_information(*path_code_args)
+def download_output_file(request, *job_id_args):
+    session_key = request.session.session_key
+    job_id = jobidentification.join_job_id(*job_id_args)
+    job_identifier = jobidentification.get_job_identifier_by_job_id(session_key, job_id)
+    
+    download_file_information = downloadhandler.get_download_file_information(job_identifier)
     
     if download_file_information != None:
         file, file_name, file_size = download_file_information
@@ -138,22 +151,30 @@ def download_output_file(request, *path_code_args):
         response['Content-Disposition'] = 'attachment; filename=' + file_name
         response['Content-Length'] = file_size
         
+        downloadhandler.set_is_downloaded(job_identifier)
+        
         return response
     else:
-        return HttpResponse('Error: file does not exist!')
+        return HttpResponseServerError('Error: file does not exist!')
 
-def remove_download_item(request, *path_code_args):
+def remove_download_item(request, *job_id_args):
     #_initialize_session(request)
     
-    path_code = pathcode.join_pathcode(*path_code_args)
+    job_id = jobidentification.join_job_id(*job_id_args)
     
-    if path_code != '':
-        downloadhandler.remove_download_item(request.session.session_key, path_code)
-        return HttpResponse('success')
+    if job_id != '':
+        job_identifier = jobidentification.get_job_identifier_by_job_id(request.session.session_key, job_id)
+        if job_identifier != None:
+            downloadhandler.remove_download_item(job_identifier)
+            return HttpResponse('Item removed')
+        else:
+            print 'job_identifier = None'
+    else:
+        print "job_id = ''"
     
-    return HttpResponse('fail')
+    return HttpResponseServerError('Error removing file')
 
-def convert_webservice(request, job_id):
+def convert_webservice(request, client_job_token):
     if request.method == 'POST':
         POST_dict = request.POST.dict()
         webservice_url = POST_dict['webservice_url'].strip()
@@ -165,42 +186,49 @@ def convert_webservice(request, job_id):
         if len(download_name) > 10: download_name = download_name[0:7] + '...'
         
         session_key = request.session.session_key
-        jobhandler.add_webservice_url(session_key, job_id, webservice_url)
-        jobhandler.set_export_format(session_key, job_id, export_format)
-        jobhandler.set_srs(session_key, job_id, source_srs, target_srs)
-        jobhandler.set_simplify_parameter(session_key, job_id, simplify_parameter)
+        job_identifier = jobidentification.get_new_job_identifier_by_client_job_token(session_key, client_job_token)
+        job_id = job_identifier.job_id
+        if job_id == '':
+            return HttpResponseServerError('Error: Job Token is not valid.')
         
-        path_code = jobhandler.get_path_code(session_key, job_id)
+        jobhandler._initialize_job(session_key, client_job_token, job_id)
+        
+        jobhandler.add_webservice_url(session_key, client_job_token, webservice_url)
+        jobhandler.set_export_format(session_key, client_job_token, export_format)
+        jobhandler.set_srs(session_key, client_job_token, source_srs, target_srs)
+        jobhandler.set_simplify_parameter(session_key, client_job_token, simplify_parameter)
+        
+        job_id = jobhandler.get_path_code(session_key, client_job_token)
         
         # Log start
         
-        loghandler.set_start_time(session_key, path_code)
-        loghandler.set_input_type(session_key, path_code, 'webservice')
-        loghandler.set_export_format(session_key, path_code, export_format)
-        loghandler.set_srs(session_key, path_code, source_srs, target_srs)
-        loghandler.set_simplify_parameter(session_key, path_code, simplify_parameter)
+        loghandler.set_start_time(session_key, job_id)
+        loghandler.set_input_type(session_key, job_id, 'webservice')
+        loghandler.set_export_format(session_key, job_id, export_format)
+        loghandler.set_srs(session_key, job_id, source_srs, target_srs)
+        loghandler.set_simplify_parameter(session_key, job_id, simplify_parameter)
         
         # Conversion start
         
-        jobhandler.process_webservice_urls(session_key, job_id)
+        jobhandler.process_webservice_urls(session_key, client_job_token)
         
-        jobhandler.create_download_file(session_key, job_id)
+        jobhandler.create_download_file(session_key, client_job_token)
         
-        downloadhandler.add_download_item(session_key, path_code)
-        downloadhandler.set_download_caption(session_key, path_code, download_name)
+        downloadhandler.add_download_item(job_identifier)
+        downloadhandler.set_download_caption(job_identifier, download_name)
         
         # Conversion end
         
-        loghandler.set_end_time(session_key, path_code)
-        loghandler.set_download_file_size(session_key, path_code, downloadhandler.get_download_file_size(path_code)/1024)
+        loghandler.set_end_time(session_key, job_id)
+        loghandler.set_download_file_size(session_key, job_id, downloadhandler.get_download_file_size(job_identifier)/1024)
         
         # Log end
         
         filemanager.remove_old_folders()
         
         response_data = {}
-        response_data['path_code'] = path_code
-        response_data['successful'] = downloadhandler.download_file_exists(path_code)
+        response_data['job_id'] = job_id
+        response_data['successful'] = downloadhandler.download_file_exists(job_identifier)
         return HttpResponse(json.dumps(response_data), mimetype="text/plain")
     
-    return HttpResponse('fail')
+    return HttpResponseServerError('Error: Request not valid.')

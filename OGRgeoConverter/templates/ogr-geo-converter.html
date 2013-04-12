@@ -22,9 +22,6 @@
 		<div id="files-selector">
 
 		</div>
-		<!--<div id="files-info-message">
-			Use zip files to  preserve the directory structure!
-		</div>-->	
 	</div>
 	<div id="files-step2">
 		<p>2. Export format</p>
@@ -33,7 +30,6 @@
 	<div id="files-step3">
 		<p>3. Convert</p>
 		<div id="files-convert-run-button"></div>
-		<!-- <input type="submit" class="files-submit-button" /> -->
 	</div>
 	<div id="files-advanced">
 		<div class="expander-icon collapsed"></div>
@@ -97,13 +93,13 @@
 {% block ogrgeoconverter-downloads %}
 
 <div id="download-list">
-	{% for path_code, download_name, file_exists in download_list %}
+	{% for path_code, download_name, file_exists, is_downloaded in download_list %}
 	
-	<div id="queue-{{ path_code }}" class="download-item default-border">
+	<div id="queue-{{ path_code }}" class="download-item default-border {% if not file_exists or is_downloaded %}old-download-item{% endif %}">
 		<div class="download-name">{{ download_name }}</div>
 		<div class="remove-download-item remove-download-item-icon"></div>
 	{% if file_exists %}
-		<div id="download-{{ path_code }}" class="qq-upload-button default-border download-button">
+		<div id="download-{{ path_code }}" class="qq-download-button default-border {% if is_downloaded %}old-{% endif %}download-button">
 	        Download
 	    </div>
     {% else %}

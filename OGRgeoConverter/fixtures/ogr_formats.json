@@ -8,7 +8,8 @@
 			"ogr_name": "DXF",
 			"file_extension": "dxf",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -20,7 +21,8 @@
 			"ogr_name": "CSV",
 			"file_extension": "csv",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -32,7 +34,8 @@
 			"ogr_name": "FileGDB",
 			"file_extension": "gdb",
 			"output_type": "folder",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -44,7 +47,8 @@
 			"ogr_name": "PGeo",
 			"file_extension": "mdb",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -56,7 +60,8 @@
 			"ogr_name": "ESRI Shapefile",
 			"file_extension": "shp",
 			"output_type": "folder",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	{
@@ -112,7 +117,8 @@
 			"ogr_name": "GeoJSON",
 			"file_extension": "geojson",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -124,7 +130,8 @@
 			"ogr_name": "GeoRSS",
 			"file_extension": "rss",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -136,7 +143,8 @@
 			"ogr_name": "PDF",
 			"file_extension": "pdf",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -144,11 +152,12 @@
 		"model": "OGRgeoConverter.OgrFormat",
 		"pk": 9,
 		"fields": {
-			"name": "Geography Markup Language (GML)",
+			"name": "Geography Markup Language 2 (GML)",
 			"ogr_name": "GML",
 			"file_extension": "gml",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	{
@@ -162,35 +171,73 @@
 		    "order": null
 		}
     },
+    
+    {
+		"model": "OGRgeoConverter.OgrFormat",
+		"pk": 10,
+		"fields": {
+			"name": "Geography Markup Language 3.2.1 (GML)",
+			"ogr_name": "GML",
+			"file_extension": "gml",
+			"output_type": "file",
+			"state_all_files": 0,
+			"is_export_format": 1
+		}
+	},
+	{
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 6,
+		"fields": {
+		    "ogr_format": 10,
+		    "file_extension": "xsd",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": null
+		}
+    },
+	{
+		"model": "OGRgeoConverter.AdditionalShellParameter",
+		"pk": 1,
+		"fields": {
+		    "ogr_format": 10,
+		    "prefix": "-",
+		    "argument_name": "dsco",
+		    "argument_value": "FORMAT=GML3.2",
+		    "value_quotation_marks": 0,
+		    "order": null
+		}
+	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-		"pk": 10,
+		"pk": 11,
 		"fields": {
 			"name": "GPS Exchange Format (GPX)",
 			"ogr_name": "GPX",
 			"file_extension": "gpx",
 			"output_type": "file",
-			"state_all_files": 0
+			"state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-		"pk": 11,
+		"pk": 12,
 		"fields": {
 		    "name": "INTERLIS 1",
 		    "ogr_name": "Interlis 1",
 		    "file_extension": "itf",
 		    "output_type": "file",
-		    "state_all_files": 1
+		    "state_all_files": 1,
+			"is_export_format": 1
 		}
     },
     {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 6,
+		"pk": 7,
 		"fields": {
-		    "ogr_format": 11,
+		    "ogr_format": 12,
 		    "file_extension": "ili",
 		    "required": 0,
 		    "multiple": 0,
@@ -201,20 +248,21 @@
 
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-		"pk": 12,
+		"pk": 13,
 		"fields": {
 		    "name": "INTERLIS 2",
 		    "ogr_name": "Interlis 2",
 		    "file_extension": "xml",
 		    "output_type": "file",
-		    "state_all_files": 1
+		    "state_all_files": 1,
+			"is_export_format": 0
 		}
     },
     {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 7,
+		"pk": 8,
 		"fields": {
-		    "ogr_format": 12,
+		    "ogr_format": 13,
 		    "file_extension": "ili",
 		    "required": 0,
 		    "multiple": 1,
@@ -225,32 +273,34 @@
 
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-  		"pk": 13,
+  		"pk": 14,
   		"fields": {
 		    "name": "Keyhole Markup Language (KML)",
 		    "ogr_name": "KML",
 		    "file_extension": "kml",
 		    "output_type": "file",
-		    "state_all_files": 0
+		    "state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-  		"pk": 14,
+  		"pk": 15,
   		"fields": {
 		    "name": "MapInfo Interchange Format (MIF/MID)",
 		    "ogr_name": "MapInfo File",
 		    "file_extension": "mif",
 		    "output_type": "file",
-		    "state_all_files": 0
+		    "state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 8,
+		"pk": 9,
 		"fields": {
-		    "ogr_format": 14,
+		    "ogr_format": 15,
 		    "file_extension": "mid",
 		    "required": 1,
 		    "multiple": 0,
@@ -259,32 +309,34 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalShellParameter",
-		"pk": 1,
+		"pk": 2,
 		"fields": {
-		    "ogr_format": 14,
+		    "ogr_format": 15,
 		    "prefix": "-",
 		    "argument_name": "dsco",
 		    "argument_value": "FORMAT=MIF",
-		    "value_quotation_marks": 0
+		    "value_quotation_marks": 0,
+		    "order": null
 		}
 	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-  		"pk": 15,
+  		"pk": 16,
   		"fields": {
 		    "name": "MapInfo TAB format",
 		    "ogr_name": "MapInfo File",
 		    "file_extension": "tab",
 		    "output_type": "file",
-		    "state_all_files": 0
+		    "state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 9,
+		"pk": 10,
 		"fields": {
-		    "ogr_format": 15,
+		    "ogr_format": 16,
 		    "file_extension": "dat",
 		    "required": 0,
 		    "multiple": 0,
@@ -293,9 +345,9 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 10,
+		"pk": 11,
 		"fields": {
-		    "ogr_format": 15,
+		    "ogr_format": 16,
 		    "file_extension": "id",
 		    "required": 0,
 		    "multiple": 0,
@@ -304,9 +356,9 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 11,
+		"pk": 12,
 		"fields": {
-		    "ogr_format": 15,
+		    "ogr_format": 16,
 		    "file_extension": "map",
 		    "required": 0,
 		    "multiple": 0,
@@ -316,25 +368,14 @@
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-  		"pk": 16,
+  		"pk": 17,
   		"fields": {
 		    "name": "Microstation DGN",
 		    "ogr_name": "DGN",
 		    "file_extension": "dgn",
 		    "output_type": "file",
-		    "state_all_files": 0
-		}
-	},
-	
-	{
-		"model": "OGRgeoConverter.OgrFormat",
-  		"pk": 17,
-  		"fields": {
-		    "name": "OpenStreetMap (OSM)",
-		    "ogr_name": "OSM",
-		    "file_extension": "osm",
-		    "output_type": "file",
-		    "state_all_files": 0
+		    "state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -342,11 +383,12 @@
 		"model": "OGRgeoConverter.OgrFormat",
   		"pk": 18,
   		"fields": {
-		    "name": "SQLite",
-		    "ogr_name": "SQLite",
-		    "file_extension": "sqlite",
+		    "name": "OpenStreetMap (OSM)",
+		    "ogr_name": "OSM",
+		    "file_extension": "osm",
 		    "output_type": "file",
-		    "state_all_files": 0
+		    "state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	
@@ -354,22 +396,37 @@
 		"model": "OGRgeoConverter.OgrFormat",
   		"pk": 19,
   		"fields": {
+		    "name": "SQLite",
+		    "ogr_name": "SQLite",
+		    "file_extension": "sqlite",
+		    "output_type": "file",
+		    "state_all_files": 0,
+			"is_export_format": 1
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 20,
+  		"fields": {
 		    "name": "SQLite + SpatiaLite",
 		    "ogr_name": "SQLite",
-		    "file_extension": "spatialite",
+		    "file_extension": "sqlite",
 		    "output_type": "file",
-		    "state_all_files": 0
+		    "state_all_files": 0,
+			"is_export_format": 1
 		}
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalShellParameter",
-		"pk": 2,
+		"pk": 3,
 		"fields": {
-		    "ogr_format": 19,
+		    "ogr_format": 20,
 		    "prefix": "-",
 		    "argument_name": "dsco",
 		    "argument_value": "SPATIALITE=YES",
-		    "value_quotation_marks": 0
+		    "value_quotation_marks": 0,
+		    "order": null
 		}
 	}
 	

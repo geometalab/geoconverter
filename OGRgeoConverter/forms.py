@@ -7,7 +7,7 @@ class GeoConverterFilesForm(forms.Form):
     
     def __init__(self, post=None, files=None):
         forms.Form.__init__(self, post, files)
-        self.fields['files_ogrformat'].choices = [('', '--Choose--')] + [(c.name, c.name) for c in OgrFormat.objects.all().order_by('name') if c.is_writeable()]
+        self.fields['files_ogrformat'].choices = [('', '--Choose--')] + [(c.name, c.name) for c in OgrFormat.objects.all().order_by('name') if c.is_active()]
         self.files = files
         self.post = post
         
@@ -17,6 +17,6 @@ class GeoConverterWebservicesForm(forms.Form):
     
     def __init__(self, post=None, url=None):
         forms.Form.__init__(self, post, url)
-        self.fields['webservices_ogrformat'].choices = [('', '--Choose--')] + [(c.name, c.name) for c in OgrFormat.objects.all().order_by('name') if c.is_writeable()]
+        self.fields['webservices_ogrformat'].choices = [('', '--Choose--')] + [(c.name, c.name) for c in OgrFormat.objects.all().order_by('name') if c.is_active()]
         self.urlinput = url
         self.post = post

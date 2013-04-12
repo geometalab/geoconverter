@@ -42,9 +42,9 @@ class FileMatch:
     Represents a single match of files belonging together
     '''
     
-    def __init__(self, file_dict, ogr_format, is_archive, is_valid):
+    def __init__(self, file_dict, ogr_format_name, is_archive, is_valid):
         self.__file_dict = file_dict
-        self.__ogr_format = ogr_format
+        self.__ogr_format_name = ogr_format_name
         self.__is_archive = is_archive
         self.__is_valid = is_valid
         print 'Match: ' + ', '.join(file_dict.values())
@@ -55,8 +55,8 @@ class FileMatch:
     def get_files(self):
         return self.__file_dict.values()
     
-    def get_ogr_format(self):
-        return self.__ogr_format
+    def get_ogr_format_name(self):
+        return self.__ogr_format_name
     
     def is_archive(self):
         return self.__is_archive

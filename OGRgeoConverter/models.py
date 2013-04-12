@@ -4,6 +4,46 @@ from collections import namedtuple
 from django.db import models
 from OGRgeoConverter.ogr import ogrinfo
 
+
+class JobIdentifier(models.Model):
+    session_key = models.CharField(max_length=50, blank=False)
+    client_job_token = models.CharField(max_length=50, blank=False)
+    job_id = models.CharField(max_length=50, unique=True, blank=False)
+    creation_time = models.DateTimeField()
+    
+    def __unicode__(self):
+        return self.job_id
+    
+    class Meta:
+        db_table = 'ogrgeoconverter_conversion_job_identification'
+        unique_together = (('session_key', 'client_job_token'),)
+        
+    @staticmethod
+    def get_job_identifier_by_client_job_token(session_key, client_job_token):
+        return JobIdentifier.objects.filter(session_key=session_key, client_job_token=client_job_token)
+    
+    @staticmethod
+    def get_job_identifier_by_job_id(session_key, job_id):
+        return JobIdentifier.objects.filter(session_key=session_key, job_id=job_id)
+
+
+class DownloadItem(models.Model):
+    job_identifier = models.ForeignKey(JobIdentifier)
+    download_caption = models.CharField(max_length=100)
+    is_downloaded = models.BooleanField()
+    
+    class Meta:
+        db_table = 'ogrgeoconverter_conversion_jobs'
+    
+    @staticmethod
+    def get_download_item(job_identifier):
+        return DownloadItem.objects.filter(job_identifier__session_key=job_identifier.session_key, job_identifier__job_id=job_identifier.job_id)
+    
+    @staticmethod
+    def get_download_items(session_key):
+        return DownloadItem.objects.filter(job_identifier__session_key=session_key).order_by('job_identifier__creation_time').reverse()
+
+
 def get_ogr_formats_tuple():
     supported_formats = ogrinfo.get_supported_formats()
     format_list = []
@@ -22,14 +62,19 @@ AdditionalOgrFormatInformation = namedtuple('AdditionalOgrFormatInformation', ['
 AdditionalShellParameterInformation = namedtuple('AdditionalShellParameterInformation', ['prefix', 'argument_name', 'argument_value', 'value_quotation_marks'])
 
 class OgrFormat(models.Model):
-    name = models.CharField(max_length=100, unique=True, verbose_name='Name', help_text='Name des Formats, wie er auf der Webseite angezeigt werden soll.')
-    ogr_name = models.CharField(max_length=100, verbose_name='OGR-Name', help_text='Der von OGR verwendete Name.', choices=get_ogr_formats_tuple())
-    file_extension = models.CharField(max_length=100, unique=True, verbose_name='Dateiendung', help_text='Die Dateiendung des Formats. Beispiel: gpx (ohne Punkt am Anfang!)')
-    output_type = models.CharField(max_length = 100, verbose_name='Ausgabetyp', help_text='Ausgabe dieses OGR-Formats in eine Datei (meistens) oder Ordner (z.B. bei ESRI Shapefile).', choices=(('file','Datei'),('folder','Ordner')), default='file')
-    state_all_files = models.BooleanField(verbose_name='Zusätzliche Dateien mit Komma getrennt angeben', help_text='Hat einen Einfluss auf Befehl im Terminal. Ist die Option aktiviert, sieht der Befehl z.B. so aus: ogr2ogr ... "input.itf,model.ili".')
+    name = models.CharField(max_length=100, unique=True, help_text='Name des Formats, wie er auf der Webseite angezeigt werden soll.')
+    ogr_name = models.CharField(max_length=100, verbose_name='OGR name', help_text='Der von OGR verwendete Name.', choices=get_ogr_formats_tuple())
+    file_extension = models.CharField(max_length=100, help_text='Die Dateiendung des Formats. Beispiel: gpx (ohne Punkt am Anfang!)')
+    output_type = models.CharField(max_length = 100, help_text='Ausgabe dieses OGR-Formats in eine Datei (meistens) oder Ordner (z.B. bei ESRI Shapefile).', choices=(('file','File'),('folder','Folder')), default='file')
+    state_all_files = models.BooleanField(verbose_name='List all files, separated by commas.', help_text='Hat einen Einfluss auf den im Terminal ausgeführten Befehl. Ist die Option aktiviert, sieht der Befehl z.B. so aus: ogr2ogr ... "input.itf,model.ili".')
+    is_export_format = models.BooleanField(verbose_name='Show as export format.', help_text='Bestimmt, ob dieses Format auf der Webseite für Besucher als Exportformat sichtbar ist.')
+    
     
     def __unicode__(self):
         return self.name
+    
+    def is_active(self):
+        return self.is_export_format and self.is_writeable()
     
     def is_readable(self):
         supported_formats = ogrinfo.get_supported_formats()
@@ -103,9 +148,9 @@ class OgrFormat(models.Model):
 class AdditionalOgrFormat(models.Model):
     ogr_format = models.ForeignKey(OgrFormat)
     
-    file_extension = models.CharField(max_length=100, verbose_name='Dateiendung')
-    required = models.BooleanField(verbose_name='Benötigt')
-    multiple = models.BooleanField(verbose_name='Mehrere Dateien möglich')
+    file_extension = models.CharField(max_length=100)
+    required = models.BooleanField()
+    multiple = models.BooleanField(verbose_name='Allow various files')
     
     order = models.IntegerField(blank = True, null = True)
     
@@ -114,6 +159,7 @@ class AdditionalOgrFormat(models.Model):
     
     class Meta:
         ordering = ('order',)
+        unique_together = (('ogr_format', 'file_extension'),)
         verbose_name = 'Additional file'
         verbose_name_plural = 'Additional files'
         
@@ -129,42 +175,30 @@ class AdditionalOgrFormat(models.Model):
 class AdditionalShellParameter(models.Model):
     ogr_format = models.ForeignKey(OgrFormat)        
 
-    prefix = models.CharField(max_length=10, verbose_name='Argument-Präfix', default="-")
-    argument_name = models.CharField(max_length=100, verbose_name='Argument-Name')
-    argument_value = models.CharField(max_length=100, verbose_name='Argument-Wert')
-    value_quotation_marks = models.BooleanField(verbose_name='Anführungszeichen für Wert', default=True)
-
-class DownloadItem(models.Model):
-    session_key = models.CharField(max_length=50)
-    job_id = models.CharField(max_length=50)
-
-    creation_time = models.DateTimeField()
-    download_caption = models.CharField(max_length=100)
+    prefix = models.CharField(max_length=10, verbose_name='Argument prefix', default="-")
+    argument_name = models.CharField(max_length=100)
+    argument_value = models.CharField(max_length=100)
+    value_quotation_marks = models.BooleanField(verbose_name='Value in quotation marks', default=True)
+    
+    order = models.IntegerField(blank = True, null = True)
     
     class Meta:
-        db_table = 'ogrgeoconverter_conversion_jobs'
-    
-    @staticmethod
-    def get_download_item(session_key, job_id):
-        return DownloadItem.objects.filter(session_key=session_key, job_id=job_id)
-    
-    @staticmethod
-    def get_download_items(session_key):
-        return DownloadItem.objects.filter(session_key=session_key).order_by('creation_time').reverse()
-    
+        ordering = ('order',)
+        unique_together = (('argument_name', 'argument_value'),)
+
 
 class LogEntry(models.Model):
     session_key = models.CharField(max_length=50)
     job_id = models.CharField(max_length=50)
     
-    input_type = models.CharField(max_length=50, verbose_name='Eingabetyp', choices=(('files','Dateien'),('webservice','Webservice')))
-    start_time = models.DateTimeField(verbose_name='Startzeit')
-    end_time = models.DateTimeField(verbose_name='Endzeit')
+    input_type = models.CharField(max_length=50, choices=(('files','Files'),('webservice','Webservice')))
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
     export_format = models.CharField(max_length=100)
     source_srs = models.CharField(max_length=100)
     target_srs = models.CharField(max_length=100)
     simplify_parameter = models.CharField(max_length=100)
-    download_file_size = models.IntegerField(verbose_name='Downloadgrösse (KB)')
+    download_file_size = models.IntegerField(verbose_name='Download file size (KB)')
     
     def __unicode__(self):
         return str(self.start_time)
@@ -172,11 +206,23 @@ class LogEntry(models.Model):
     def duration(self):
         difference = self.end_time - self.start_time
         return str(difference)
+    
+    def successful(self):
+        # !!! Check every OGRlogEntry !!!
+        return True
         
     class Meta:
+        verbose_name_plural = "Log entries"
         db_table = 'ogrgeoconverter_log'
         
     @staticmethod
     def get_log_entry(session_key, job_id):
         return LogEntry.objects.filter(session_key=session_key, job_id=job_id)
-        
+
+
+class OGRlogEntry(models.Model):
+    log_entry = models.ForeignKey(LogEntry)
+    
+    ogr_command = models.CharField(max_length=1000)
+    ogr_error_message = models.CharField(max_length=2500)
+    is_successful = models.BooleanField()

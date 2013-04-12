@@ -48,4 +48,19 @@ def set_download_file_size(session_key, job_id, file_size):
 def set_simplify_parameter(session_key, job_id, simplify_parameter):
     log_entry = _get_log_entry_query_set(session_key, job_id)
     log_entry.update(simplify_parameter=simplify_parameter)
+
+def add_ogr_command(session_key, job_id, ogr_command):
+    pass
+    #log_entry = _get_log_entry_query_set(session_key, job_id)
+    #max_length = LogEntry.ogr_command_max_length()
+    #if len(ogr_command) > max_length:
+    #    ogr_command = ogr_command[0:max_length-6] + ' [...]'
+    #log_entry.update(ogr_command=ogr_command)
     
+def add_ogr_error_message(session_key, job_id, ogr_error_message):
+    pass
+    #log_entry = _get_log_entry_query_set(session_key, job_id)
+    #max_length = LogEntry.ogr_error_message_max_length()
+    #if len(ogr_error_message) > max_length:
+    #    ogr_error_message = ogr_error_message[0:max_length-6] + ' [...]'
+    #log_entry.update(ogr_error_message=ogr_error_message)

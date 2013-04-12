@@ -7,7 +7,7 @@ from GeoConverter import paths
 # Django settings for GeoConverter project.
 
 # Set to False before launching the website!
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 # Session ends when user closes his browser
@@ -154,7 +154,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'OGRgeoConverter',
-    'functional_tests',
 )
 
 # A sample logging configuration. The only tangible logging
