@@ -57,10 +57,10 @@ function getJobIDByDownloadDivID(download_div_id) {
 function get_download_name() {
 	var current_date = new Date();
 	var current_hours = current_date.getHours();
-	if (current_hours < 10) current_hours = "0" + current_hours;
+	if (current_hours < 10) current_hours = '0' + current_hours;
 	var current_minutes = current_date.getMinutes();
-	if (current_minutes < 10) current_minutes = "0" + current_minutes;
-	return current_hours + ":" + current_minutes;
+	if (current_minutes < 10) current_minutes = '0' + current_minutes;
+	return current_hours + ':' + current_minutes;
 }
 
 function addUploader() {
@@ -205,7 +205,11 @@ function openDownload(e, job_id) {
 function submitFilesForm(uploader, job_token) {
     var fileIDs = uploader.fineUploader('getStoredFilesIDs');
 	
-	if (fileIDs.length > 0 && $('#id_files_ogrformat').val() != "") {
+	if (fileIDs.length <= 0) {
+		flashAddFileButton(job_token);
+	} else if ($('#id_files_ogrformat').val() == '') {
+		flashFileExportFormatTextBox();
+	} else {
 		var uploaderDivID = getUploaderAddDivID(job_token);
 		var queueDivID = getQueueDivID(job_token);
 		var download_name = get_download_name();
@@ -258,6 +262,15 @@ function submitFilesForm(uploader, job_token) {
 
 }
 
+function flashAddFileButton(job_token) {
+	//$('#' + getUploaderAddDivID(job_token) + ' .qq-uploader .qq-upload-button').effect('shake', { times:3, direction:'right', distance:10 }, 300);
+	$('#' + getUploaderAddDivID(job_token) + ' .qq-uploader .qq-upload-button').effect('highlight', { color:'#FF8C00' }, 1000);
+}
+
+function flashFileExportFormatTextBox() {
+	$('#id_files_ogrformat').effect('highlight', { color:'#FF8C00' }, 1000);
+}
+
 function checkUploadListBorder(ul_element, min) {
 	if (!ul_element.hasClass('in-queue')) {
 		if (ul_element.children('li').length >= min) {
@@ -274,17 +287,17 @@ function registerDownloadItemEvents() {
 		var elem = $(this).closest('.download-item');
 
 		//elem.hide("slide", { direction: "left" }, 1000);
-		elem.hide("slow");
+		elem.hide('slow');
 		
 		$.ajax({
-		  url: "/converter/remove/" + elem.attr('id'),
+		  url: '/converter/remove/' + elem.attr('id'),
 		})
 	});
 	
-	$(".download-item .remove-download-item").hover(function() {
-		$(this).attr("class","remove-download-item remove-download-item-icon-hover");
+	$('.download-item .remove-download-item').hover(function() {
+		$(this).attr('class','remove-download-item remove-download-item-icon-hover');
 			}, function() {
-		$(this).attr("class","remove-download-item remove-download-item-icon");
+		$(this).attr('class','remove-download-item remove-download-item-icon');
 	});
 }
 
@@ -297,12 +310,24 @@ function registerWebservicesRunButton() {
     	var simplify_parameter = $('#id_webservices_simplify').val();
     	var download_name = get_download_name();
     	
-    	if (url != "" && export_format != "") {
-    		$('#id_urlinput').val("");
+    	if (url == '') {
+    		flashWebserviceTextBox();
+    	} else if (export_format == '') {
+    		flashWebserviceExportFormatTextBox();
+    	} else {
+    		$('#id_urlinput').val('');
     		
     		runWebserviceConversion(url, export_format, source_srs, target_srs, simplify_parameter, download_name);
     	}
 	});
+}
+
+function flashWebserviceTextBox() {
+	$('#id_urlinput').effect('highlight', { color:'#FF8C00' }, 1000);
+}
+
+function flashWebserviceExportFormatTextBox() {
+	$('#id_webservices_ogrformat').effect('highlight', { color:'#FF8C00' }, 1000);
 }
 
 function runWebserviceConversion(url, export_format, source_srs, target_srs, simplify_parameter, download_name) {

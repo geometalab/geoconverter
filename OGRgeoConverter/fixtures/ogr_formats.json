@@ -33,7 +33,7 @@
 			"name": "ESRI File Geodatabase (FileGDB)",
 			"ogr_name": "FileGDB",
 			"file_extension": "gdb",
-			"output_type": "folder",
+			"output_type": "file",
 			"state_all_files": 0,
 			"is_export_format": 1
 		}

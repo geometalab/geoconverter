@@ -1,4 +1,4 @@
-class ShellResult(object):
+class ShellResult:
     '''
     Is returned by the Shell.
     Stores output text and error messages.

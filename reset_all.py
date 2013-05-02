@@ -1,9 +1,16 @@
-import os
+import os, shutil
 
 print 'Warning: All data will be lost!'
 answer = raw_input('Do you want to continue? (yes/no): ')
 if answer == 'yes':
     print ''
+    
+    print 'Removing old conversion files ...'
+    folder_path = './OGRgeoConverter/ConversionJobFiles'
+    for folder in os.listdir(folder_path):
+        full_path = os.path.join(folder_path, folder)
+        shutil.rmtree(full_path)
+    
     print 'Removing database.sqlite ...'
     if os.path.exists('default.sqlite'):
         os.remove('default.sqlite')

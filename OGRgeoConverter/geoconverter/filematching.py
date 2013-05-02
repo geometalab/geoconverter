@@ -152,7 +152,7 @@ def _resolve_name_conflicts(matches):
             if file_names[j] == file_names[i]:
                 found_double = True
         
-        if found_double:
+        if found_double and matches[i].is_valid(): # Only rename if valid (known) format
             base_name = file_names[i] + '_'
             file_number = _get_free_file_name_number(base_name, file_names, 2)
             file_names[i] = base_name + str(file_number)

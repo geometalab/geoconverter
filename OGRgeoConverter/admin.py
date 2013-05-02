@@ -29,8 +29,8 @@ class OgrFormatAdmin(admin.ModelAdmin):
 
 class LogEntryAdmin(admin.ModelAdmin):
     model = LogEntry
-    readonly_fields = ('session_key','job_id', 'input_type', 'start_time', 'end_time', 'export_format', 'source_srs', 'target_srs', 'simplify_parameter', 'download_file_size')
-    list_display = ('start_time', 'duration', 'input_type', 'export_format', 'source_srs', 'target_srs', 'download_file_size')
+    readonly_fields = ('job_identifier', 'input_type', 'start_time', 'end_time', 'export_format', 'source_srs', 'target_srs', 'simplify_parameter', 'download_file_size')
+    list_display = ('start_time', 'duration', 'input_type', 'export_format', 'source_srs', 'target_srs', 'simplify_parameter', 'download_file_size')
 
 class DownloadItemAdmin(admin.ModelAdmin):
     model = DownloadItem
@@ -40,5 +40,5 @@ admin.site.register(OgrFormat, OgrFormatAdmin)
 admin.site.register(LogEntry, LogEntryAdmin)
 
 # Temporary !!!!!
-admin.site.register(JobIdentifier)
-admin.site.register(DownloadItem, DownloadItemAdmin)
+#admin.site.register(JobIdentifier)
+#admin.site.register(DownloadItem, DownloadItemAdmin)

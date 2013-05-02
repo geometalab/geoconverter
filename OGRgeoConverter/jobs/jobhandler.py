@@ -57,10 +57,15 @@ def set_simplify_parameter(session_key, job_id, simplify_parameter):
     session.save()
             
 def remove_file(session_key, job_id, file_id):
-    _initialize_job(session_key, job_id)
     session = sessionhandler.get_session(session_key)
-    session['jobs'][job_id].remove_file(file_id)
-    session.save()
+    if not 'jobs' in session:
+        session['jobs'] = {}
+    # Only remove if conversion already started
+    if job_id in session['jobs']:
+        _initialize_job(session_key, job_id)
+        session = sessionhandler.get_session(session_key)
+        session['jobs'][job_id].remove_file(file_id)
+        session.save()
     
 def store_file(session_key, job_id, file_id, file_data):
     _initialize_job(session_key, job_id)

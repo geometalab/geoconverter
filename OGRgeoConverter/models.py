@@ -29,6 +29,7 @@ class JobIdentifier(models.Model):
 
 class DownloadItem(models.Model):
     job_identifier = models.ForeignKey(JobIdentifier)
+    
     download_caption = models.CharField(max_length=100)
     is_downloaded = models.BooleanField()
     
@@ -188,8 +189,7 @@ class AdditionalShellParameter(models.Model):
 
 
 class LogEntry(models.Model):
-    session_key = models.CharField(max_length=50)
-    job_id = models.CharField(max_length=50)
+    job_identifier = models.ForeignKey(JobIdentifier)
     
     input_type = models.CharField(max_length=50, choices=(('files','Files'),('webservice','Webservice')))
     start_time = models.DateTimeField()
@@ -216,13 +216,13 @@ class LogEntry(models.Model):
         db_table = 'ogrgeoconverter_log'
         
     @staticmethod
-    def get_log_entry(session_key, job_id):
-        return LogEntry.objects.filter(session_key=session_key, job_id=job_id)
+    def get_log_entry(job_identifier):
+        return LogEntry.objects.filter(job_identifier=job_identifier)
 
 
 class OGRlogEntry(models.Model):
     log_entry = models.ForeignKey(LogEntry)
     
-    ogr_command = models.CharField(max_length=1000)
-    ogr_error_message = models.CharField(max_length=2500)
+    command = models.CharField(max_length=1000)
+    error_message = models.CharField(max_length=5000)
     is_successful = models.BooleanField()

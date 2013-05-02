@@ -25,8 +25,13 @@ def convert_files(source_path, matched_files, destination_path, output_format_na
         input_format_info = OgrFormat.get_format_information_by_name(input_format_name)
         output_format_info = OgrFormat.get_format_information_by_name(output_format_name)
     
-    if input_format_info != None:
-        ogr_input_format = input_format_info.ogr_name
+        if input_format_info != None:
+            ogr_input_format = input_format_info.ogr_name
+            input_format_extension = input_format_info.extension.lower()
+        else:
+            ogr_input_format = ''
+            input_format_extension = os.path.splitext(os.path.basename(input_files[0]))[0].lower()
+            
         ogr_output_format = output_format_info.ogr_name
         
         base_name = os.path.splitext(os.path.basename(input_files[0]))[0]
@@ -37,7 +42,7 @@ def convert_files(source_path, matched_files, destination_path, output_format_na
         else:
             input_file_path = ''
             for input_file in input_files:
-                if os.path.splitext(os.path.basename(input_file))[1].lower() == '.' + input_format_info.extension.lower():
+                if os.path.splitext(os.path.basename(input_file))[1].lower() == '.' + input_format_extension:
                     input_file_path = input_file
             if input_file_path == '': input_file_path = input_files[0]
         

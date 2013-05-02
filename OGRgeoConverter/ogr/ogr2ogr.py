@@ -47,6 +47,10 @@ def convert_file(input_file_path, output_file_path, ogr_input_format, ogr_output
     
     result = shell.execute(call)
     
+    print '.++++++++++.'
+    print result.get_text()
+    print '.----------.'
+    print result.get_error()
     # !!! Fehlermeldungen umwandeln => ogr2ogr result !!!
     return result
 
