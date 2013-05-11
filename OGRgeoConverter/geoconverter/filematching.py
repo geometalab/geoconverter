@@ -47,13 +47,12 @@ class FileMatch:
         self.__ogr_format_name = ogr_format_name
         self.__is_archive = is_archive
         self.__is_valid = is_valid
-        print 'Match: ' + ', '.join(file_dict.values())
 
     def get_file_dict(self):
         return self.__file_dict
     
     def get_files(self):
-        return self.__file_dict.values()
+        return list(self.__file_dict.values())
     
     def get_ogr_format_name(self):
         return self.__ogr_format_name
@@ -66,7 +65,6 @@ class FileMatch:
     
     def rename_file(self, file_id, new_name):
         if file_id in self.__file_dict:
-            print 'Renaming file ' + self.__file_dict[file_id] + ' to ' + new_name
             self.__file_dict[file_id] = new_name
 
 def _get_matches_from_file_list(file_dict):
@@ -138,11 +136,11 @@ def _get_extended_file_lists(file_dict):
     return ogr_format_files, additional_format_files, archive_formats, unknown_format_files
 
 def _resolve_name_conflicts(matches):
-    print 'Resolve name conflicts...'
-    
     file_names = [] # Stores a list of the file names (without file extension) of every file match
     for i in range(len(matches)):
-        files = matches[i].get_file_dict().values()
+        files = list(matches[i].get_file_dict().values())
+        print(files)
+        print(', '.join(files))
         file_name = os.path.splitext(files[0])[0]
         file_names.append(file_name)
         

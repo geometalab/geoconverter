@@ -174,10 +174,6 @@ def remove_download_item(request, *job_id_args):
             download_handler = DownloadHandler(job_identifier)
             download_handler.remove_download_item()
             return HttpResponse('Item removed')
-        else:
-            print 'job_identifier = None'
-    else:
-        print "job_id = ''"
     
     return HttpResponseServerError('Error removing file')
 

@@ -1,8 +1,3 @@
-'''
-Django URL dispatcher: Maps urls to views.
-Transforms a URL called by a user into a function call.
-'''
-
 from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
@@ -21,7 +16,7 @@ urlpatterns = patterns('',
     
     # All urls starting with "converter" are handled by the following URL dispatcher
     url(r'^converter/', include('OGRgeoConverter.urls')),
-    
+
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 )

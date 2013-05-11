@@ -86,7 +86,6 @@ def process_file(session_key, job_id, file_id):
     session = sessionhandler.get_session(session_key)
     conversion_job = session['jobs'][job_id]
     if conversion_job.file_ready_for_process(file_id):
-        print '+++++'
         matched_files = conversion_job.get_matched_files(file_id)
         for matched_file_id in matched_files.get_file_dict().keys():
             conversion_job.set_file_processed(matched_file_id)
@@ -110,8 +109,6 @@ def process_file(session_key, job_id, file_id):
             process_archive(os.path.join(source_path, file_name), extract_base_path, extract_path, destination_path, export_format_name, source_srs, target_srs, simplify_parameter, additional_arguments, 1)
         else:
             conversion.convert_files(source_path, matched_files, destination_path, export_format_name, source_srs, target_srs, simplify_parameter, additional_arguments)
-    else:
-        print '-----'
         
 def process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, source_srs, target_srs, simplify_parameter, additional_arguments, archive_depth=1):
     # Allowed depth of nested archives
@@ -331,7 +328,6 @@ class ConversionJob:
         return self.__matched_files.get_file_name(file_id)
     
     def set_file_uploaded(self, file_id):
-        print 'Setting file uploaded: ' + str(file_id)
         self.__uploaded_file_dict[file_id] = True
         
     def set_all_files_uploaded(self):
@@ -351,13 +347,10 @@ class ConversionJob:
         is_ready = True
         for matched_file_id in matched_files.get_file_dict().keys():
             if not self.__uploaded_file_dict[matched_file_id]:
-                print 'File ' + str(matched_file_id) + ' is not uploaded yet.'
-                print self.__uploaded_file_dict.items()
                 is_ready = False
         return is_ready
     
     def set_file_processed(self, file_id):
-        print 'Set file processed: ' + str(file_id)
         self.__processed_file_dict[file_id] = True
         
     def get_matched_files(self, file_id):
@@ -369,9 +362,7 @@ class ConversionJob:
         for file_id, processed in self.__processed_file_dict.items():
             if not processed:
                 unprocessed_files.append(file_id)
-        
-        print 'Unprocessed files:'
-        print ', '.join(unprocessed_files)
+
         return unprocessed_files
     
     def get_upload_folder_path(self):

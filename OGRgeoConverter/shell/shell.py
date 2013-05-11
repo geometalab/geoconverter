@@ -1,6 +1,6 @@
 import shlex
 from subprocess import Popen, PIPE
-from shellresult import ShellResult
+from OGRgeoConverter.shell.shellresult import ShellResult
 
 def execute(shell_call):
     command = shell_call.get_shell_command()
@@ -12,7 +12,7 @@ def execute(shell_call):
         #p = Popen(args, stdout=PIPE, stderr=PIPE, shell=True)
         # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         stdout, stderr = p.communicate()
-    except Exception, e:
+    except Exception as e:
         stdout = ''
         stderr = e
     

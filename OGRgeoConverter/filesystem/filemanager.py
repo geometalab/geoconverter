@@ -70,8 +70,7 @@ def get_file_count(folder_path):
     
     for root, dirs, files in os.walk(folder_path):
         file_count += len(files)
-    
-    print 'File count: ' + str(file_count)
+
     return file_count
 
 def get_conversion_job_folder():

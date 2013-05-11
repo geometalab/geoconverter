@@ -33,12 +33,10 @@ def unpack_archive_file(source_file_path, destination_folder_path):
         unpack_tar_archive_file(source_file_path, destination_folder_path)
     
 def unpack_zip_archive_file(source_file_path, destination_folder_path):
-    print 'Unpacking Zip ' + source_file_path
     source_zip = zipfile.ZipFile(source_file_path, 'r')
     source_zip.extractall(destination_folder_path)
     
 def unpack_tar_archive_file(source_file_path, destination_folder_path):
-    print 'Unpacking Zip ' + source_file_path
     source_tar = tarfile.TarFile(source_file_path, 'r')
     source_tar.extractall(destination_folder_path)
 

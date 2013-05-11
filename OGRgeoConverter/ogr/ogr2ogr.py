@@ -41,16 +41,12 @@ def convert_file(input_file_path, output_file_path, ogr_input_format, ogr_output
     call = get_ogr2ogr_shell_call()
     call.set_arguments(arguments)
     
-    print '________________'
-    print call.get_shell_command()
-    print ''
+    #print call.get_shell_command()
     
     result = shell.execute(call)
     
-    print '.++++++++++.'
-    print result.get_text()
-    print '.----------.'
-    print result.get_error()
+    #print result.get_text()
+    #print result.get_error()
     # !!! Fehlermeldungen umwandeln => ogr2ogr result !!!
     return result
 
@@ -83,9 +79,7 @@ def convert_wfs(webservice_url, output_file_path, ogr_output_format, source_srs,
     call = get_ogr2ogr_shell_call()
     call.set_arguments(arguments)
     
-    print '________________'
-    print call.get_shell_command()
-    print ''
+    #print call.get_shell_command()
     
     result = shell.execute(call)
     

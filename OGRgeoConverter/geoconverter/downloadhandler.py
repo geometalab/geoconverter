@@ -1,8 +1,8 @@
 import os
 from django.core.servers.basehttp import FileWrapper
 from OGRgeoConverter.filesystem import filemanager
-from OGRgeoConverter.jobs import jobidentification
-from OGRgeoConverter.geoconverter import datetimehandler
+#from OGRgeoConverter.jobs import jobidentification
+#from OGRgeoConverter.geoconverter import datetimehandler
 from OGRgeoConverter.models import DownloadItem
 
 
@@ -78,7 +78,7 @@ class DownloadHandler:
         file_path = filemanager.get_download_file_path(self.__job_identifier.job_id)
         
         if self.download_file_exists():
-            wrapper = FileWrapper(file(file_path, 'rb'))
+            wrapper = FileWrapper(open(file_path, 'rb'))
             file_name = os.path.split(file_path)[1]
             file_size = os.path.getsize(file_path)
             return wrapper, file_name, file_size
