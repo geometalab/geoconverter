@@ -1,5 +1,7 @@
 Fixtures provide initial data for models. The data is loaded when you run syncdb.
 
+Example syncdb command: 'python manage.py loaddata ogr_formats.json --database=ogrgeoconverter_db'
+
 ogr_formats contains a list of possible import and export formats used by the OGR GeoConverter. It has the following structure:
 
 [

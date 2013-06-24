@@ -226,6 +226,7 @@ function submitFilesForm(uploader, job_token) {
 		$('#' + uploaderDivID + ' .qq-uploader .qq-upload-button').remove('');
 		$('#' + uploaderDivID + ' .qq-uploader .qq-upload-list').addClass('in-queue');
 		$('#' + uploaderDivID + ' .qq-uploader .qq-upload-list').removeClass('default-border');
+		$('#' + uploaderDivID).css('width', '325px');
 		
 		addUploader();
 		

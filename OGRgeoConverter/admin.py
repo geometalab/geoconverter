@@ -1,10 +1,11 @@
 from django.contrib import admin
-from OGRgeoConverter.models import JobIdentifier
 from OGRgeoConverter.models import OgrFormat
 from OGRgeoConverter.models import AdditionalOgrFormat
-from OGRgeoConverter.models import AdditionalShellParameter
+from OGRgeoConverter.models import OgrFormatShellParameter
+from OGRgeoConverter.models import GlobalOgrShellParameter
 from OGRgeoConverter.models import LogEntry
-from OGRgeoConverter.models import DownloadItem
+from OGRgeoConverter.models import OGRlogEntry
+
 
 
 class AdditionalOgrFormatInline(admin.StackedInline):
@@ -12,7 +13,7 @@ class AdditionalOgrFormatInline(admin.StackedInline):
     extra = 0
 
 class AdditionalShellArgumentInline(admin.StackedInline):
-    model = AdditionalShellParameter
+    model = OgrFormatShellParameter
     extra = 0
 
 class OgrFormatAdmin(admin.ModelAdmin):
@@ -27,18 +28,70 @@ class OgrFormatAdmin(admin.ModelAdmin):
             '/static/django/js/admin-sort.js',
         )
 
+class GlobalOgrShellParameterAdmin(admin.ModelAdmin):
+    model = GlobalOgrShellParameter
+    list_display = ('parameter_string', 'is_active')
+    
+class OGRlogEntryInline(admin.StackedInline):
+    model = OGRlogEntry
+    extra = 0
+    readonly_fields = ('sub_path', 'input', 'command', 'error_message', 'has_output_file')
+    
 class LogEntryAdmin(admin.ModelAdmin):
     model = LogEntry
-    readonly_fields = ('job_identifier', 'input_type', 'start_time', 'end_time', 'export_format', 'source_srs', 'target_srs', 'simplify_parameter', 'download_file_size')
-    list_display = ('start_time', 'duration', 'input_type', 'export_format', 'source_srs', 'target_srs', 'simplify_parameter', 'download_file_size')
-
-class DownloadItemAdmin(admin.ModelAdmin):
-    model = DownloadItem
-    list_display = ('job_identifier', 'download_caption')
+    inlines = [OGRlogEntryInline]
+    readonly_fields = ('session_key', 'job_id', 'client_job_token', 'client_ip', 'client_language', 'client_user_agent', 'input_type', 'start_time', 'end_time', 'export_format', 'source_srs', 'target_srs', 'simplify_parameter', 'download_file_size', 'file_downloaded', 'has_download_file', 'all_files_converted', 'has_no_error')
+    list_display = ('start_time', 'duration', 'input_type', 'export_format', 'source_srs', 'target_srs', 'simplify_parameter', 'download_file_size', 'file_downloaded', 'has_download_file', 'all_files_converted', 'has_no_error')
+    list_filter = ('start_time', 'input_type', 'export_format', 'file_downloaded', 'has_download_file', 'all_files_converted', 'has_no_error')
     
 admin.site.register(OgrFormat, OgrFormatAdmin)
+admin.site.register(GlobalOgrShellParameter, GlobalOgrShellParameterAdmin)
 admin.site.register(LogEntry, LogEntryAdmin)
 
+
+
 # Temporary !!!!!
-#admin.site.register(JobIdentifier)
+from OGRgeoConverter.models import JobIdentifier
+from OGRgeoConverter.models import ConversionJob
+from OGRgeoConverter.models import ConversionJobFolder
+from OGRgeoConverter.models import ConversionJobFileMatch
+from OGRgeoConverter.models import ConversionJobFile
+from OGRgeoConverter.models import ConversionJobFileIdTracker
+from OGRgeoConverter.models import ConversionJobUrl
+from OGRgeoConverter.models import ConversionJobShellParameter
+from OGRgeoConverter.models import DownloadItem
+
+class ConversionJobFolderInline(admin.StackedInline):
+    model = ConversionJobFolder
+    extra = 0
+class ConversionJobUrlInline(admin.StackedInline):
+    model = ConversionJobUrl
+    extra = 0
+class ConversionJobShellParameterInline(admin.StackedInline):
+    model = ConversionJobShellParameter
+    extra = 0
+class ConversionJobAdmin(admin.ModelAdmin):
+    model = ConversionJob
+    inlines = [ConversionJobFolderInline, ConversionJobUrlInline, ConversionJobShellParameterInline]
+class DownloadItemAdmin(admin.ModelAdmin):
+    model = DownloadItem
+    list_display = ('job_identifier', 'download_caption', 'is_downloaded')
+class ConversionJobInline(admin.StackedInline):
+    model = ConversionJob
+    extra = 0
+class DownloadItemInline(admin.StackedInline):
+    model = DownloadItem
+    extra = 0
+class JobIdentifierAdmin(admin.ModelAdmin):
+    model = JobIdentifier
+    inlines = [ConversionJobInline, DownloadItemInline]
+
+#admin.site.register(JobIdentifier, JobIdentifierAdmin)
+#admin.site.register(ConversionJob, ConversionJobAdmin)
+#admin.site.register(ConversionJobFolder)
+#admin.site.register(ConversionJobFileMatch)
+#admin.site.register(ConversionJobFile)
+#admin.site.register(ConversionJobFileIdTracker)
+#admin.site.register(ConversionJobUrl)
+#admin.site.register(ConversionJobShellParameter)
 #admin.site.register(DownloadItem, DownloadItemAdmin)

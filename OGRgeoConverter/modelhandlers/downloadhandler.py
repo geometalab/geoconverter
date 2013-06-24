@@ -45,7 +45,10 @@ class DownloadHandler:
             download_items = DownloadItem.get_download_item(self.__job_identifier)
         
         return download_items
-    
+
+        def get_job_identifier(self):
+            return self.__job_identifier
+        
     def add_download_item(self):
         download_item = self.__get_download_item_query_set()
         return download_item

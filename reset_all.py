@@ -27,9 +27,9 @@ if answer == 'yes':
     if os.path.exists('./OGRgeoConverter/log.sqlite'):
         os.remove('./OGRgeoConverter/log.sqlite')
     
-    print('Removing conversion_jobs.sqlite ...')
-    if os.path.exists('./OGRgeoConverter/conversion_jobs.sqlite'):
-        os.remove('./OGRgeoConverter/conversion_jobs.sqlite')
+    print('Removing conversionjobs.sqlite ...')
+    if os.path.exists('./OGRgeoConverter/conversionjobs.sqlite'):
+        os.remove('./OGRgeoConverter/conversionjobs.sqlite')
             
     print('Creating default.sqlite ...')
     os.system('python manage.py syncdb')
@@ -43,10 +43,13 @@ if answer == 'yes':
     print('Creating log.sqlite ...')
     os.system('python manage.py syncdb --database=ogrgeoconverter_log_db')
     
-    print('Creating conversion_jobs.sqlite ...')
+    print('Creating conversionjobs.sqlite ...')
     os.system('python manage.py syncdb --database=ogrgeoconverter_conversion_jobs_db')
     
     print('Loading fixture ogr_formats.json ...')
     os.system('python manage.py loaddata ogr_formats.json --database=ogrgeoconverter_db')
+
+    print('Loading fixture global_shell_parameters.json ...')
+    os.system('python manage.py loaddata global_shell_parameters.json --database=ogrgeoconverter_db')
 else:
     print('Action canceled')

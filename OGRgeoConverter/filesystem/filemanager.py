@@ -25,23 +25,6 @@ def rename_file(folder_path, old_file_name, new_file_name):
     new_file_path = os.path.join(folder_path, new_file_name)
     os.rename(old_file_path, new_file_path)
 
-def get_empty_job_folder():
-    '''
-    Returns a unique random job id and creates the folders belonging to the job id.
-    '''
-    i = 0
-    while i < 100:
-        job_id = jobidentification._get_random_job_id()
-        full_path = get_folder_path(job_id)
-        i += 1
-        if not os.path.exists(get_folder_path(job_id)):
-            os.makedirs(full_path)
-            break
-    
-    create_job_folders(job_id)
-
-    return job_id
-
 def create_job_folders(job_id):
     os.makedirs(get_upload_folder_path(job_id))
     os.makedirs(get_extract_folder_path(job_id))

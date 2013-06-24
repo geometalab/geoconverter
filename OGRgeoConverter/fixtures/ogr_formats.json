@@ -196,13 +196,13 @@
 		}
     },
 	{
-		"model": "OGRgeoConverter.AdditionalShellParameter",
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
 		"pk": 1,
 		"fields": {
 		    "ogr_format": 10,
 		    "prefix": "-",
-		    "argument_name": "dsco",
-		    "argument_value": "FORMAT=GML3.2",
+		    "parameter_name": "dsco",
+		    "parameter_value": "FORMAT=GML3.2",
 		    "value_quotation_marks": 0,
 		    "order": null
 		}
@@ -308,13 +308,13 @@
 		}
 	},
 	{
-		"model": "OGRgeoConverter.AdditionalShellParameter",
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
 		"pk": 2,
 		"fields": {
 		    "ogr_format": 15,
 		    "prefix": "-",
-		    "argument_name": "dsco",
-		    "argument_value": "FORMAT=MIF",
+		    "parameter_name": "dsco",
+		    "parameter_value": "FORMAT=MIF",
 		    "value_quotation_marks": 0,
 		    "order": null
 		}
@@ -418,13 +418,13 @@
 		}
 	},
 	{
-		"model": "OGRgeoConverter.AdditionalShellParameter",
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
 		"pk": 3,
 		"fields": {
 		    "ogr_format": 20,
 		    "prefix": "-",
-		    "argument_name": "dsco",
-		    "argument_value": "SPATIALITE=YES",
+		    "parameter_name": "dsco",
+		    "parameter_value": "SPATIALITE=YES",
 		    "value_quotation_marks": 0,
 		    "order": null
 		}

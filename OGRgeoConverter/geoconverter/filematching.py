@@ -79,15 +79,17 @@ def _get_matches_from_file_list(file_dict):
         matches = []
         
         ogr_format_files, additional_format_files, archive_formats, unknown_format_files = _get_extended_file_lists(file_dict)
-
+        additional_format_in_use = [False] * len(additional_format_files)
+        
         for file_info in ogr_format_files:
             is_valid = True
             matched_files_dict = {file_info.file_id: file_info.full_name}
             for additional_format in formats[file_info.format_name].additional_files:
                 limit_reached = False
-                for additional_file_info in additional_format_files:
-                    if not limit_reached and additional_file_info.file_extension.lower() == additional_format.file_extension.lower() and additional_file_info.file_name == file_info.file_name:
-                        matched_files_dict[additional_file_info.file_id] = additional_file_info.full_name
+                for i in range(len(additional_format_files)):
+                    if not limit_reached and additional_format_files[i].file_extension.lower() == additional_format.file_extension.lower() and additional_format_files[i].file_name == file_info.file_name and not additional_format_in_use[i]:
+                        matched_files_dict[additional_format_files[i].file_id] = additional_format_files[i].full_name
+                        additional_format_in_use[i] = True
                         
                         if not additional_format.is_multiple:
                             limit_reached = True
@@ -139,8 +141,6 @@ def _resolve_name_conflicts(matches):
     file_names = [] # Stores a list of the file names (without file extension) of every file match
     for i in range(len(matches)):
         files = list(matches[i].get_file_dict().values())
-        print(files)
-        print(', '.join(files))
         file_name = os.path.splitext(files[0])[0]
         file_names.append(file_name)
         
