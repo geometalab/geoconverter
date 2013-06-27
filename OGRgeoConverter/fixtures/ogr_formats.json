@@ -108,6 +108,20 @@
 		    "order": 4
 		}
     },
+    {
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 1,
+		"fields": {
+		    "ogr_format": 5,
+		    "prefix": "-",
+		    "parameter_name": "lco",
+		    "parameter_value": "RESIZE=YES",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 0,
+		    "use_for_writing": 1,
+		    "order": null
+		}
+	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
@@ -132,6 +146,20 @@
 			"output_type": "file",
 			"state_all_files": 0,
 			"is_export_format": 1
+		}
+	},
+	{
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 2,
+		"fields": {
+		    "ogr_format": 7,
+		    "prefix": "-",
+		    "parameter_name": "dsco",
+		    "parameter_value": "USE_EXTENSIONS=YES",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 0,
+		    "use_for_writing": 1,
+		    "order": null
 		}
 	},
 	
@@ -197,7 +225,7 @@
     },
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 1,
+		"pk": 3,
 		"fields": {
 		    "ogr_format": 10,
 		    "prefix": "-",
@@ -220,6 +248,20 @@
 			"output_type": "file",
 			"state_all_files": 0,
 			"is_export_format": 1
+		}
+	},
+	{
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 4,
+		"fields": {
+		    "ogr_format": 11,
+		    "prefix": "-",
+		    "parameter_name": "dsco",
+		    "parameter_value": "GPX_USE_EXTENSIONS=YES",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 0,
+		    "use_for_writing": 1,
+		    "order": null
 		}
 	},
 
@@ -311,7 +353,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 2,
+		"pk": 5,
 		"fields": {
 		    "ogr_format": 15,
 		    "prefix": "-",
@@ -382,6 +424,20 @@
 			"is_export_format": 1
 		}
 	},
+	{
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 6,
+		"fields": {
+		    "ogr_format": 17,
+		    "prefix": "-",
+		    "parameter_name": "select",
+		    "parameter_value": "\"\"",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 1,
+		    "use_for_writing": 0,
+		    "order": null
+		}
+	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
@@ -397,7 +453,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 3,
+		"pk": 7,
 		"fields": {
 		    "ogr_format": 18,
 		    "prefix": "--",
@@ -424,7 +480,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 4,
+		"pk": 8,
 		"fields": {
 		    "ogr_format": 19,
 		    "prefix": "--",
@@ -464,7 +520,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 5,
+		"pk": 9,
 		"fields": {
 		    "ogr_format": 21,
 		    "prefix": "-",
