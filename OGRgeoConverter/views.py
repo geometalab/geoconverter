@@ -26,7 +26,6 @@ from OGRgeoConverter.modelhandlers.jobhandler import JobHandler
 from OGRgeoConverter.modelhandlers.downloadhandler import DownloadHandler
 from OGRgeoConverter.modelhandlers.loghandler import LogHandler
 from OGRgeoConverter.geoconverter import sessionhandler
-from OGRgeoConverter.filesystem import filemanager
 
 
 def redirect_to_main_page(request):
@@ -103,8 +102,9 @@ def start_conversion_job(request, client_job_token):
         if format_information != None:
             job_handler.set_export_format_name(format_information.ogr_name)
             for shell_parameter in format_information.additional_parameters:
-                job_handler.add_shell_parameter(shell_parameter.prefix, shell_parameter.parameter_name, shell_parameter.parameter_value, shell_parameter.value_quotation_marks)
-        
+                if shell_parameter.use_for_writing:
+                    job_handler.add_shell_parameter(shell_parameter.prefix, shell_parameter.parameter_name, shell_parameter.parameter_value, shell_parameter.value_quotation_marks)
+                    
         for global_shell_parameter in GlobalOgrShellParameter.get_active_parameters():
             job_handler.add_shell_parameter_object(global_shell_parameter)
         
@@ -177,7 +177,7 @@ def finish_conversion_job(request, client_job_token):
         log_handler.set_all_files_converted()
         log_handler.set_has_no_error()
         
-        filemanager.remove_old_folders()
+        jobprocessing.cleanup()
         
         response_data = {}
         response_data['job_id'] = job_identifier.job_id
@@ -249,7 +249,8 @@ def convert_webservice(request, client_job_token):
         if format_information != None:
             job_handler.set_export_format_name(format_information.ogr_name)
             for shell_parameter in format_information.additional_parameters:
-                job_handler.add_shell_parameter(shell_parameter.prefix, shell_parameter.parameter_name, shell_parameter.parameter_value, shell_parameter.value_quotation_marks)
+                if shell_parameter.use_for_writing:
+                    job_handler.add_shell_parameter(shell_parameter.prefix, shell_parameter.parameter_name, shell_parameter.parameter_value, shell_parameter.value_quotation_marks)
         
         for global_shell_parameter in GlobalOgrShellParameter.get_active_parameters():
             job_handler.add_shell_parameter_object(global_shell_parameter)
@@ -288,7 +289,7 @@ def convert_webservice(request, client_job_token):
         
         # Log end
         
-        filemanager.remove_old_folders()
+        jobprocessing.cleanup()
         
         response_data = {}
         response_data['job_id'] = job_id

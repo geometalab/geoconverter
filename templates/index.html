@@ -5,20 +5,15 @@
 
 		<title>GeoConverter</title>
 		<meta name="description" content="Online geo data converter for GIS vector file formats based on GDAL/OGR." />
-		<meta name="keywords" lang="en" content="converter, file, GIS, geo, vector, GDAL, OGR, shapefile, AutoCAD, DXF, GPX, INTERLIS, KML, SQLite">
-		<meta name="keywords" lang="de" content="Konverter, Datei, GIS, Geo, Vektor, GDAL, OGR, Shapefile, AutoCAD, DXF, GPX, INTERLIS, KML, SQLite">
-		<meta name="author" content="jstaehli" />
-
-		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<meta name="keywords" lang="en" content="converter, conversion, file, GIS, geo, vector, GDAL, OGR, AutoCAD, DXF, CSV, ESRI File Geodatabase, FileGDB, Shapefile, GPX, GeoJSON, GeoRSS, GML, Geospatial PDF, INTERLIS, KML, MapInfo, Microsation DGN, OpenStreetMap, OSM, PBF, SQLite, SpatiaLite">
+		<meta name="keywords" lang="de" content="Konverter, Konvertierung, Datei, GIS, Geo, Vektor, GDAL, OGR, AutoCAD, DXF, CSV, ESRI File Geodatabase, FileGDB, Shapefile, GPX, GeoJSON, GeoRSS, GML, Geospatial PDF, INTERLIS, KML, MapInfo, Microsation DGN, OpenStreetMap, OSM, PBF, SQLite, SpatiaLite">
+		
 		<!-- <link rel="shortcut icon" href="/favicon.ico" /> -->
-		<!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png" /> -->
 			
 		<!-- jQuery -->
 		<link rel="stylesheet" href="static/jquery/css/smoothness/jquery-ui-1.9.1.custom.css" />
     	<script src="static/jquery/js/jquery-1.8.2.min.js"></script>
     	<script src="static/jquery/js/jquery-ui-1.9.1.custom.min.js"></script>
-    	<!-- <script src="http://code.jquery.com/jquery-1.8.2.js"></script> -->
-    	<!-- <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script> -->
     	
     	<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="static/geoconverter/css/style.css">
@@ -46,7 +41,6 @@
 			    <ul>
 			        <li><a href="#tabs-1">Files</a></li>
 			        <li><a href="#tabs-2">Webservices</a></li>
-			        <!--<li><a href="#tabs-3">Coordinates</a></li>-->
 			    </ul>
 			    <div id="tabs-1">
 			        {% block ogrgeoconverter-files %}{% endblock %}
@@ -54,10 +48,6 @@
 			    <div id="tabs-2">
 			        {% block ogrgeoconverter-webservices %}{% endblock %}
 			    </div>
-			    <!--<div id="tabs-3">
-			    	Convert coordinates
-			        {% block coordinateconverter %}{% endblock %}
-			    </div>-->
 			</div>
 			
 			{% block ogrgeoconverter-downloads %}{% endblock %}
@@ -90,7 +80,7 @@
 				<p>This is an online data converter for GIS vector file formats.<br>
 				It is based on the open source GDAL/OGR tools.</p>
 				<p>For more information please visit the <a href="http://giswiki.hsr.ch/GeoConverter" target="_blank">GISpunkt HSR Wiki</a></p>
-				<p><small>Last updated: 24 June 2013</small></p>
+				<p><small>Last updated: 27 June 2013</small></p>
 			</div>
 			
 			<div id="terms-of-service-dialog" style="display:none;">

@@ -44,6 +44,10 @@ class JobIdentifier(models.Model):
     @staticmethod
     def get_job_identifier_by_job_id(session_key, job_id):
         return JobIdentifier.objects.filter(session_key=session_key, job_id=job_id)
+    
+    @staticmethod
+    def cleanup_by_date(date_limit):
+        JobIdentifier.objects.filter(creation_time__lt=date_limit).delete()
 
 
 class ConversionJob(models.Model):
@@ -165,7 +169,7 @@ class ConversionJobShellParameter(ShellParameter):
 
 OgrFormatInformation = namedtuple('OgrFormatInformation', ['name', 'ogr_name', 'extension', 'is_folder', 'state_all_files', 'additional_files', 'additional_parameters'])
 AdditionalOgrFormatInformation = namedtuple('AdditionalOgrFormatInformation', ['file_extension', 'is_required', 'is_multiple'])
-AdditionalShellParameterInformation = namedtuple('AdditionalShellParameterInformation', ['prefix', 'parameter_name', 'parameter_value', 'value_quotation_marks'])
+AdditionalShellParameterInformation = namedtuple('AdditionalShellParameterInformation', ['prefix', 'parameter_name', 'parameter_value', 'value_quotation_marks', 'use_for_reading', 'use_for_writing'])
 
 
 def get_ogr_formats_tuple():
@@ -244,7 +248,9 @@ class OgrFormat(models.Model):
             parameter_name = additional_shell_parameter.parameter_name
             parameter_value = additional_shell_parameter.parameter_value
             value_quotation_marks = additional_shell_parameter.value_quotation_marks
-            formats_information[additional_shell_parameter.ogr_format.name].additional_parameters.append(AdditionalShellParameterInformation(prefix, parameter_name, parameter_value, value_quotation_marks))
+            use_for_reading = additional_shell_parameter.use_for_reading
+            use_for_writing = additional_shell_parameter.use_for_writing
+            formats_information[additional_shell_parameter.ogr_format.name].additional_parameters.append(AdditionalShellParameterInformation(prefix, parameter_name, parameter_value, value_quotation_marks, use_for_reading, use_for_writing))
         
         return formats_information
     
@@ -297,6 +303,8 @@ class AdditionalOgrFormat(models.Model):
 
 class OgrFormatShellParameter(ShellParameter):
     ogr_format = models.ForeignKey(OgrFormat)
+    use_for_reading = models.BooleanField()
+    use_for_writing = models.BooleanField(default=True)
     
     order = models.IntegerField(blank = True, null = True)
     
@@ -421,3 +429,7 @@ class OGRlogEntry(models.Model):
     @staticmethod
     def get_ogr_log_entry(log_entry):
         return OGRlogEntry.objects.filter(log_entry=log_entry)
+    
+    @staticmethod
+    def cleanup_by_date(date_limit):
+        OGRlogEntry.objects.filter(log_entry__start_time__lt=date_limit).delete()

@@ -3,7 +3,6 @@ Functions to process conversion jobs.
 '''
 
 import os
-import time
 from OGRgeoConverter.filesystem import filemanager, archives
 from OGRgeoConverter.geoconverter import conversion
 from OGRgeoConverter.geoconverter.filematching import FileMatcher
@@ -153,8 +152,23 @@ def create_download_file(job_identifier):
     zip_file_path = filemanager.get_download_file_path(job_id)
     if filemanager.get_file_count(output_folder) > 0:
         archives.create_zip_archive(output_folder, zip_file_path)
-        
-def is_canceled(job_identifier):
-    pass
-    #session = sessionhandler.get_session(session_key)
-    #return session['jobs'][job_id].get_file_count() == 0
+
+import time
+from threading import Thread
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
+from OGRgeoConverter.models import JobIdentifier, OGRlogEntry
+    
+def cleanup():
+    thread = Thread(target=cleanup_thread)
+    thread.start()
+
+def cleanup_thread():
+    filemanager.remove_old_folders()
+    
+    job_identifiers_date_limit = (datetime.now() - timedelta(days=5)).replace(tzinfo=utc)
+    JobIdentifier.cleanup_by_date(job_identifiers_date_limit)
+    
+    ogr_log_entry_date_limit = (datetime.now() - timedelta(weeks=18)).replace(tzinfo=utc)
+    OGRlogEntry.cleanup_by_date(ogr_log_entry_date_limit)
+    

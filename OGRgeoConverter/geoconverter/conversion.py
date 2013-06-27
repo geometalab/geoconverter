@@ -28,6 +28,9 @@ def convert_files(job_identifier, source_path, matched_files, destination_path, 
         if input_format_info != None:
             ogr_input_format = input_format_info.ogr_name
             input_format_extension = input_format_info.extension.lower()
+            for shell_parameter in input_format_info.additional_parameters:
+                if shell_parameter.use_for_reading:
+                    additional_arguments.append(shell_parameter)
         else:
             ogr_input_format = ''
             input_format_extension = os.path.splitext(os.path.basename(input_files[0]))[0].lower()

@@ -184,7 +184,7 @@ class LogHandler:
         if len(ogr_error_message) > error_message_max_length:
             split_position1 = error_message_max_length//3*2 - 10
             split_position2 = error_message_max_length - split_position1 - 20
-            ogr_error_message = ogr_error_message[0:split_position1] + '...\n[...]\n...' + ogr_error_message[-split_position2:]
+            ogr_error_message = ogr_error_message[0:split_position1] + '...\n\n[...]\n\n...' + ogr_error_message[-split_position2:]
         
         log_entry = self.__get_log_entry_query_set()[0]
         

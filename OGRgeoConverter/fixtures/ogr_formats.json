@@ -204,6 +204,8 @@
 		    "parameter_name": "dsco",
 		    "parameter_value": "FORMAT=GML3.2",
 		    "value_quotation_marks": 0,
+		    "use_for_reading": 0,
+		    "use_for_writing": 1,
 		    "order": null
 		}
 	},
@@ -316,6 +318,8 @@
 		    "parameter_name": "dsco",
 		    "parameter_value": "FORMAT=MIF",
 		    "value_quotation_marks": 0,
+		    "use_for_reading": 0,
+		    "use_for_writing": 1,
 		    "order": null
 		}
 	},
@@ -383,7 +387,7 @@
 		"model": "OGRgeoConverter.OgrFormat",
   		"pk": 18,
   		"fields": {
-		    "name": "OpenStreetMap (OSM)",
+		    "name": "OpenStreetMap (OSM, XML based)",
 		    "ogr_name": "OSM",
 		    "file_extension": "osm",
 		    "output_type": "file",
@@ -391,10 +395,51 @@
 			"is_export_format": 1
 		}
 	},
+	{
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 3,
+		"fields": {
+		    "ogr_format": 18,
+		    "prefix": "--",
+		    "parameter_name": "config",
+		    "parameter_value": "OSM_USE_CUSTOM_INDEXING NO",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 1,
+		    "use_for_writing": 0,
+		    "order": null
+		}
+	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
   		"pk": 19,
+  		"fields": {
+		    "name": "OpenStreetMap (PBF, optimized binary)",
+		    "ogr_name": "OSM",
+		    "file_extension": "pbf",
+		    "output_type": "file",
+		    "state_all_files": 0,
+			"is_export_format": 1
+		}
+	},
+	{
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 4,
+		"fields": {
+		    "ogr_format": 19,
+		    "prefix": "--",
+		    "parameter_name": "config",
+		    "parameter_value": "OSM_USE_CUSTOM_INDEXING NO",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 1,
+		    "use_for_writing": 0,
+		    "order": null
+		}
+	},
+	
+	{
+		"model": "OGRgeoConverter.OgrFormat",
+  		"pk": 20,
   		"fields": {
 		    "name": "SQLite",
 		    "ogr_name": "SQLite",
@@ -407,7 +452,7 @@
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
-  		"pk": 20,
+  		"pk": 21,
   		"fields": {
 		    "name": "SQLite + SpatiaLite",
 		    "ogr_name": "SQLite",
@@ -419,13 +464,15 @@
 	},
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 3,
+		"pk": 5,
 		"fields": {
-		    "ogr_format": 20,
+		    "ogr_format": 21,
 		    "prefix": "-",
 		    "parameter_name": "dsco",
 		    "parameter_value": "SPATIALITE=YES",
 		    "value_quotation_marks": 0,
+		    "use_for_reading": 0,
+		    "use_for_writing": 1,
 		    "order": null
 		}
 	}
