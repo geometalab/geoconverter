@@ -152,8 +152,9 @@ def process_upload(request, client_job_token):
 def remove_file(request, client_job_token, file_id):
     if request.method == 'POST':
         job_identifier = jobidentification.get_job_identifier_by_client_job_token(request.session.session_key, client_job_token)
-        job_handler = JobHandler(job_identifier)
-        job_handler.remove_file(file_id)
+        if job_identifier != None:
+            job_handler = JobHandler(job_identifier)
+            job_handler.remove_file(file_id)
         return HttpResponse('success')
     else:
         return redirect_to_main_page(request)

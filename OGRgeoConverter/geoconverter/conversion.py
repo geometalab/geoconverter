@@ -41,7 +41,15 @@ def convert_files(job_identifier, source_path, matched_files, destination_path, 
         output_file_path = _get_extended_output_file_path(destination_path, base_name, output_format_info)
               
         if input_format_info != None and input_format_info.state_all_files:
-            input_file_path = ','.join(input_files)
+            input_file_path = ''
+            for input_file in input_files:
+                if os.path.splitext(os.path.basename(input_file))[1].lower() == '.' + input_format_extension:
+                    input_file_path = input_file
+                    break;
+            if input_file in input_files:
+                input_files.remove(input_file)
+            if len(input_files) > 0:
+                input_file_path = input_file_path + ',' + ','.join(input_files)
         else:
             input_file_path = ''
             for input_file in input_files:
