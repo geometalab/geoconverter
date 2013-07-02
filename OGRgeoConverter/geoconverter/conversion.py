@@ -63,7 +63,7 @@ def convert_files(job_identifier, source_path, matched_files, destination_path, 
         ogr2ogr_converter.set_ogr_output_format(ogr_output_format)
         ogr2ogr_converter.set_source_srs(source_srs)
         ogr2ogr_converter.set_target_srs(target_srs)
-        ogr2ogr_converter.set_target_srs(target_srs)
+        ogr2ogr_converter.set_simplify_parameter(simplify_parameter)
         for shell_parameter in additional_arguments:
             ogr2ogr_converter.add_shell_parameter(shell_parameter)
         ogr2ogr_converter.convert_file()
