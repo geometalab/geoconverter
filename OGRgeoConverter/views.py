@@ -235,6 +235,9 @@ def convert_webservice(request, client_job_token):
         simplify_parameter = POST_dict['simplify_parameter'].strip()
         download_name = POST_dict['download_name'].strip()
         if len(download_name) > 10: download_name = download_name[0:7] + '...'
+        client_ip = get_client_ip(request)
+        client_language = get_client_language(request)
+        client_user_agent = get_client_user_agent(request)
         
         session_key = request.session.session_key
         job_identifier = jobidentification.get_new_job_identifier_by_client_job_token(session_key, client_job_token)
@@ -265,6 +268,9 @@ def convert_webservice(request, client_job_token):
         # Log start
         
         log_handler.set_start_time()
+        log_handler.set_client_ip(client_ip)
+        log_handler.set_client_language(client_language)
+        log_handler.set_client_user_agent(client_user_agent)
         log_handler.set_input_type('webservice')
         log_handler.set_export_format_name(job_handler.get_export_format_name())
         log_handler.set_source_srs(job_handler.get_source_srs())

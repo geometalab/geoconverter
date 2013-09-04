@@ -487,6 +487,20 @@
 		    "order": null
 		}
 	},
+	{
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 8,
+		"fields": {
+		    "ogr_format": 18,
+		    "prefix": "--",
+		    "parameter_name": "config",
+		    "parameter_value": "OGR_INTERLEAVED_READING NO",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 1,
+		    "use_for_writing": 0,
+		    "order": null
+		}
+	},
 	
 	{
 		"model": "OGRgeoConverter.OgrFormat",
@@ -502,12 +516,26 @@
 	},
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 8,
+		"pk": 9,
 		"fields": {
 		    "ogr_format": 19,
 		    "prefix": "--",
 		    "parameter_name": "config",
 		    "parameter_value": "OSM_USE_CUSTOM_INDEXING NO",
+		    "value_quotation_marks": 0,
+		    "use_for_reading": 1,
+		    "use_for_writing": 0,
+		    "order": null
+		}
+	},
+	{
+		"model": "OGRgeoConverter.OgrFormatShellParameter",
+		"pk": 10,
+		"fields": {
+		    "ogr_format": 19,
+		    "prefix": "--",
+		    "parameter_name": "config",
+		    "parameter_value": "OGR_INTERLEAVED_READING NO",
 		    "value_quotation_marks": 0,
 		    "use_for_reading": 1,
 		    "use_for_writing": 0,
@@ -542,7 +570,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
-		"pk": 9,
+		"pk": 11,
 		"fields": {
 		    "ogr_format": 21,
 		    "prefix": "-",
