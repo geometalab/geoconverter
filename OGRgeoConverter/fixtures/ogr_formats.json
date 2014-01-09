@@ -73,9 +73,9 @@
 		    "required": 1,
 		    "multiple": 0,
 		    "order": 1
-		}
-    },
-    {
+	  }
+  },
+  {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
 		"pk": 2,
 		"fields": {
@@ -85,8 +85,8 @@
 		    "multiple": 0,
 		    "order": 2
 		}
-    },
-    {
+  },
+  {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
 		"pk": 3,
 		"fields": {
@@ -96,8 +96,8 @@
 		    "multiple": 0,
 		    "order": 3
 		}
-    },
-    {
+  },
+  {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
 		"pk": 4,
 		"fields": {
@@ -107,8 +107,30 @@
 		    "multiple": 0,
 		    "order": 4
 		}
-    },
-    {
+  },
+  {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 5,
+		"fields": {
+		    "ogr_format": 5,
+		    "file_extension": "sbn",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 5
+		}
+  },
+  {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 6,
+		"fields": {
+		    "ogr_format": 5,
+		    "file_extension": "sbx",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 6
+		}
+  },
+  {
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
 		"pk": 1,
 		"fields": {
@@ -190,7 +212,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 5,
+		"pk": 7,
 		"fields": {
 		    "ogr_format": 9,
 		    "file_extension": "xsd",
@@ -198,10 +220,10 @@
 		    "multiple": 0,
 		    "order": null
 		}
-    },
-    {
+  },
+  {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 6,
+		"pk": 8,
 		"fields": {
 		    "ogr_format": 9,
 		    "file_extension": "gfs",
@@ -209,9 +231,9 @@
 		    "multiple": 0,
 		    "order": null
 		}
-    },
+  },
     
-    {
+  {
 		"model": "OGRgeoConverter.OgrFormat",
 		"pk": 10,
 		"fields": {
@@ -225,7 +247,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 7,
+		"pk": 9,
 		"fields": {
 		    "ogr_format": 10,
 		    "file_extension": "xsd",
@@ -233,10 +255,10 @@
 		    "multiple": 0,
 		    "order": null
 		}
-    },
-    {
+  },
+  {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 8,
+		"pk": 10,
 		"fields": {
 		    "ogr_format": 10,
 		    "file_extension": "gfs",
@@ -244,7 +266,7 @@
 		    "multiple": 0,
 		    "order": null
 		}
-    },
+  },
 	{
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
 		"pk": 3,
@@ -298,10 +320,10 @@
 		    "state_all_files": 1,
 			"is_export_format": 1
 		}
-    },
-    {
+  },
+  {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 9,
+		"pk": 11,
 		"fields": {
 		    "ogr_format": 12,
 		    "file_extension": "ili",
@@ -310,7 +332,6 @@
 		    "order": null
 		}
 	},
-
 
 	{
 		"model": "OGRgeoConverter.OgrFormat",
@@ -323,10 +344,10 @@
 		    "state_all_files": 1,
 			"is_export_format": 0
 		}
-    },
-    {
+  },
+  {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 10,
+		"pk": 12,
 		"fields": {
 		    "ogr_format": 13,
 		    "file_extension": "ili",
@@ -336,7 +357,6 @@
 		}
 	},
 	
-
 	{
 		"model": "OGRgeoConverter.OgrFormat",
   		"pk": 14,
@@ -364,7 +384,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 11,
+		"pk": 13,
 		"fields": {
 		    "ogr_format": 15,
 		    "file_extension": "mid",
@@ -402,7 +422,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 12,
+		"pk": 14,
 		"fields": {
 		    "ogr_format": 16,
 		    "file_extension": "dat",
@@ -413,7 +433,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 13,
+		"pk": 15,
 		"fields": {
 		    "ogr_format": 16,
 		    "file_extension": "id",
@@ -424,7 +444,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 14,
+		"pk": 16,
 		"fields": {
 		    "ogr_format": 16,
 		    "file_extension": "map",
