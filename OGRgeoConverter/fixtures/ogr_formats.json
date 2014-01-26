@@ -362,7 +362,7 @@
   		"pk": 14,
   		"fields": {
 		    "name": "Keyhole Markup Language (KML)",
-		    "ogr_name": "KML",
+		    "ogr_name": "LIBKML",
 		    "file_extension": "kml",
 		    "output_type": "file",
 		    "state_all_files": 0,
@@ -516,7 +516,7 @@
 		    "parameter_name": "config",
 		    "parameter_value": "OGR_INTERLEAVED_READING NO",
 		    "value_quotation_marks": 0,
-		    "use_for_reading": 1,
+		    "use_for_reading": 0,
 		    "use_for_writing": 0,
 		    "order": null
 		}

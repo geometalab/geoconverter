@@ -33,7 +33,7 @@ def create_job_folders(job_id):
     
 def remove_old_folders():
     '''
-    Cleans up conversion folders older than 1 day
+    Cleans up conversion folders older than 2 days
     '''
     folder_path = get_conversion_job_folder()
     
@@ -44,7 +44,7 @@ def remove_old_folders():
         if len(parts) == 3:
             folder_date = date(int(parts[0]), int(parts[1]), int(parts[2]))
             difference = today - folder_date
-            if difference.days >= 1:
+            if difference.days >= 2:
                 full_path = os.path.join(folder_path, folder)
                 shutil.rmtree(full_path)
                 
