@@ -131,6 +131,17 @@
 		}
   },
   {
+		"model": "OGRgeoConverter.AdditionalOgrFormat",
+		"pk": 7,
+		"fields": {
+		    "ogr_format": 5,
+		    "file_extension": "qpj",
+		    "required": 0,
+		    "multiple": 0,
+		    "order": 7
+		}
+  },
+  {
 		"model": "OGRgeoConverter.OgrFormatShellParameter",
 		"pk": 1,
 		"fields": {
@@ -212,7 +223,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 7,
+		"pk": 8,
 		"fields": {
 		    "ogr_format": 9,
 		    "file_extension": "xsd",
@@ -223,7 +234,7 @@
   },
   {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 8,
+		"pk": 9,
 		"fields": {
 		    "ogr_format": 9,
 		    "file_extension": "gfs",
@@ -247,7 +258,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 9,
+		"pk": 10,
 		"fields": {
 		    "ogr_format": 10,
 		    "file_extension": "xsd",
@@ -258,7 +269,7 @@
   },
   {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 10,
+		"pk": 11,
 		"fields": {
 		    "ogr_format": 10,
 		    "file_extension": "gfs",
@@ -323,7 +334,7 @@
   },
   {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 11,
+		"pk": 12,
 		"fields": {
 		    "ogr_format": 12,
 		    "file_extension": "ili",
@@ -347,7 +358,7 @@
   },
   {
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 12,
+		"pk": 13,
 		"fields": {
 		    "ogr_format": 13,
 		    "file_extension": "ili",
@@ -384,7 +395,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 13,
+		"pk": 14,
 		"fields": {
 		    "ogr_format": 15,
 		    "file_extension": "mid",
@@ -422,7 +433,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 14,
+		"pk": 15,
 		"fields": {
 		    "ogr_format": 16,
 		    "file_extension": "dat",
@@ -433,7 +444,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 15,
+		"pk": 16,
 		"fields": {
 		    "ogr_format": 16,
 		    "file_extension": "id",
@@ -444,7 +455,7 @@
 	},
 	{
 		"model": "OGRgeoConverter.AdditionalOgrFormat",
-		"pk": 16,
+		"pk": 17,
 		"fields": {
 		    "ogr_format": 16,
 		    "file_extension": "map",
