@@ -6,8 +6,9 @@ from GeoConverter import paths
 
 # Django settings for GeoConverter project.
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+LOCAL_STATIC = True
 
 # Session ends when user closes his browser
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -53,6 +54,7 @@ DATABASE_ROUTERS = ['GeoConverter.database.DatabaseRouter']
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = [
     'localhost',
+    '127.0.0.1',
 ]
 
 # Local time zone for this installation. Choices can be found here:

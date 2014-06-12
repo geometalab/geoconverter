@@ -13,10 +13,14 @@ class ShellCommand:
         self.__parameter_list = ShellParameterList()
         self.__result_output = ''
         self.__result_error = ''
+        self.__commandtimeoutsecs = 600
     
     def set_command(self, command):
         self.__command = command
         
+    def set_timeout(self, timeout=None):
+        self.__commandtimeoutsecs = timeout
+ 
     def get_command(self):
         return self.__command
         
@@ -37,7 +41,13 @@ class ShellCommand:
         try:
             args = shlex.split(command)
             p = Popen(args, stdout=PIPE, stderr=PIPE)
+            stdout, stderr = p.communicate(timeout=self.__commandtimeoutsecs)
+        except subprocess.TimeoutExpired as e:
+            # The child process is not killed if the timeout expires
+            p.kill()
             stdout, stderr = p.communicate()
+            if not stderr:
+                stderr = e
         except Exception as e:
             stdout = ''
             stderr = e
