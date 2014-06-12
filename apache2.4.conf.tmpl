@@ -1,0 +1,24 @@
+<VirtualHost *:80>
+  ServerAdmin admin@example.com
+  DocumentRoot "/var/lib/geoconverter/geoconverter-www"
+  ServerName geoconverter.example.com
+  
+  <Directory /var/lib/geoconverter/geoconverter-www/static>
+    Require all granted
+  </Directory>
+  <Directory /var/lib/geoconverter/geoconverter-www/GeoConverter>
+    <Files wsgi.py>
+      Require all granted
+    </Files>
+  </Directory>
+  
+  WSGIDaemonProcess GeoconverterDaemon user=geoconverter group=geoconverter python-path=/var/lib/geoconverter/geoconverter-www:/var/lib/geoconverter/geoenv/lib/python3.4/site-packages threads=2
+  WSGIProcessGroup GeoconverterDaemon
+  WSGIApplicationGroup %{GLOBAL}
+  
+  WSGIScriptAlias / /var/lib/geoconverter/geoconverter-www/GeoConverter/wsgi.py
+  
+  Alias /static/ /var/lib/geoconverter/geoconverter-www/static/
+
+</VirtualHost>
+
