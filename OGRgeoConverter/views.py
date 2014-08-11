@@ -61,8 +61,9 @@ def show_main_page(request):
         webservices_form = GeoConverterWebservicesForm()
     
     download_list = downloadhandler.get_download_items(request.session.session_key)
+    last_update_date = 'June 12 2014'
 
-    return render(request, 'ogr-geo-converter.html', {'files_form': files_form, 'webservices_form': webservices_form, 'download_list': download_list})
+    return render(request, 'ogr-geo-converter.html', {'files_form': files_form, 'webservices_form': webservices_form, 'download_list': download_list, 'last_update_date': last_update_date})
     
         
 def start_conversion_job(request, client_job_token):
