@@ -20,29 +20,34 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # List of databases used
-# What database is used is determined by a database router (see DATABASE_ROUTERS below)
+# What database is used is determined by a database router (see
+# DATABASE_ROUTERS below)
 DATABASES = {
-    'default': { # Main database mainly used by Django (Users, Admin site, ...)
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': paths.default_database_path(),                      # Or path to database file if using sqlite3.
+    'default': {  # Main database mainly used by Django (Users, Admin site, ...)
+        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',
+        # Or path to database file if using sqlite3.
+        'NAME': paths.default_database_path(),
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        # Set to empty string for localhost. Not used with sqlite3.
+        'HOST': '',
+        # Set to empty string for default. Not used with sqlite3.
+        'PORT': '',
     },
-    'sessions_db': { # Database storing session information of website visitors
+    'sessions_db': {  # Database storing session information of website visitors
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.sessions_database_path(),
     },
-    'ogrgeoconverter_db': { # Database used by the OGRgeoConverter-App. Stores most of the models.
+    'ogrgeoconverter_db': {  # Database used by the OGRgeoConverter-App. Stores most of the models.
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.ogrgeoconverter_database_path(),
     },
-    'ogrgeoconverter_log_db': { # Database logs conversions by website visitors
+    'ogrgeoconverter_log_db': {  # Database logs conversions by website visitors
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.ogrgeoconverter_log_database_path(),
     },
-    'ogrgeoconverter_conversion_jobs_db': { # Database logs conversions by website visitors
+    'ogrgeoconverter_conversion_jobs_db': {  # Database logs conversions by website visitors
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': paths.ogrgeoconverter_conversion_jobs_database_path(),
     }
@@ -113,7 +118,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -123,7 +128,7 @@ SECRET_KEY = '!@*!lad%60wzad71a^7u=w!u@*xdnkeg-&)k1ysjl!n7nr09ee'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (

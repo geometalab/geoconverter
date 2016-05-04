@@ -10,11 +10,11 @@ from collections import namedtuple
 def get_supported_formats():
     shell_command = ShellCommand()
     shell_command.set_command('ogrinfo')
-    
+
     shell_command.add_parameter('formats', None, '--')
-    
+
     shell_command.execute()
-    
+
     OgrFormat = namedtuple('OgrFormat', ['name', 'read', 'write'])
     format_list = []
     for line in shell_command.get_result_output().splitlines():
@@ -37,5 +37,5 @@ def get_supported_formats():
                 read = False
                 write = False
             format_list.append(OgrFormat(name, read, write))
-    
+
     return format_list

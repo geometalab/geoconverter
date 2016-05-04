@@ -1,10 +1,11 @@
 class DatabaseRouter(object):
+
     '''
     These functions are called when Django accesses the database.
     Returns the name of the database to use depending on the app and model.
     Returning None means use default.
     '''
-    
+
     def db_for_read(self, model, **hints):
         return self.__db_for_read_and_write(model, **hints)
 
@@ -55,9 +56,9 @@ class DatabaseRouter(object):
             allow = allow and model._meta.app_label == 'OGRgeoConverter'
         else:
             allow = None
-            
+
         return allow
-        
+
     def __db_for_read_and_write(self, model, **hints):
         if model._meta.app_label == 'sessions':
             return 'sessions_db'
@@ -77,5 +78,5 @@ class DatabaseRouter(object):
                 return 'ogrgeoconverter_conversion_jobs_db'
             else:
                 return 'ogrgeoconverter_db'
-                
+
         return None

@@ -7,21 +7,22 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'GeoConverter.views.home', name='home'),
-    # url(r'^GeoConverter/', include('GeoConverter.foo.urls')),
+                       # Examples:
+                       # url(r'^$', 'GeoConverter.views.home', name='home'),
+                       # url(r'^GeoConverter/', include('GeoConverter.foo.urls')),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+                       # Uncomment the admin/doc line below to enable admin documentation:
+                       # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-    url(r'^$', 'OGRgeoConverter.views.show_main_page'),
-    
-    # All urls starting with "converter" are handled by the following URL dispatcher
-    url(r'^converter/', include('OGRgeoConverter.urls')),
+                       url(r'^$', 'OGRgeoConverter.views.show_main_page'),
 
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
-)
+                       # All urls starting with "converter" are handled by the following URL dispatcher
+                       url(r'^converter/', include('OGRgeoConverter.urls')),
+
+                       # Uncomment the next line to enable the admin:
+                       url(r'^admin/', include(admin.site.urls)),
+                       )
 
 if settings.LOCAL_STATIC:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
