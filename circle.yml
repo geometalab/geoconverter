@@ -23,7 +23,9 @@ deployment:
   hub:
     branch: master
     commands:
+      - export geoversion=$(docker run -it --rm --env DJANGO_ENV_FILE=/dev/null $docker_image python3 manage.py geoconvversion --short | sed -rn 's/^([-._A-Za-z0-9]+).*$/\1/p')
+      - echo ${geoversion:-oha}
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker push $docker_image
-      - docker tag $docker_image $docker_image:$(docker run -it --rm $docker_image python3 manage.py geoconvversion --short | tr -d '\n')
-      - docker push $docker_image:$(docker run -it --rm $docker_image python3 manage.py geoconvversion --short | tr -d '\n')
+      - docker tag $docker_image $docker_image:$(docker run -it --rm --env DJANGO_ENV_FILE=/dev/null $docker_image python3 manage.py geoconvversion --short | sed -rn 's/^([-._A-Za-z0-9]+).*$/\1/p')
+      - docker push $docker_image:$(docker run -it --rm --env DJANGO_ENV_FILE=/dev/null $docker_image python3 manage.py geoconvversion --short | sed -rn 's/^([-._A-Za-z0-9]+).*$/\1/p')
