@@ -39,7 +39,7 @@ env = environ.Env(
                             str(DATA_DIR('sessions.sqlite'))),
     DJANGO_DEBUG=(bool, False),
     DJANGO_DEFAULT_FROM_EMAIL=(str, 'webmaster@localhost'),
-    DJANGO_EMAIL_BACKEND=(str, 'django.core.mail.backends.smtp.EmailBackend'),
+    DJANGO_EMAIL_BACKEND=(str, 'django.core.mail.backends.filebased.EmailBackend'),
     DJANGO_EMAIL_FILE_PATH=(str, str(DATA_DIR('emails'))),
     DJANGO_EMAIL_HOST=(str, 'localhost'),
     DJANGO_EMAIL_HOST_PASSWORD=(str, ''),
@@ -141,6 +141,9 @@ EMAIL_FILE_PATH = str(env("DJANGO_EMAIL_FILE_PATH"))
 # allow default setting (unset) if the variable isn't set in the environment
 if not EMAIL_FILE_PATH:
     del EMAIL_FILE_PATH
+else:
+    if not os.path.isdir(EMAIL_FILE_PATH):
+        os.makedirs(EMAIL_FILE_PATH)
 
 # MANAGER CONFIGURATION
 # ------------------------------------------------------------------------------

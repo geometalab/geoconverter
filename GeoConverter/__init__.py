@@ -1,8 +1,8 @@
 import codecs
 import re
 
-__version__ = '1.0.0.dev'
-__date__ = 'May 11, 2016'
+__version__ = '1.0.0'
+__date__ = 'May 12, 2016'
 
 
 def get_metadata(filepath=__file__):

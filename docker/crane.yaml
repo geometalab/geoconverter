@@ -2,19 +2,19 @@ groups:
   default:
   - geoconverter
 containers:
-  geoconverter: &cref
+  geoconverter: &geocref
     build:
       context: ..
       file: Dockerfile
-    image: geometalab/geoconverter
-    run: &crefrun
+    image: geometalab/geoconverter:latest
+    run: &geocrefrun
       detach: false
       env:
       - VIRTUAL_HOST=$VIRTUAL_HOST
 #      - VIRTUAL_PORT=$VIRTUAL_PORT
-      - CERT_NAME=$CERT_NAME
-#      - LETSENCRYPT_HOST=$LETSENCRYPT_HOST
-#      - LETSENCRYPT_EMAIL=$LETSENCRYPT_EMAIL
+#      - CERT_NAME=$CERT_NAME
+      - LETSENCRYPT_HOST=$LETSENCRYPT_HOST
+      - LETSENCRYPT_EMAIL=$LETSENCRYPT_EMAIL
       - DJANGO_ADMIN_USER=$DJANGO_ADMIN_USER
       - DJANGO_ADMIN_EMAIL=$DJANGO_ADMIN_EMAIL
       - DJANGO_ADMIN_PASS=$DJANGO_ADMIN_PASS
@@ -47,7 +47,7 @@ containers:
 #      - DJANGO_STATIC_ROOT=$DJANGO_STATIC_ROOT
 #      - DJANGO_STATIC_URL=$DJANGO_STATIC_URL
 #      - DJANGO_X_FRAME_OPTIONS=$DJANGO_X_FRAME_OPTIONS
-      stop-signal: SIGTERM
+      stop-signal: SIGINT
       interactive: false
       tty: false
       volume:
@@ -56,8 +56,11 @@ containers:
     exec:
       interactive: true
       tty: true
-  cshell: { <<: *cref, run: { <<: *crefrun, detach: false, entrypoint: /bin/bash, cmd, tty: true, interactive: true } }
+  geocshell: { <<: *geocref, run: { <<: *geocrefrun, detach: false, entrypoint: /bin/bash, cmd, tty: true, interactive: true } }
+  geoconverter-dev: { <<: *geocref, image: 'geometalab/geoconverter:latest-dev', run: { <<: *geocrefrun, volume: ['geoconverter-dev-data_data:/data:rw','geoconverter-dev-data_output:/output:rw'] } }
 hooks:
 volumes:
-  geoconverter-data_data:
-  geoconverter-data_output:
+  geoconverter-data_data: null
+  geoconverter-data_output: null
+  geoconverter-dev-data_data: null
+  geoconverter-dev-data_output: null
