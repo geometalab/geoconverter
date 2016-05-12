@@ -1,7 +1,7 @@
 import codecs
 import re
 
-__version__ = '1.0.0'
+__version__ = '1.0.1.dev'
 __date__ = 'May 12, 2016'
 
 
