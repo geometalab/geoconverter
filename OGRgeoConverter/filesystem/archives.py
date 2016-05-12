@@ -6,9 +6,6 @@ Currently zip and tar are supported.
 import os
 import zipfile
 import tarfile
-#import gzip
-#import zlib
-#import bz2
 
 
 def is_archive_file(file_path):

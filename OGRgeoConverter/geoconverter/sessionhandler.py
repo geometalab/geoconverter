@@ -29,11 +29,3 @@ def is_valid_key(session_key):
         return False
 
     return True
-
-
-# How to detect Session end? -> Cleanup of Session database
-
-#from django.contrib.auth import logout
-# Destroy Session:
-# logout(request)
-# or request.session.flush()

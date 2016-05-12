@@ -1,0 +1,29 @@
+general:
+  branches:
+    ignore:
+
+machine:
+  environment:
+    docker_image: geometalab/geoconverter
+    docker_file: docker/Dockerfile
+    docker_context: .
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    - docker build -t $docker_image -f $docker_file $docker_context
+
+test:
+  override:
+    - docker run -it --rm $docker_image python3 manage.py geoconvversion
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push $docker_image
+      - docker tag $docker_image $docker_image:$(docker run -it --rm $docker_image python3 manage.py geoconvversion --short | tr -d '\n')
+      - docker push $docker_image:$(docker run -it --rm $docker_image python3 manage.py geoconvversion --short | tr -d '\n')

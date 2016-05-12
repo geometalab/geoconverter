@@ -1,6 +1,6 @@
 import shlex
 import locale
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, TimeoutExpired
 
 
 class ShellCommand:
@@ -56,7 +56,7 @@ class ShellCommand:
             args = shlex.split(command)
             p = Popen(args, stdout=PIPE, stderr=PIPE)
             stdout, stderr = p.communicate(timeout=self.__commandtimeoutsecs)
-        except subprocess.TimeoutExpired as e:
+        except TimeoutExpired as e:
             # The child process is not killed if the timeout expires
             p.kill()
             stdout, stderr = p.communicate()

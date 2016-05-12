@@ -7,22 +7,22 @@
 		<meta name="description" content="Online geo data converter for GIS vector file formats based on GDAL/OGR." />
 		<meta name="keywords" lang="en" content="converter, conversion, file, GIS, geo, vector, GDAL, OGR, AutoCAD, DXF, CSV, ESRI File Geodatabase, FileGDB, Shapefile, GPX, GeoJSON, GeoRSS, GML, Geospatial PDF, INTERLIS, KML, MapInfo, MicroStation DGN, OpenStreetMap, OSM, PBF, SQLite, SpatiaLite">
 		<meta name="keywords" lang="de" content="Konverter, Konvertierung, Datei, GIS, Geo, Vektor, GDAL, OGR, AutoCAD, DXF, CSV, ESRI File Geodatabase, FileGDB, Shapefile, GPX, GeoJSON, GeoRSS, GML, Geospatial PDF, INTERLIS, KML, MapInfo, MicroStation DGN, OpenStreetMap, OSM, PBF, SQLite, SpatiaLite">
-		
+
 		<!-- <link rel="shortcut icon" href="/favicon.ico" /> -->
-			
+
 		<!-- jQuery -->
 		<link rel="stylesheet" href="static/jquery/css/smoothness/jquery-ui-1.9.1.custom.css" />
     	<script src="static/jquery/js/jquery-1.8.2.min.js"></script>
     	<script src="static/jquery/js/jquery-ui-1.9.1.custom.min.js"></script>
-    	
+
     	<!-- CSS -->
 		<link rel="stylesheet" type="text/css" href="static/geoconverter/css/style.css">
 		{% block ogrgeoconverter-css %}{% endblock %}
-    	
+
     	<!-- Scripts -->
     	<script src="static/geoconverter/js/dialogs.js"></script>
     	{% block ogrgeoconverter-scripts %}{% endblock %}
-    	
+
     	<script>
 	    $(function() {
 	        $( "#tabs" ).tabs();
@@ -32,7 +32,7 @@
 
 	<body class="page">
 		<div id="container">
-			
+
 			<div id="header">
 				<a href="/" title="GeoConverter Home" id="header-logo"></a>
 			</div>
@@ -49,7 +49,7 @@
 			        {% block ogrgeoconverter-webservices %}{% endblock %}
 			    </div>
 			</div>
-			
+
 			{% block ogrgeoconverter-downloads %}{% endblock %}
 
 			<footer>
@@ -58,7 +58,7 @@
 						<ul>
 							<li>
 								<a href="/">Home</a>
-							</li>	
+							</li>
 							<li>
 								<a id="about-dialog-link" href="#">About</a>
 							</li>
@@ -75,14 +75,14 @@
 					</nav>
 				</div>
 			</footer>
-			
+
 			<div id="about-dialog" style="display:none;">
 				<p>This is an online data converter for GIS vector file formats.<br>
 				It is based on the open source GDAL/OGR tools.</p>
 				<p>For more information please visit the <a href="http://giswiki.hsr.ch/GeoConverter" target="_blank">GISpunkt HSR Wiki</a></p>
-				<p><small>Last updated: {{ last_update_date }}</small></p>
+				<p><small>Version: {{ version_string }} Last updated: {{ last_update_date }}</small></p>
 			</div>
-			
+
 			<div id="terms-of-service-dialog" style="display:none;">
 				<dl>
 		        	<dt>Haftung</dt>
@@ -98,10 +98,10 @@
 		        </dl>
 		        <dl>
 		        	<dt>Copyright</dt>
-		        	<dd> GISpunkt HSR. Eine Weiterverwendung der  Grafiken und Informationen im Rahmen von Publikationen oder  Internetseiten ist nur unter Anf&uuml;hrung eines Quellenhinweises &quot;GISpunkt  HSR www.gis.hsr.ch&quot; zul&auml;ssig. </dd>
+		        	<dd> GISpunkt HSR. Eine Weiterverwendung der Grafiken und Informationen im Rahmen von Publikationen oder Internetseiten ist nur unter Anf&uuml;hrung eines Quellenhinweises &quot;GISpunkt HSR www.gis.hsr.ch&quot; zul&auml;ssig. </dd>
 		        </dl>
 			</div>
-			
+
 			<div id="contact-dialog" style="display:none;">
 				<p>Prof. S. Keller<br>
 				   GeometaLab am Institut für Software<br><br>
@@ -112,7 +112,7 @@
             	   Switzerland</p>
           	    <p><a href="http://wiki.hsr.ch/StefanKeller/wiki.cgi?GeometaLab" target="_blank">Weblink</a></p>
 			</div>
-			
+
 		</div>
 	</body>
 </html>

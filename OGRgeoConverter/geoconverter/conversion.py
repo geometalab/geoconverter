@@ -38,13 +38,11 @@ def convert_files(
             output_format_name)
 
         if input_format_info is not None:
-            ogr_input_format = input_format_info.ogr_name
             input_format_extension = input_format_info.extension.lower()
             for shell_parameter in input_format_info.additional_parameters:
                 if shell_parameter.use_for_reading:
                     additional_arguments.append(shell_parameter)
         else:
-            ogr_input_format = ''
             input_format_extension = os.path.splitext(
                 os.path.basename(
                     input_files[0]))[0].lower()
@@ -60,8 +58,8 @@ def convert_files(
         if input_format_info is not None and input_format_info.state_all_files:
             input_file_path = ''
             for input_file in input_files:
-                if os.path.splitext(
-                        os.path.basename(input_file))[1].lower() == '.' + input_format_extension:
+                if os.path.splitext(os.path.basename(input_file))[
+                        1].lower() == '.' + input_format_extension:
                     input_file_path = input_file
                     break
             if input_file in input_files:
@@ -71,8 +69,8 @@ def convert_files(
         else:
             input_file_path = ''
             for input_file in input_files:
-                if os.path.splitext(
-                        os.path.basename(input_file))[1].lower() == '.' + input_format_extension:
+                if os.path.splitext(os.path.basename(input_file))[
+                        1].lower() == '.' + input_format_extension:
                     input_file_path = input_file
             if input_file_path == '':
                 input_file_path = input_files[0]
@@ -101,7 +99,6 @@ def convert_files(
             ogr2ogr_converter.get_last_successful())
     else:
         pass
-        # Error !!!!!!!!!!!!!!!!!!!
 
 
 def convert_webservice(

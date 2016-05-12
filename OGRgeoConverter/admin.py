@@ -5,6 +5,12 @@ from OGRgeoConverter.models import OgrFormatShellParameter
 from OGRgeoConverter.models import GlobalOgrShellParameter
 from OGRgeoConverter.models import LogEntry
 from OGRgeoConverter.models import OGRlogEntry
+from OGRgeoConverter.models import JobIdentifier
+from OGRgeoConverter.models import ConversionJob
+from OGRgeoConverter.models import ConversionJobFolder
+from OGRgeoConverter.models import ConversionJobUrl
+from OGRgeoConverter.models import ConversionJobShellParameter
+from OGRgeoConverter.models import DownloadItem
 
 
 class AdditionalOgrFormatInline(admin.StackedInline):
@@ -102,17 +108,6 @@ admin.site.register(LogEntry, LogEntryAdmin)
 
 
 # Temporary !!!!!
-from OGRgeoConverter.models import JobIdentifier
-from OGRgeoConverter.models import ConversionJob
-from OGRgeoConverter.models import ConversionJobFolder
-from OGRgeoConverter.models import ConversionJobFileMatch
-from OGRgeoConverter.models import ConversionJobFile
-from OGRgeoConverter.models import ConversionJobFileIdTracker
-from OGRgeoConverter.models import ConversionJobUrl
-from OGRgeoConverter.models import ConversionJobShellParameter
-from OGRgeoConverter.models import DownloadItem
-
-
 class ConversionJobFolderInline(admin.StackedInline):
     model = ConversionJobFolder
     extra = 0
@@ -154,13 +149,3 @@ class DownloadItemInline(admin.StackedInline):
 class JobIdentifierAdmin(admin.ModelAdmin):
     model = JobIdentifier
     inlines = [ConversionJobInline, DownloadItemInline]
-
-#admin.site.register(JobIdentifier, JobIdentifierAdmin)
-#admin.site.register(ConversionJob, ConversionJobAdmin)
-# admin.site.register(ConversionJobFolder)
-# admin.site.register(ConversionJobFileMatch)
-# admin.site.register(ConversionJobFile)
-# admin.site.register(ConversionJobFileIdTracker)
-# admin.site.register(ConversionJobUrl)
-# admin.site.register(ConversionJobShellParameter)
-#admin.site.register(DownloadItem, DownloadItemAdmin)

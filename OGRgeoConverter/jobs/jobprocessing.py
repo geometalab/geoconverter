@@ -3,10 +3,15 @@ Functions to process conversion jobs.
 '''
 
 import os
+import time
 from OGRgeoConverter.filesystem import filemanager, archives
 from OGRgeoConverter.geoconverter import conversion
 from OGRgeoConverter.geoconverter.filematching import FileMatcher
 from OGRgeoConverter.modelhandlers.jobhandler import JobHandler
+from threading import Thread
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
+from OGRgeoConverter.models import JobIdentifier, OGRlogEntry
 
 
 def initialize_conversion_job(job_identifier):
@@ -41,7 +46,6 @@ def store_file(job_identifier, file_id, file_data):
 def remove_file(job_identifier, job_id, file_id):
     job_handler = JobHandler(job_identifier)
     job_handler.remove_file(file_id)
-    #...
 
 
 def process_file(job_identifier, file_id):
@@ -124,8 +128,6 @@ def process_archive(
     folder_files_list = [(root, files)
                          for root, dirs, files in os.walk(unpack_path)]
 
-    #file_matches = []
-
     for folder_files in folder_files_list:
         source_path = folder_files[0]
 
@@ -140,10 +142,8 @@ def process_archive(
         sub_path = source_path.replace(unpack_base_path, '').lstrip('/\\')
         destination_path = os.path.join(output_path, sub_path)
 
-        #
         if not os.path.exists(destination_path):
             os.mkdir(destination_path)
-        #
 
         process_folder(
             job_identifier,
@@ -210,7 +210,6 @@ def process_folder(
             output_path = os.path.join(
                 destination_path,
                 archive_file_name_without_extension)
-            #process_archive(archive_path, unpack_base_path, unpack_path, output_path, export_format_name, export_format, source_srs, target_srs, additional_arguments, archive_depth+1)
             process_archive(
                 job_identifier,
                 archive_path,
@@ -224,7 +223,6 @@ def process_folder(
                 additional_arguments,
                 archive_depth + 1)
         else:
-            # Convert files
             conversion.convert_files(
                 job_identifier,
                 source_path,
@@ -265,12 +263,6 @@ def create_download_file(job_identifier):
     zip_file_path = filemanager.get_download_file_path(job_id)
     if filemanager.get_file_count(output_folder) > 0:
         archives.create_zip_archive(output_folder, zip_file_path)
-
-import time
-from threading import Thread
-from datetime import datetime, timedelta
-from django.utils.timezone import utc
-from OGRgeoConverter.models import JobIdentifier, OGRlogEntry
 
 
 def cleanup():

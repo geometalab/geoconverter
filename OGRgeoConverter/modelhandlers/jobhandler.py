@@ -21,7 +21,6 @@ class JobHandler:
             self.__job_identifier)
 
         if len(conversion_jobs) == 0:
-            # Creat conversion job if it doesen't exist yet
             conversion_job = ConversionJob()
             conversion_job.job_identifier = self.__job_identifier
             conversion_job.source_srs = 0
@@ -39,8 +38,7 @@ class JobHandler:
     def __get_conversion_job_folder_query_set(self, folder_path):
         conversion_job = self.__get_conversion_job_query_set()[0]
         conversion_job_folders = ConversionJobFolder.get_conversion_job_folder_by_path(
-            conversion_job,
-            folder_path)
+            conversion_job, folder_path)
 
         if len(conversion_job_folders) == 0:
             conversion_job_folder = ConversionJobFolder()
@@ -48,8 +46,7 @@ class JobHandler:
             conversion_job_folder.folder_path = folder_path
             conversion_job_folder.save()
             conversion_job_folders = ConversionJobFolder.get_conversion_job_folder_by_path(
-                conversion_job,
-                folder_path)
+                conversion_job, folder_path)
 
         if len(conversion_job_folders) == 1:
             return conversion_job_folders
@@ -63,7 +60,6 @@ class JobHandler:
         return conversion_job_files
 
     def __get_conversion_job_files_query_set_from_file_match(self, file_match):
-        conversion_job = self.__get_conversion_job_query_set()[0]
         conversion_job_files = ConversionJobFile.get_conversion_job_files_by_file_match(
             file_match)
         return conversion_job_files
@@ -124,13 +120,6 @@ class JobHandler:
     def get_simplify_parameter(self):
         conversion_job = self.__get_conversion_job_query_set()
         return conversion_job[0].simplify_parameter
-
-    # def add_file(self, file_id, file_name):
-        #conversion_job_file = ConversionJobFile()
-        #conversion_job_file.conversion_job = self.__get_conversion_job_query_set()[0]
-        #conversion_job_file.file_id = file_id
-        #conversion_job_file.file_name = file_name
-        # conversion_job_file.save()
 
     def get_original_file_name(self, file_id):
         file_query_set = self.__get_conversion_job_files_query_set().filter(

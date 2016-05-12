@@ -27,6 +27,8 @@ from OGRgeoConverter.modelhandlers.downloadhandler import DownloadHandler
 from OGRgeoConverter.modelhandlers.loghandler import LogHandler
 from OGRgeoConverter.geoconverter import sessionhandler
 
+from GeoConverter import settings
+
 
 def redirect_to_main_page(request):
     return HttpResponseRedirect(
@@ -69,14 +71,15 @@ def show_main_page(request):
 
     download_list = downloadhandler.get_download_items(
         request.session.session_key)
-    last_update_date = 'June 12 2014'
 
     return render(request,
                   'ogr-geo-converter.html',
                   {'files_form': files_form,
                    'webservices_form': webservices_form,
                    'download_list': download_list,
-                   'last_update_date': last_update_date})
+                   'last_update_date': settings.METADATA.get('date'),
+                   'version_string': settings.METADATA.get('version'),
+                   })
 
 
 def start_conversion_job(request, client_job_token):
@@ -101,8 +104,7 @@ def start_conversion_job(request, client_job_token):
 
         session_key = request.session.session_key
         job_identifier = jobidentification.get_new_job_identifier_by_client_job_token(
-            session_key,
-            client_job_token)
+            session_key, client_job_token)
         job_id = job_identifier.job_id
         if job_id == '':
             return HttpResponseServerError('Error: Job Token is not valid.')
@@ -140,7 +142,6 @@ def start_conversion_job(request, client_job_token):
         job_handler.set_target_srs(target_srs)
         job_handler.set_simplify_parameter(simplify_parameter)
 
-        #job_id = jobhandler.get_path_code(session_key, client_job_token)
         download_handler.set_download_caption(download_name)
 
         log_handler.set_start_time()
@@ -164,7 +165,6 @@ def start_conversion_job(request, client_job_token):
 
 @csrf_exempt
 def process_upload(request, client_job_token):
-    #file_name = request.GET['qqfile']
     file_id = request.GET['qqfileid']
     file_data = SimpleUploadedFile(request.GET['qqfile'], request.body)
 
@@ -186,8 +186,7 @@ def process_upload(request, client_job_token):
 def remove_file(request, client_job_token, file_id):
     if request.method == 'POST':
         job_identifier = jobidentification.get_job_identifier_by_client_job_token(
-            request.session.session_key,
-            client_job_token)
+            request.session.session_key, client_job_token)
         if job_identifier is not None:
             job_handler = JobHandler(job_identifier)
             job_handler.remove_file(file_id)
@@ -199,10 +198,7 @@ def remove_file(request, client_job_token, file_id):
 def finish_conversion_job(request, client_job_token):
     if request.method == 'POST':
         job_identifier = jobidentification.get_job_identifier_by_client_job_token(
-            request.session.session_key,
-            client_job_token)
-
-        #jobprocessing.convert_unprocessed_files(session_key, client_job_token)
+            request.session.session_key, client_job_token)
 
         jobprocessing.create_download_file(job_identifier)
 
@@ -226,7 +222,6 @@ def finish_conversion_job(request, client_job_token):
         response_data['job_id'] = job_identifier.job_id
         response_data['successful'] = download_handler.download_file_exists()
         return HttpResponse(json.dumps(response_data), mimetype="text/plain")
-        # if count files == 0 response job canceled
     return HttpResponse('success')
 
 
@@ -258,8 +253,6 @@ def download_output_file(request, *job_id_args):
 
 
 def remove_download_item(request, *job_id_args):
-    #_initialize_session(request)
-
     job_id = jobidentification.join_job_id(*job_id_args)
 
     if job_id != '':
@@ -291,8 +284,7 @@ def convert_webservice(request, client_job_token):
 
         session_key = request.session.session_key
         job_identifier = jobidentification.get_new_job_identifier_by_client_job_token(
-            session_key,
-            client_job_token)
+            session_key, client_job_token)
         job_id = job_identifier.job_id
         if job_id == '':
             return HttpResponseServerError('Error: Job Token is not valid.')
@@ -323,7 +315,6 @@ def convert_webservice(request, client_job_token):
         job_handler.set_simplify_parameter(simplify_parameter)
 
         # Log start
-
         log_handler.set_start_time()
         log_handler.set_client_ip(client_ip)
         log_handler.set_client_language(client_language)
@@ -346,7 +337,6 @@ def convert_webservice(request, client_job_token):
         download_handler.set_download_caption(download_name)
 
         # Conversion end
-
         log_handler.set_end_time()
         log_handler.set_download_file_size(
             download_handler.get_download_file_size() /
@@ -355,7 +345,6 @@ def convert_webservice(request, client_job_token):
             download_handler.download_file_exists())
         log_handler.set_all_files_converted()
         log_handler.set_has_no_error()
-
         # Log end
 
         jobprocessing.cleanup()

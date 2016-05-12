@@ -60,7 +60,6 @@ class JobIdentifier(models.Model):
 class ConversionJob(models.Model):
     job_identifier = models.ForeignKey(JobIdentifier)
 
-    #export_format = models.CharField(max_length=20)
     export_format_name = models.CharField(max_length=50)
     source_srs = models.IntegerField()
     target_srs = models.IntegerField()
@@ -200,7 +199,7 @@ def get_ogr_formats_tuple():
 
     for ogr_format in supported_formats:
         name = ogr_format.name
-        if ogr_format.write == False:
+        if not ogr_format.write:
             name += ' (readonly)'
         format_list.append((ogr_format.name, name))
 
@@ -209,8 +208,7 @@ def get_ogr_formats_tuple():
 
 class OgrFormat(models.Model):
     name = models.CharField(
-        max_length=100,
-        unique=True,
+        max_length=100, unique=True,
         help_text='Name des Formats, wie er auf der Webseite angezeigt werden soll.')
     ogr_name = models.CharField(
         max_length=100,

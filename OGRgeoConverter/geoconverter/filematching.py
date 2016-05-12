@@ -89,13 +89,14 @@ def _get_matches_from_file_list(file_dict):
         for file_info in ogr_format_files:
             is_valid = True
             matched_files_dict = {file_info.file_id: file_info.full_name}
-            for additional_format in formats[file_info.format_name].additional_files:
+            for additional_format in formats[
+                    file_info.format_name].additional_files:
                 limit_reached = False
                 for i in range(len(additional_format_files)):
                     if not limit_reached and additional_format_files[i].file_extension.lower() == additional_format.file_extension.lower(
                     ) and additional_format_files[i].file_name == file_info.file_name and not additional_format_in_use[i]:
-                        matched_files_dict[
-                            additional_format_files[i].file_id] = additional_format_files[i].full_name
+                        matched_files_dict[additional_format_files[
+                            i].file_id] = additional_format_files[i].full_name
                         additional_format_in_use[i] = True
 
                         if not additional_format.is_multiple:

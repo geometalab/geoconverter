@@ -6,7 +6,7 @@ import os
 import shutil
 from datetime import datetime
 from datetime import date
-from OGRgeoConverter import paths
+from GeoConverter import settings
 from OGRgeoConverter.jobs import jobidentification
 
 
@@ -56,7 +56,7 @@ def remove_old_folders():
 def get_file_count(folder_path):
     file_count = 0
 
-    for root, dirs, files in os.walk(folder_path):
+    for _, _, files in os.walk(folder_path):
         file_count += len(files)
 
     return file_count
@@ -65,9 +65,8 @@ def get_file_count(folder_path):
 def get_conversion_job_folder():
     '''
     Returns the folder containing the job folders
-    /OGRgeoConverter/ConversionJobs/
     '''
-    return paths.conversion_job_path()
+    return settings.OUTPUT_DIR('ConversionJobs')
 
 
 def get_folder_path(job_id):
@@ -75,7 +74,7 @@ def get_folder_path(job_id):
     Returns the root job folder belonging to a job id
     e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/
     '''
-    year, month, day, hour, minute, second, code = jobidentification.split_job_id(
+    year, month, day, hour, minute, _, code = jobidentification.split_job_id(
         job_id)
 
     folder_path = get_conversion_job_folder()
@@ -130,7 +129,7 @@ def get_download_file_path(job_id):
     Returns the file path of the final archive with the converted files (depending on job id)
     e.g. /OGRgeoConverter/ConversionJobs/2012_12_12/4_download/geoconverter_20121212_151500.zip
     '''
-    year, month, day, hour, minute, second, code = jobidentification.split_job_id(
+    year, month, day, hour, minute, second, _ = jobidentification.split_job_id(
         job_id)
 
     file_path = get_download_folder_path(job_id)

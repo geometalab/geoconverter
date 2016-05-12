@@ -1,8 +1,6 @@
 import os
 from django.core.servers.basehttp import FileWrapper
 from OGRgeoConverter.filesystem import filemanager
-#from OGRgeoConverter.jobs import jobidentification
-#from OGRgeoConverter.geoconverter import datetimehandler
 from OGRgeoConverter.models import DownloadItem
 
 
@@ -40,7 +38,6 @@ class DownloadHandler:
     def __get_download_item_query_set(self):
         download_items = DownloadItem.get_download_item(self.__job_identifier)
         if len(download_items) == 0:
-            # Creat download item if it doesen't exist yet
             download_item = DownloadItem()
             download_item.job_identifier = self.__job_identifier
             download_item.download_caption = ''
