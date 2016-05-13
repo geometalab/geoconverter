@@ -1,0 +1,1 @@
+web: gunicorn GeoConverter.wsgi --workers=$(($(nproc)*2)) -b ${APP_HOST:-0.0.0.0}:${APP_PORT:-8000}

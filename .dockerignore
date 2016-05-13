@@ -3,4 +3,5 @@
 README.md
 *.swp
 .venv*/
-GeoConverter/settings_production.py
+*.tar
+*.sqlite

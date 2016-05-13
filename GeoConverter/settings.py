@@ -25,7 +25,7 @@ METADATA = get_metadata()
 
 env = environ.Env(
     DJANGO_ADMINS=(str, 'Some User;user@example.org'),
-    DJANGO_ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1', '0.0.0.0', ]),
+    DJANGO_ALLOWED_HOSTS=(str, 'localhost,127.0.0.1,0.0.0.0'),
     DJANGO_CACHE_DEFAULT_URL=(environ.Env.cache_url, 'locmemcache://'),
     DJANGO_DB_CONVERTER_URL=(environ.Env.db_url, 'sqlite:///' +
                              str(DATA_DIR('ogrgeoconverter.sqlite'))),
@@ -39,7 +39,8 @@ env = environ.Env(
                             str(DATA_DIR('sessions.sqlite'))),
     DJANGO_DEBUG=(bool, False),
     DJANGO_DEFAULT_FROM_EMAIL=(str, 'webmaster@localhost'),
-    DJANGO_EMAIL_BACKEND=(str, 'django.core.mail.backends.filebased.EmailBackend'),
+    DJANGO_EMAIL_BACKEND=(str,
+                          'django.core.mail.backends.filebased.EmailBackend'),
     DJANGO_EMAIL_FILE_PATH=(str, str(DATA_DIR('emails'))),
     DJANGO_EMAIL_HOST=(str, 'localhost'),
     DJANGO_EMAIL_HOST_PASSWORD=(str, ''),
@@ -55,15 +56,23 @@ env = environ.Env(
     DJANGO_SECRET_KEY=(str, 'DummyKeyToBeChanged'),
     DJANGO_SERVER_EMAIL=(str, 'root@localhost'),
     DJANGO_STATICFILES_DIRS=(list, [str(ROOT_DIR('static'))]),
+    DJANGO_STATICFILES_STORAGE=(str,
+                                'django.contrib.staticfiles.storage.StaticFilesStorage'),
     DJANGO_STATIC_ROOT=(str, str(STATICFILES_DIR)),
     DJANGO_STATIC_URL=(str, '/static/'),
+    DJANGO_THIRD_PARTY_APPS=(str, ''),
     DJANGO_X_FRAME_OPTIONS=(str, 'SAMEORIGIN'),)
 
 environ.Env.read_env(env('DJANGO_ENV_FILE'))  # reading potential .env file
 
+
+def tolist_with_env_lookup(x):
+    return [x for x in filter(None, [y for y in x.split(',') if not y.startswith(
+        '$')] + [env(y[1:], default=None) for y in x.split(',') if y.startswith('$')])]
+
 # APP CONFIGURATION
 # ------------------------------------------------------------------------------
-DJANGO_APPS = (
+DJANGO_APPS = [
     # Default Django apps:
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -77,15 +86,19 @@ DJANGO_APPS = (
 
     # Admin
     'django.contrib.admin',
-)
+]
 
-THIRD_PARTY_APPS = ()
+THIRD_PARTY_APPS = []
+THIRD_PARTY_APPS += env(
+    'DJANGO_THIRD_PARTY_APPS',
+    cast=list,
+    parse_default=True)
 
 # Apps specific for this project go here.
-LOCAL_APPS = (
+LOCAL_APPS = [
     'OGRgeoConverter',
     # 'version',
-)
+]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -250,6 +263,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+STATICFILES_STORAGE = env('DJANGO_STATICFILES_STORAGE')
 
 # MEDIA CONFIGURATION
 # ------------------------------------------------------------------------------
@@ -329,7 +343,11 @@ LOGGING = {
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = env("DJANGO_ALLOWED_HOSTS")
+ALLOWED_HOSTS = env(
+    'DJANGO_ALLOWED_HOSTS',
+    cast=tolist_with_env_lookup,
+    parse_default=True)
+
 X_FRAME_OPTIONS = env("DJANGO_X_FRAME_OPTIONS")
 
 # Session ends when user closes his browser
