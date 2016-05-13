@@ -3,7 +3,7 @@ FROM geometalab/gdal-docker
 USER root
 
 RUN apt-get update -y \
-    && apt-get install --no-install-recommends -y curl nano sqlite3 python3-pip python3-dev \
+    && apt-get install --no-install-recommends -y curl nano sqlite3 python3-pip \
     && apt-get autoremove -y && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 

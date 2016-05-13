@@ -8,19 +8,19 @@
 		<meta name="keywords" lang="en" content="converter, conversion, file, GIS, geo, vector, GDAL, OGR, AutoCAD, DXF, CSV, ESRI File Geodatabase, FileGDB, Shapefile, GPX, GeoJSON, GeoRSS, GML, Geospatial PDF, INTERLIS, KML, MapInfo, MicroStation DGN, OpenStreetMap, OSM, PBF, SQLite, SpatiaLite">
 		<meta name="keywords" lang="de" content="Konverter, Konvertierung, Datei, GIS, Geo, Vektor, GDAL, OGR, AutoCAD, DXF, CSV, ESRI File Geodatabase, FileGDB, Shapefile, GPX, GeoJSON, GeoRSS, GML, Geospatial PDF, INTERLIS, KML, MapInfo, MicroStation DGN, OpenStreetMap, OSM, PBF, SQLite, SpatiaLite">
 
+		{% load static from staticfiles %}
 		<!-- <link rel="shortcut icon" href="/favicon.ico" /> -->
-
 		<!-- jQuery -->
-		<link rel="stylesheet" href="static/jquery/css/smoothness/jquery-ui-1.9.1.custom.css" />
-    	<script src="static/jquery/js/jquery-1.8.2.min.js"></script>
-    	<script src="static/jquery/js/jquery-ui-1.9.1.custom.min.js"></script>
+		<link rel="stylesheet" href="{% static "jquery/css/smoothness/jquery-ui-1.9.1.custom.css" %}" />
+    	<script src="{% static "jquery/js/jquery-1.8.2.min.js" %}"></script>
+    	<script src="{% static "jquery/js/jquery-ui-1.9.1.custom.min.js" %}"></script>
 
     	<!-- CSS -->
-		<link rel="stylesheet" type="text/css" href="static/geoconverter/css/style.css">
+		<link rel="stylesheet" type="text/css" href="{% static "geoconverter/css/style.css" %}">
 		{% block ogrgeoconverter-css %}{% endblock %}
 
     	<!-- Scripts -->
-    	<script src="static/geoconverter/js/dialogs.js"></script>
+    	<script src="{% static "geoconverter/js/dialogs.js" %}"></script>
     	{% block ogrgeoconverter-scripts %}{% endblock %}
 
     	<script>
@@ -104,7 +104,7 @@
 
 			<div id="contact-dialog" style="display:none;">
 				<p>Prof. S. Keller<br>
-				   GeometaLab am Institut für Software<br><br>
+				   GeometaLab am Institut f&uuml;r Software<br><br>
 				   HSR Hochschule f&uuml;r Technik Rapperswil<br>
             	   Institut f&uuml;r Software<br>
             	   Oberseestrasse 10<br>

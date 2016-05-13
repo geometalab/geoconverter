@@ -1,6 +1,5 @@
-Django==1.5.1
+Django>=1.5,<1.6
 django-environ
-gunicorn==19.3.0
-gevent==1.0.2
-honcho
+gunicorn>=19,<20
 whitenoise>=2.0,<3.0
+honcho

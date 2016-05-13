@@ -5,21 +5,21 @@ $(document).ready(function(){
 	    	xhr.setRequestHeader('X-CSRFToken', $('input[name=csrfmiddlewaretoken]').val());
 	    }
 	});
-	
+
 	addUploader();
 	registerDownloadItemEvents();
 	registerDownloads();
-	
+
 	registerWebservicesRunButton();
-	
+
 });
 
 function getRandomConversionJobToken() {
 	var chars = 'abcdefghijklmnopqurstuvwxyz';
 	var random_token = 'job';
-	
+
 	random_token += (new Date()).getTime();
-	
+
 	for(var i = 0; i < 9; i++) {
 		random_token += chars.substr(Math.floor(Math.random() * chars.length), 1);
 	}
@@ -60,27 +60,29 @@ function get_download_name() {
 	if (current_hours < 10) current_hours = '0' + current_hours;
 	var current_minutes = current_date.getMinutes();
 	if (current_minutes < 10) current_minutes = '0' + current_minutes;
-	return current_hours + ':' + current_minutes;
+	var current_seconds = current_date.getSeconds();
+	if (current_seconds < 10) current_seconds = '0' + current_seconds;
+	return current_hours + ':' + current_minutes + ':' + current_seconds;
 }
 
 function addUploader() {
 	var job_token = getRandomConversionJobToken();
-	
+
 	var uploader_add_div = '';
 	uploader_add_div += '<div id="' + getUploaderAddDivID(job_token) + '" style="margin-top: 25px; margin-bottom: 20px;">' + '\n';
 	uploader_add_div += '    <noscript>' + '\n';
 	uploader_add_div += '        <!-- put a simple form for upload here -->' + '\n';
 	uploader_add_div += '    </noscript>' + '\n';
 	uploader_add_div += '</div>';
-	
+
 	var uploader_run_div = '';
 	uploader_run_div += '<div id="' + getUploaderRunDivID(job_token) + '" class="qq-upload-button default-border" style="margin-top: 10px;">' + '\n';
 	uploader_run_div += '    Run' + '\n';
 	uploader_run_div += '</div>' + '\n';
-	
+
 	$('#files-selector').html(uploader_add_div);
 	$('#files-convert-run-button').html(uploader_run_div);
-	
+
 	initializeUploader(job_token);
 }
 
@@ -88,7 +90,7 @@ function initializeUploader(job_token) {
 	var uploader_add_div_id = getUploaderAddDivID(job_token);
 	var uploader_run_div_id = getUploaderRunDivID(job_token);
 	var queue_div_id = getQueueDivID(job_token);
-	
+
 	var manualuploader = $('#' + uploader_add_div_id).fineUploader({
       	request: {
         	endpoint: '/converter/forms/files/' + job_token + '/upload'
@@ -120,9 +122,9 @@ function initializeUploader(job_token) {
     	});
 	}).on('submit', function(event, id, filename) {
 		//$(this).fineUploader('setParams', {'X-CSRFToken': $('input[name=csrfmiddlewaretoken]').val()});
-		
+
 	}).on('error', function(event, id, filename, reason) {
-		
+
 	}).on('complete', function(event, id, filename, responseJSON){
 		//alert('Complete!\nEvent: ' + event + '\nID: ' + id + '\nFilename: ' + filename + '\nJSON response: ' + responseJSON);
 		//console.log(responseJSON);
@@ -158,7 +160,7 @@ function finishConversion(job_token) {
 	    		download_div += '<p>Error: Conversion failed!</p>';
 	    		$('#' + queue_div_id).addClass('old-download-item');
 	    	}
-        	
+
         	$('#' + queue_div_id).append(download_div);
         	new_queue_div_id = getDownloadQueueDivID(job_id);
         	$('#' + queue_div_id).attr('id', new_queue_div_id);
@@ -204,7 +206,7 @@ function openDownload(e, job_id) {
 
 function submitFilesForm(uploader, job_token) {
     var fileIDs = uploader.fineUploader('getStoredFilesIDs');
-	
+
 	if (fileIDs.length <= 0) {
 		flashAddFileButton(job_token);
 	} else if ($('#id_files_ogrformat').val() == '') {
@@ -217,31 +219,31 @@ function submitFilesForm(uploader, job_token) {
 		new_download_box += '    <div class="download-name">' + download_name + '</div>';
 		new_download_box += '    <div class="remove-download-item remove-download-item-icon"></div>\n';
 		new_download_box += '</div>\n';
-		
+
 		$('#download-list').prepend(new_download_box);
 		registerDownloadItemEvents();
-		
+
 		$('#' + queueDivID).append($('#' + uploaderDivID));
 		$('#' + uploaderDivID + ' .qq-uploader .qq-upload-drop-area').remove();
 		$('#' + uploaderDivID + ' .qq-uploader .qq-upload-button').remove('');
 		$('#' + uploaderDivID + ' .qq-uploader .qq-upload-list').addClass('in-queue');
 		$('#' + uploaderDivID + ' .qq-uploader .qq-upload-list').removeClass('default-border');
 		$('#' + uploaderDivID).css('width', '325px');
-		
+
 		addUploader();
-		
+
 		var fileList = {};
 		//console.log(uploader);
     	for (var i in fileIDs) {
     		fileList[fileIDs[i]] = uploader.fineUploader('getFilenameByID', fileIDs[i]);
     	}
-    	
+
     	fileList['export_format'] = $('#id_files_ogrformat').val();
     	fileList['source_srs'] = $('#id_files_sourceSRS').val();
     	fileList['target_srs'] = $('#id_files_targetSRS').val();
     	fileList['simplify_parameter'] = $('#id_files_simplify').val();
     	fileList['download_name'] = download_name;
-    	
+
     	$.ajax({
 	        url: '/converter/forms/files/' + job_token + '/start',
 	        type: 'POST',
@@ -250,15 +252,15 @@ function submitFilesForm(uploader, job_token) {
 	        	// Löschen!
 	        	//var newDoc = document.open("text/html", "replace");
 				//newDoc.write(xhr.responseText);
-				//newDoc.close();  
-	        },  
+				//newDoc.close();
+	        },
 	        success: function (response) {
 	        	uploader.fineUploader('uploadStoredFiles');
 	        }
     	});
-    	
+
     	//
-	
+
 	}
 
 }
@@ -284,17 +286,17 @@ function checkUploadListBorder(ul_element, min) {
 
 function registerDownloadItemEvents() {
 	$('#download-list .download-item .remove-download-item').click(function(){
-		
+
 		var elem = $(this).closest('.download-item');
 
 		//elem.hide("slide", { direction: "left" }, 1000);
 		elem.hide('slow');
-		
+
 		$.ajax({
 		  url: '/converter/remove/' + elem.attr('id'),
 		})
 	});
-	
+
 	$('.download-item .remove-download-item').hover(function() {
 		$(this).attr('class','remove-download-item remove-download-item-icon-hover');
 			}, function() {
@@ -310,14 +312,14 @@ function registerWebservicesRunButton() {
     	var target_srs = $('#id_webservices_targetSRS').val();
     	var simplify_parameter = $('#id_webservices_simplify').val();
     	var download_name = get_download_name();
-    	
+
     	if (url == '') {
     		flashWebserviceTextBox();
     	} else if (export_format == '') {
     		flashWebserviceExportFormatTextBox();
     	} else {
     		$('#id_urlinput').val('');
-    		
+
     		runWebserviceConversion(url, export_format, source_srs, target_srs, simplify_parameter, download_name);
     	}
 	});
@@ -333,7 +335,7 @@ function flashWebserviceExportFormatTextBox() {
 
 function runWebserviceConversion(url, export_format, source_srs, target_srs, simplify_parameter, download_name) {
 	var job_token = getRandomConversionJobToken();
-		
+
 	var queue_div_id = getQueueDivID(job_token);
 	var new_download_box = '<div id="' + queue_div_id + '" class="download-item default-border">\n';
 	new_download_box += '    <div class="download-name">' + download_name + '</div>';
@@ -342,16 +344,16 @@ function runWebserviceConversion(url, export_format, source_srs, target_srs, sim
 	new_download_box += '</div>\n';
 	$('#download-list').prepend(new_download_box);
 	registerDownloadItemEvents();
-	
+
 	var webservicesData = {};
-	
+
 	webservicesData['webservice_url'] = url;
 	webservicesData['export_format'] = export_format;
 	webservicesData['source_srs'] = source_srs;
 	webservicesData['target_srs'] = target_srs;
 	webservicesData['simplify_parameter'] = simplify_parameter;
 	webservicesData['download_name'] = download_name;
-	
+
 	$.ajax({
         url: '/converter/forms/webservices/' + job_token + '/convert',
         type: 'POST',
@@ -359,13 +361,13 @@ function runWebserviceConversion(url, export_format, source_srs, target_srs, sim
         error: function (xhr) {
         	$('#' + queue_div_id).children('img[name=ajax-loader]').remove();
 	    	$('#' + queue_div_id).append('Error');
-        },  
+        },
         success: function (response) {
 	    	var json_response = jQuery.parseJSON(response);
 	    	var job_id = json_response.job_id;
 	    	var successful = json_response.successful;
 	    	$('#' + queue_div_id).children('img[name=ajax-loader]').remove();
-	    	
+
 	    	var download_div = '';
 	    	if (successful) {
 		    	var download_div_id = getDownloadDivID(job_id);
@@ -376,11 +378,11 @@ function runWebserviceConversion(url, export_format, source_srs, target_srs, sim
 	    		download_div += '<p>Error: Conversion failed!</p>';
 	    		$('#' + queue_div_id).addClass('old-download-item');
 	    	}
-	    	
+
 	    	$('#' + queue_div_id).append(download_div);
 	    	new_queue_div_id = getDownloadQueueDivID(job_id);
 	    	$('#' + queue_div_id).attr('id', new_queue_div_id);
-	    	
+
 	    	if (successful) registerDownload(job_id);
         }
 	});

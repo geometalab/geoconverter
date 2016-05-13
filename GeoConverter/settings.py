@@ -57,7 +57,7 @@ env = environ.Env(
     DJANGO_SERVER_EMAIL=(str, 'root@localhost'),
     DJANGO_STATICFILES_DIRS=(list, [str(ROOT_DIR('static'))]),
     DJANGO_STATICFILES_STORAGE=(str,
-                                'django.contrib.staticfiles.storage.StaticFilesStorage'),
+                                'django.contrib.staticfiles.storage.CachedStaticFilesStorage'),
     DJANGO_STATIC_ROOT=(str, str(STATICFILES_DIR)),
     DJANGO_STATIC_URL=(str, '/static/'),
     DJANGO_THIRD_PARTY_APPS=(str, ''),
@@ -79,6 +79,7 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     # 'django.contrib.sites',
     'django.contrib.messages',
+#     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
     # Useful template tags:
@@ -112,6 +113,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+#    'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 
 # MIGRATIONS CONFIGURATION
