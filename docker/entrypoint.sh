@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-if [ "$1" = 'dummy' ]; then
+if [ "$1" = 'honcho' ]; then
   chown -R nobody:nogroup $DATA_DIR $OUTPUT_DIR $STATICFILES_DIR
 
   if ! test -f $DATA_DIR/default.sqlite; then
@@ -27,7 +27,7 @@ if [ "$1" = 'dummy' ]; then
   fi
 
 #python3 manage.py migrate && \
-  gosu nobody sh -c 'python3 manage.py collectstatic --noinput && \
-    python3 manage.py runserver 0.0.0.0:8000'
+  gosu nobody python3 manage.py collectstatic --noinput
+  eval exec gosu nobody "$@"
 fi
 exec "$@"

@@ -1,15 +1,16 @@
 {% extends "index.html" %}
+{% load static from staticfiles %}
 
 {% block ogrgeoconverter-css %}
-<link rel="stylesheet" type="text/css" href="static/geoconverter/css/geoconverter.css">
-<link rel="stylesheet" type="text/css" href="static/fineuploader/css/fineuploader-extended.css">
+<link rel="stylesheet" type="text/css" href="{% static "geoconverter/css/geoconverter.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "fineuploader/css/fineuploader-extended.css" %}">
 {% endblock %}
 
 {% block ogrgeoconverter-scripts %}
-<script src="static/geoconverter/js/advanced-options.js"></script>
-<script src="static/geoconverter/js/formats.js"></script>
-<script src="static/geoconverter/js/ogr-converter.js"></script>
-<script src="static/fineuploader/js/jquery.fineuploader-3.0.js"></script>
+<script src="{% static "geoconverter/js/advanced-options.js" %}"></script>
+<script src="{% static "geoconverter/js/formats.js" %}"></script>
+<script src="{% static "geoconverter/js/ogr-converter.js" %}"></script>
+<script src="{% static "fineuploader/js/jquery.fineuploader-3.0.js" %}"></script>
 {% endblock %}
 
 {% block ogrgeoconverter-files %}
@@ -93,7 +94,7 @@
 
 <div id="download-list">
 	{% for path_code, download_name, file_exists, is_downloaded in download_list %}
-	
+
 	<div id="queue-{{ path_code }}" class="download-item default-border {% if not file_exists or is_downloaded %}old-download-item{% endif %}">
 		<div class="download-name">{{ download_name }}</div>
 		<div class="remove-download-item remove-download-item-icon"></div>
@@ -105,7 +106,7 @@
 		<p>Error: Conversion failed!</p>
     {% endif %}
     </div>
-    
+
 	{% endfor %}
 </div>
 
