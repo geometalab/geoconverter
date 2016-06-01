@@ -70,9 +70,9 @@ class ShellCommand:
         if encoding is None:
             encoding = 'utf-8'
         if stdout is not None:
-            self.__result_output = stdout.decode(encoding)
+            self.__result_output = stdout.decode(encoding) if hasattr(stdout, 'decode') else stdout
         if stderr is not None:
-            self.__result_error = stderr.decode(encoding)
+            self.__result_error = stderr.decode(encoding) if hasattr(stderr, 'decode') else stderr
 
     def get_result_output(self):
         return self.__result_output
