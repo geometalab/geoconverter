@@ -15,7 +15,7 @@ containers:
       - HONCHO_STARTFILE
       - VIRTUAL_HOST
 #      - VIRTUAL_PORT
-#      - CERT_NAME\
+#      - CERT_NAME
       - LETSENCRYPT_HOST
       - LETSENCRYPT_EMAIL
       - DJANGO_ADMIN_USER
