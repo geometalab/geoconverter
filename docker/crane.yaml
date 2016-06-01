@@ -5,7 +5,7 @@ containers:
   geoconverter: &geocref
     build:
       context: ..
-      file: Dockerfile
+      file: docker/Dockerfile
     image: geometalab/geoconverter:latest
     run: &geocrefrun
       detach: false
