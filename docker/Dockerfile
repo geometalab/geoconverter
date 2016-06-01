@@ -20,11 +20,11 @@ COPY requirements.txt $APP_DIR/requirements.txt
 RUN pip3 install -r $APP_DIR/requirements.txt
 
 COPY .git $APP_DIR/.git
-RUN cd $APP_DIR && git checkout -- GeoConverter OGRgeoConverter static templates manage.py Procfile.django*
+RUN cd $APP_DIR && git reset --hard
 # replace dynamic version info with fixed values
 RUN cd $APP_DIR && git checkout -- setup.py setup.cfg versioneer.py \
     && python3 setup.py build_py -d . \
-    && rm -rf setup.py setup.cfg versioneer.py .git
+    && rm -rf .* docker circle.yml MANIFEST.in setup.* versioneer.py || true
 RUN chmod +x /entrypoint.sh
 RUN mkdir -p $STATICFILES_DIR
 RUN chown -R nobody:nogroup $APP_DIR $STATICFILES_DIR
