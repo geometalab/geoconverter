@@ -183,6 +183,8 @@ class JobHandler:
     def file_removed(self, file_id):
         conversion_job_file = self.__get_conversion_job_files_query_set().filter(
             file_id=file_id)
+        if not conversion_job_file:
+            return True
         return conversion_job_file[0].is_removed
 
     def set_file_uploaded(self, file_id):

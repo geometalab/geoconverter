@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import os
 import versioneer
@@ -12,9 +13,7 @@ It is based on the open source GDAL/OGR tools.
 
 
 def get_packages(package):
-    """
-    Return root package and all sub-packages.
-    """
+    """Return root package and all sub-packages."""
     return [dirpath
             for dirpath, _, _ in os.walk(package)
             if os.path.exists(os.path.join(dirpath, '__init__.py'))]
@@ -39,6 +38,7 @@ setup(
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     author="Josua Stähli",
+    author_email="jstaehli@hsr.ch",
     maintainer="Marcel Huber",
     maintainer_email="marcel.huber@hsr.ch",
     description="GIS file format converter",
