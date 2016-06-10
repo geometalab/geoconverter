@@ -33,5 +33,5 @@ deployment:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
       - docker tag $docker_image $docker_image:latest-dev
       - docker push $docker_image:latest-dev
-      - docker tag $docker_image:latest-dev $docker_image:$(docker run -it --rm --env DJANGO_ENV_FILE=/dev/null $docker_image python3 manage.py geoconvversion --short | sed -rn 's/^([-._A-Za-z0-9]+).*$/\1/p')
-      - docker push $docker_image:$(docker run -it --rm --env DJANGO_ENV_FILE=/dev/null $docker_image python3 manage.py geoconvversion --short | sed -rn 's/^([-._A-Za-z0-9]+).*$/\1/p')
+      - docker tag $docker_image:latest-dev $docker_image:$(docker run -it --rm --env DJANGO_ENV_FILE=/dev/null $docker_image python3 manage.py geoconvversion --dockertag | sed -rn 's/^([-._A-Za-z0-9]+).*$/\1/p')
+      - docker push $docker_image:$(docker run -it --rm --env DJANGO_ENV_FILE=/dev/null $docker_image python3 manage.py geoconvversion --dockertag | sed -rn 's/^([-._A-Za-z0-9]+).*$/\1/p')
