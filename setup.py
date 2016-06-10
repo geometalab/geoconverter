@@ -40,6 +40,7 @@ setup(
     version=versioneer.get_version(),
     cmdclass=versioneer.get_cmdclass(),
     author="Josua Stähli",
+    author_email="jstaehli@hsr.ch",
     maintainer="Marcel Huber",
     maintainer_email="marcel.huber@hsr.ch",
     description="GIS file format converter",
