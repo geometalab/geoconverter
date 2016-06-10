@@ -13,6 +13,7 @@ containers:
       - APP_HOST
       - APP_PORT
 #      - HONCHO_STARTFILE
+      - HONCHO_WORKERS
       - VIRTUAL_HOST
 #      - VIRTUAL_PORT
 #      - CERT_NAME
