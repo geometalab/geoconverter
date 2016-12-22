@@ -7,4 +7,5 @@ GeoConverter by Geometa Lab HSR
 
 Free online tool for the conversion of (vector) geodata formats. 
 
-See also https://giswiki.hsr.ch/GeoConverter .
+* Homepage: https://giswiki.hsr.ch/GeoConverter
+* User Documentation https://giswiki.hsr.ch/GeoConverter .
