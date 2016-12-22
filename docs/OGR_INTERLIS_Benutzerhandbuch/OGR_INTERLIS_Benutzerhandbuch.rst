@@ -338,7 +338,7 @@ Ob die Installation wie im Kapitel 1 beschrieben geklappt hat, können
 Sie testen, indem Sie beispielsweise folgende Zeile in die Kommandozeile
 eingeben und die Entertaste drücken:
 
-ogrinfo --version
+  ogrinfo --version
 
 Als Ausgabe erscheint die Versionsnummer von GDAL. Geben Sie nun
 folgenden Befehl ein:
