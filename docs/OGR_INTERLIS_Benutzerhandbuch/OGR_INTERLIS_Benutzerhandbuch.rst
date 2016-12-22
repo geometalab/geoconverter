@@ -7,7 +7,10 @@ Version 7
 
 Im Auftrag von KOGIS 
 
-Josua Stähli und Stefan Keller
+Stefan Keller, Geometa Lab HSR, www.hsr.ch/geometalab et al.
+
+Weitere Beteiligte: Pirmin Kalberer, Josua Stähli, Dennis Ligtenberg, Severin Fritschi.
+
 
 Einleitung
 ==========
