@@ -343,7 +343,7 @@ eingeben und die Entertaste drücken:
 Als Ausgabe erscheint die Versionsnummer von GDAL. Geben Sie nun
 folgenden Befehl ein:
 
-ogr2ogr --formats
+  ogr2ogr --formats
 
 Es erscheint eine Liste mit allen von OGR unterstützten Formaten mit dem
 Hinweise, ob diese nur gelesen oder auch geschrieben werden können. In
@@ -356,7 +356,7 @@ ogr2ogr
 Mit ogr2ogr kann man Dateien mit Vektordaten von einem Format in ein
 anderes konvertieren. Ein möglicher Befehl sieht so aus:
 
-ogr2ogr -f GPX out.gpx in.kml
+  ogr2ogr -f GPX out.gpx in.kml
 
 Mit diesem Befehl wird die Datei mit dem Namen „in.kml“ eingelesen, von
 KML in das GPX-Format umgewandelt und in der Datei „out.gpx“
@@ -374,7 +374,7 @@ aktuellen Pfad der Kommandozeile sieht man auf der linken Seite vor der
 Befehlseingabe. Absolute Pfade können beispielsweise so angegeben
 werden:
 
-ogr2ogr -f GPX "c:\\output files\\output.gpx" c:\\ogr\\data.kml
+  ogr2ogr -f GPX "c:\\output files\\output.gpx" c:\\ogr\\data.kml
 
 ogrinfo
 -------
@@ -383,19 +383,19 @@ Damit lassen sich Informationen zu Dateien anzeigen, die sich in einem
 von OGR unterstützten Format befinden. Mit folgendem Befehl werden alle
 Features von den einzelnen Layern der angegebenen Datei angezeigt:
 
-ogrinfo –al in.kml
+  ogrinfo –al in.kml
 
 Mit dem Parameter „so“ werden die Informationen zusammengefasst
 angezeigt:
 
-ogrinfo –so in.kml
+  ogrinfo –so in.kml
 
 Falls vorhanden werden Informationen wie Projektion, Ausdehnung und
 Schema angezeigt.
 
 Für INTERLIS 2 sieht der Befehl folgendermassen aus:
 
-ogrinfo –al in.xml,in.imd
+  ogrinfo –al in.xml,in.imd
 
 Wie Sie die .imd Datei erstellen können Sie im Kapitel 2.6 nachlesen.
 
@@ -468,9 +468,9 @@ Wenn Sie in OGR INTERLIS Daten lesen wollen müssen Sie immer zuerst bei
 INTERLIS 1 die ITF Datei oder bei INTERLIS 2 die XML Datei und dann
 kommasepariert die wie soeben beschrieben erstelle .imd Datei angeben:
 
-ogr2ogr -f "ESRI Shapefile" shpdir in.xml,in.imd
+  ogr2ogr -f "ESRI Shapefile" shpdir in.xml,in.imd
 
-ogr2ogr -f "ESRI Shapefile" shpdir in.itf,in.imd
+  ogr2ogr -f "ESRI Shapefile" shpdir in.itf,in.imd
 
 Allgemeine Informationen zur INTERLIS-Unterstützung in OGR finden Sie
 hier:
@@ -485,7 +485,7 @@ cd c:\\ogr\\interlis1. Erstellen Sie die benötigte imd Datei (Kapitel
 4.6.1), nennen sie diese bahnhoefe.imd. Die Anweisung für die
 Konvertierung in das Shapefile-Format lautet folgendermassen:
 
-ogr2ogr -f "ESRI Shapefile" shpdir bahnhoefe.itf,bahnhoefe.imd
+  ogr2ogr -f "ESRI Shapefile" shpdir bahnhoefe.itf,bahnhoefe.imd
 
 OGR erzeugt einen neuen Ordner mit dem Namen „shpdir“, der die
 konvertierten Shapefiles aller Layer enthält. Für jede INTERLIS-Tabelle
@@ -498,7 +498,7 @@ Wir benutzen den Ordner mit den eben erzeugten Shapefiles. Mit folgendem
 Befehl wird das gesamte Verzeichnis wieder zu INTERLIS 1
 zurückkonvertiert:
 
-ogr2ogr -f "Interlis 1" bahnhoefe.itf,bahnhoefe.imd shpdir
+  ogr2ogr -f "Interlis 1" bahnhoefe.itf,bahnhoefe.imd shpdir
 
 Um Daten zu INTERLIS 1 und 2 konvertieren zu können wird immer eine
 bereits vorhandene passende .imd Datei benötigt.
@@ -513,7 +513,7 @@ beispielsweise mit cd c:\\ogr\\interlis2\_roads. Erstellen Sie auch hier
 die dazugehörige imd Datei, nennen sie diese RoadsExdm2ien.imd. Benutzen
 Sie nun folgenden Befehl:
 
-ogr2ogr -f "ESRI Shapefile" shpdir RoadsExdm2ien.xml,RoadsExdm2ien.imd
+  ogr2ogr -f "ESRI Shapefile" shpdir RoadsExdm2ien.xml,RoadsExdm2ien.imd
 
 Konvertieren von Shapefile nach INTERLIS 2
 ``````````````````````````````````````````
@@ -522,7 +522,7 @@ Mit diesem Befehl werden wieder alle Shapefiles aus dem vorher
 erstellten Verzeichnis zu INTERLIS 2 konvertiert (auf einer Zeile
 eingeben):
 
-ogr2ogr -f "Interlis 2" interlis2.xml,RoadsExdm2ien.imd shpdir
+  ogr2ogr -f "Interlis 2" interlis2.xml,RoadsExdm2ien.imd shpdir
 
 Oder nur ein einzelnes Shapefile:
 
@@ -559,7 +559,7 @@ verfügt?
     ab. Starten Sie die Kommandozeile und geben Sie folgenden Befehl
     ein:
 
-    ogr2ogr –-formats
+      ogr2ogr –-formats
 
     Die Ausgabe ist eine Liste mit allen Formaten, die von dem aktuell
     installierten OGR unterstützt werden. Beachten Sie die Klammern nach
@@ -599,13 +599,13 @@ nicht erkannt?
     Konvertieren von INTERLIS 1 nach INTERLIS 2 kann der Befehl
     folgendermassen aussehen:
 
-    ogr2ogr -f "Interlis 1" interlis2\_out.itf,interlis2\_out.imd
-    interlis1\_in.xml,interlis\_in1.imd
+      ogr2ogr -f "Interlis 1" interlis2\_out.itf,interlis2\_out.imd
+      interlis1\_in.xml,interlis\_in1.imd
 
     Und umgekehrt, von INTERLIS 2 nach INTERLIS 1:
 
-    ogr2ogr -f "Interlis 2" interlis1\_out.xml,interlis1\_out.imd
-    interlis2\_in.itf,interlis2\_in.imd
+      ogr2ogr -f "Interlis 2" interlis1\_out.xml,interlis1\_out.imd
+      interlis2\_in.itf,interlis2\_in.imd
 
 • Gibt es weitere Dokumentationen und Tipps zu OGR?
 
@@ -620,19 +620,19 @@ Konvertierungen:
 
 • Nach INTERLIS 1:
 
-ogr2ogr -f "Interlis 1" out.itf,out.imd in.shp
+  ogr2ogr -f "Interlis 1" out.itf,out.imd in.shp
 
 • Nach INTERLIS 2:
 
-ogr2ogr -f "Interlis 2" out.xml,model.imd in.shp
+  ogr2ogr -f "Interlis 2" out.xml,model.imd in.shp
 
 • Nach Shapefile
 
-ogr2ogr -f "ESRI Shapefile" shpdir in.itf,model.imd
+  ogr2ogr -f "ESRI Shapefile" shpdir in.itf,model.imd
 
 • Nach SQLite:
 
-ogr2ogr -f SQLite out.sqlite in.xml,model.imd
+  ogr2ogr -f SQLite out.sqlite in.xml,model.imd
 
 Weitere Parameter von ogr2ogr
 -----------------------------
@@ -709,14 +709,15 @@ Fehlermeldungen und Warnungen
     wurde der Dateiname falsch geschrieben oder es ist in OGR kein
     Treiber für das Format dieser Datei vorhanden.
 
-| • c:\\ogr>ogr2ogr -f "ESRI Shapefile" shpdir test2.itf,test2.imd
-| *Info: ilifile <test2.ili>
+``c:\ogr>ogr2ogr -f "ESRI Shapefile" shpdir test2.itf,test2.imd
+::
+  Info: ilifile <test2.ili>
   FAILED: Layer Bahnhoefe\_\_Bahnhoefe already exists, and -append not
   specified.
   Consider using -append, or -overwrite.
   ERROR 1: Terminating translation prematurely after failed
   translation of layer Bahnhoefe\_\_Bahnhoefe (use -skipfailures to skip
-  errors)*
+  errors)
 
     → Die Ausgabedatei (oder Ausgabeordner) ist bereits vorhanden.
     Löschen sie vor der Konvertierung die schon vorhandene Datei oder
