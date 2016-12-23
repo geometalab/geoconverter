@@ -700,16 +700,18 @@ Java), die entsprechenden Programmierkenntnisse vorausgesetzt.
 Fehlermeldungen und Warnungen
 -----------------------------
 
-| • c:\\ogr>ogr2ogr -f GPX out.gpx in.kml
-| *FAILURE: Unable to open datasource ‘in.kml' with the following
+``c:\ogr>ogr2ogr -f GPX out.gpx in.kml``
+::
+  FAILURE: Unable to open datasource ‘in.kml' with the following
   drivers.
-  ...*
+  ...
 
     → Die angegebene Inputdatei kann nicht gelesen werden. Entweder
     wurde der Dateiname falsch geschrieben oder es ist in OGR kein
     Treiber für das Format dieser Datei vorhanden.
-
-``c:\ogr>ogr2ogr -f "ESRI Shapefile" shpdir test2.itf,test2.imd
+    
+**Fehler 1: Kann angegebene Inputdatei nicht lesen**
+``c:\ogr>ogr2ogr -f "ESRI Shapefile" shpdir test2.itf,test2.imd``
 ::
   Info: ilifile <test2.ili>
   FAILED: Layer Bahnhoefe\_\_Bahnhoefe already exists, and -append not
@@ -725,19 +727,21 @@ Fehlermeldungen und Warnungen
     hinzu. Mit dem Parameter –append wird ein existierender Layer mit
     den neuen Daten ergänzt.
 
-• *c:\\ogr\\interlis1>ogr2ogr -f "ESRI Shapefile" shpdir
-Beispieldatensatz\_24d.itf,DM.01-AV-CH\_24d.ili
-Warning 6: Normalized/laundered field name: 'ILI\_Geometry' to
-'ILI\_Geomet'*
+``c:\\ogr\\interlis1>ogr2ogr -f "ESRI Shapefile" shpdir``
+``Beispieldatensatz\_24d.itf,DM.01-AV-CH\_24d.ili``
+::
+  Warning 6: Normalized/laundered field name: 'ILI\_Geometry' to
+  'ILI\_Geomet'
 
     → Ein Feldname ist zu lang für das Zielformat und wurde deshalb
     gekürzt. Falls die Kürzung des Namens kein Problem darstellt, kann
     diese Warnung ignoriert werden.
 
-• c:\\ogr\\interlis2>ogr2ogr -f "Interlis 2" interlis2.xml *
-interlis1.itf,model.ili
-Warning 4: Model file '(null)' (interlis2.xml) not found : No such file
-or directory.*
+``c:\\ogr\\interlis2>ogr2ogr -f "Interlis 2" interlis2.xml``
+``interlis1.itf,model.ili``
+::
+  Warning 4: Model file '(null)' (interlis2.xml) not found : No such file
+  or directory.
 
     → Es wurde entweder gar kein Modell (ili) angegeben, oder zusammen
     mit der Eingabedatei. Modell müssen zusammen mit Ausgabedatei
